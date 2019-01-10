@@ -5,11 +5,11 @@ public class AnulacionLRFacturasEmitidasRequest
 {
     [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/ssii/fact/ws/SuministroLR.xsd", Order=0)]
     public BajaLRFacturasEmitidas BajaLRFacturasEmitidas;
-    
+
     public AnulacionLRFacturasEmitidasRequest()
     {
     }
-    
+
     public AnulacionLRFacturasEmitidasRequest(BajaLRFacturasEmitidas BajaLRFacturasEmitidas)
     {
         this.BajaLRFacturasEmitidas = BajaLRFacturasEmitidas;

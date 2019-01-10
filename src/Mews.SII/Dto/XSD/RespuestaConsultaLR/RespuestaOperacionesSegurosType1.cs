@@ -1,5 +1,4 @@
-﻿[System.SerializableAttribute]
-[System.Xml.Serialization.XmlTypeAttribute(TypeName="RespuestaOperacionesSegurosType", Namespace="https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/ssii/fact/ws/RespuestaConsultaLR.xsd")]
+﻿[System.Xml.Serialization.XmlTypeAttribute(TypeName="RespuestaOperacionesSegurosType", Namespace="https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/ssii/fact/ws/RespuestaConsultaLR.xsd")]
 public class RespuestaOperacionesSegurosType1
 {
     [System.Xml.Serialization.XmlElementAttribute(Order=0)]
