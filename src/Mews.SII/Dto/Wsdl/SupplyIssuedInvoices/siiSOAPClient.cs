@@ -1,4 +1,12 @@
-﻿[System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+﻿using Mews.Sii.Dto.Wsdl.SupplyIssuedInvoices.Requests;
+using Mews.Sii.Dto.Wsdl.SupplyIssuedInvoices.Responses;
+using Mews.Sii.Dto.XSD.ConsultaLR;
+using Mews.Sii.Dto.XSD.RespuestaConsultaLR;
+using Mews.Sii.Dto.XSD.RespuestaSuministro;
+using Mews.Sii.Dto.XSD.SuministroInformacion;
+using Mews.Sii.Dto.XSD.SuministroLR;
+
+[System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
 public class siiSOAPClient : System.ServiceModel.ClientBase<siiSOAP>, siiSOAP
 {
     public siiSOAPClient()

@@ -1,8 +1,11 @@
-﻿[System.SerializableAttribute]
-[System.Xml.Serialization.XmlTypeAttribute(TypeName="EstadoRegistroSIIType", Namespace="https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/ssii/fact/ws/RespuestaConsultaLR.xsd")]
-public enum EstadoRegistroSIIType1
+﻿namespace Mews.Sii.Dto.XSD.RespuestaConsultaLR
 {
-    Correcta,
-    AceptadaConErrores,
-    Anulada,
+    [System.SerializableAttribute]
+    [System.Xml.Serialization.XmlTypeAttribute(TypeName="EstadoRegistroSIIType", Namespace="https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/ssii/fact/ws/RespuestaConsultaLR.xsd")]
+    public enum EstadoRegistroSIIType1
+    {
+        Correcta,
+        AceptadaConErrores,
+        Anulada,
+    }
 }

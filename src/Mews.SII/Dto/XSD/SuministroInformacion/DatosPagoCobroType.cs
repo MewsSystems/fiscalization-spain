@@ -1,16 +1,19 @@
-﻿[System.SerializableAttribute]
-[System.Xml.Serialization.XmlTypeAttribute(Namespace="https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/ssii/fact/ws/SuministroInformacion.xsd")]
-public class DatosPagoCobroType
+﻿namespace Mews.Sii.Dto.XSD.SuministroInformacion
 {
-    [System.Xml.Serialization.XmlElementAttribute(Order=0)]
-    public string Fecha { get; set; }
+    [System.SerializableAttribute]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/ssii/fact/ws/SuministroInformacion.xsd")]
+    public class DatosPagoCobroType
+    {
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public string Fecha { get; set; }
 
-    [System.Xml.Serialization.XmlElementAttribute(Order=1)]
-    public string Importe { get; set; }
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public string Importe { get; set; }
 
-    [System.Xml.Serialization.XmlElementAttribute(Order=2)]
-    public MedioPagoType Medio { get; set; }
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public MedioPagoType Medio { get; set; }
 
-    [System.Xml.Serialization.XmlElementAttribute(Order=3)]
-    public string Cuenta_O_Medio { get; set; }
+        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        public string Cuenta_O_Medio { get; set; }
+    }
 }

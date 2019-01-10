@@ -1,4 +1,10 @@
-﻿[System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+﻿using Mews.Sii.Dto.Wsdl.SupplyIssuedInvoices.Requests;
+using Mews.Sii.Dto.Wsdl.SupplyIssuedInvoices.Responses;
+using Mews.Sii.Dto.XSD.RespuestaConsultaLR;
+using Mews.Sii.Dto.XSD.RespuestaSuministro;
+using Mews.Sii.Dto.XSD.SuministroInformacion;
+
+[System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
 [System.ServiceModel.ServiceContractAttribute(Namespace="https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/ssii/fact/ws/SuministroFactEmitidas.wsdl", ConfigurationName="siiSOAP")]
 public interface siiSOAP
 {

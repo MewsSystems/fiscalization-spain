@@ -1,7 +1,10 @@
-﻿[System.SerializableAttribute]
-[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/ssii/fact/ws/SuministroInformacion.xsd")]
-public enum OperacionIntracomunitariaTypeTipoOperacion
+﻿namespace Mews.Sii.Dto.XSD.SuministroInformacion
 {
-    A,
-    B,
+    [System.SerializableAttribute]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/ssii/fact/ws/SuministroInformacion.xsd")]
+    public enum OperacionIntracomunitariaTypeTipoOperacion
+    {
+        A,
+        B,
+    }
 }

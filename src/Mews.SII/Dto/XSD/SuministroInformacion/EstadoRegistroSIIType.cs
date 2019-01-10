@@ -1,8 +1,11 @@
-﻿[System.SerializableAttribute]
-[System.Xml.Serialization.XmlTypeAttribute(Namespace="https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/ssii/fact/ws/SuministroInformacion.xsd")]
-public enum EstadoRegistroSIIType
+﻿namespace Mews.Sii.Dto.XSD.SuministroInformacion
 {
-    Correcta,
-    AceptadaConErrores,
-    Anulada,
+    [System.SerializableAttribute]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/ssii/fact/ws/SuministroInformacion.xsd")]
+    public enum EstadoRegistroSIIType
+    {
+        Correcta,
+        AceptadaConErrores,
+        Anulada,
+    }
 }

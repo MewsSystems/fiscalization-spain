@@ -1,17 +1,22 @@
-﻿[System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-[System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-[System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
-public class ConsultaLRFactInformadasAgrupadasClienteRequest
+﻿using Mews.Sii.Dto.XSD.ConsultaLR;
+
+namespace Mews.Sii.Dto.Wsdl.SupplyIssuedInvoices.Requests
 {
-    [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/ssii/fact/ws/ConsultaLR.xsd", Order=0)]
-    public ConsultaLRFactInformadasAgrupadasClienteType ConsultaLRFactInformadasAgrupadasCliente;
-    
-    public ConsultaLRFactInformadasAgrupadasClienteRequest()
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public class ConsultaLRFactInformadasAgrupadasClienteRequest
     {
-    }
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/ssii/fact/ws/ConsultaLR.xsd", Order=0)]
+        public ConsultaLRFactInformadasAgrupadasClienteType ConsultaLRFactInformadasAgrupadasCliente;
     
-    public ConsultaLRFactInformadasAgrupadasClienteRequest(ConsultaLRFactInformadasAgrupadasClienteType ConsultaLRFactInformadasAgrupadasCliente)
-    {
-        this.ConsultaLRFactInformadasAgrupadasCliente = ConsultaLRFactInformadasAgrupadasCliente;
+        public ConsultaLRFactInformadasAgrupadasClienteRequest()
+        {
+        }
+    
+        public ConsultaLRFactInformadasAgrupadasClienteRequest(ConsultaLRFactInformadasAgrupadasClienteType ConsultaLRFactInformadasAgrupadasCliente)
+        {
+            this.ConsultaLRFactInformadasAgrupadasCliente = ConsultaLRFactInformadasAgrupadasCliente;
+        }
     }
 }
