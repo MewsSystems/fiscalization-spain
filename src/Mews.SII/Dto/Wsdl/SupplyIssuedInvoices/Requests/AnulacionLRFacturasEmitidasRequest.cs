@@ -14,9 +14,9 @@ namespace Mews.Sii.Dto.Wsdl.SupplyIssuedInvoices.Requests
         {
         }
 
-        public AnulacionLRFacturasEmitidasRequest(BajaLRFacturasEmitidas BajaLRFacturasEmitidas)
+        public AnulacionLRFacturasEmitidasRequest(BajaLRFacturasEmitidas bajaLRFacturasEmitidas)
         {
-            this.BajaLRFacturasEmitidas = BajaLRFacturasEmitidas;
+            BajaLRFacturasEmitidas = bajaLRFacturasEmitidas;
         }
     }
 }

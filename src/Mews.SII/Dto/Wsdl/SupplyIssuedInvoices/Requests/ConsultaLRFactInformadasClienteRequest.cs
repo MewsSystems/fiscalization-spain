@@ -9,14 +9,14 @@ namespace Mews.Sii.Dto.Wsdl.SupplyIssuedInvoices.Requests
     {
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/ssii/fact/ws/ConsultaLR.xsd", Order=0)]
         public ConsultaLRFactInformadasClienteType ConsultaLRFactInformadasCliente;
-    
+
         public ConsultaLRFactInformadasClienteRequest()
         {
         }
-    
-        public ConsultaLRFactInformadasClienteRequest(ConsultaLRFactInformadasClienteType ConsultaLRFactInformadasCliente)
+
+        public ConsultaLRFactInformadasClienteRequest(ConsultaLRFactInformadasClienteType consultaLRFactInformadasCliente)
         {
-            this.ConsultaLRFactInformadasCliente = ConsultaLRFactInformadasCliente;
+            ConsultaLRFactInformadasCliente = consultaLRFactInformadasCliente;
         }
     }
 }

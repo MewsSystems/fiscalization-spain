@@ -6,7 +6,7 @@ using Mews.Sii.Dto.XSD.SuministroInformacion;
 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
 [System.ServiceModel.ServiceContractAttribute(Namespace="https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/ssii/fact/ws/SuministroFactEmitidas.wsdl", ConfigurationName="siiSOAP")]
-public interface siiSOAP
+public interface ISiiSOAPClient
 {
     [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
     [System.ServiceModel.XmlSerializerFormatAttribute]

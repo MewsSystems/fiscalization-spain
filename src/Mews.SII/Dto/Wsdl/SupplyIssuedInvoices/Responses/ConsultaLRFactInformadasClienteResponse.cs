@@ -14,9 +14,9 @@ namespace Mews.Sii.Dto.Wsdl.SupplyIssuedInvoices.Responses
         {
         }
 
-        public ConsultaLRFactInformadasClienteResponse(RespuestaConsultaLRFactInformadasClienteType RespuestaConsultaLRFactInformadasCliente)
+        public ConsultaLRFactInformadasClienteResponse(RespuestaConsultaLRFactInformadasClienteType respuestaConsultaLRFactInformadasCliente)
         {
-            this.RespuestaConsultaLRFactInformadasCliente = RespuestaConsultaLRFactInformadasCliente;
+            RespuestaConsultaLRFactInformadasCliente = respuestaConsultaLRFactInformadasCliente;
         }
     }
 }

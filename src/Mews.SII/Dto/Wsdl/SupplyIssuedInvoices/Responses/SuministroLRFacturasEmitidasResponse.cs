@@ -9,14 +9,14 @@ namespace Mews.Sii.Dto.Wsdl.SupplyIssuedInvoices.Responses
     {
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/ssii/fact/ws/RespuestaSuministro.xsd", Order=0)]
         public RespuestaLRFEmitidasType RespuestaLRFacturasEmitidas;
-    
+
         public SuministroLRFacturasEmitidasResponse()
         {
         }
-    
-        public SuministroLRFacturasEmitidasResponse(RespuestaLRFEmitidasType RespuestaLRFacturasEmitidas)
+
+        public SuministroLRFacturasEmitidasResponse(RespuestaLRFEmitidasType respuestaLRFacturasEmitidas)
         {
-            this.RespuestaLRFacturasEmitidas = RespuestaLRFacturasEmitidas;
+            RespuestaLRFacturasEmitidas = respuestaLRFacturasEmitidas;
         }
     }
 }

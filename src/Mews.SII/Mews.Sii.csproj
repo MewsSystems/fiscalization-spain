@@ -60,6 +60,7 @@
     <Compile Include="DateTimeProvider.cs" />
     <Compile Include="Dto\Wsdl\SupplyIssuedInvoices\Requests\AnulacionLRFacturasEmitidasRequest.cs" />
     <Compile Include="Dto\Wsdl\SupplyIssuedInvoices\Responses\AnulacionLRFacturasEmitidasResponse.cs" />
+    <Compile Include="Dto\Wsdl\SupplyIssuedInvoices\ISiiSOAPChannel.cs" />
     <Compile Include="Dto\XSD\SuministroLR\BajaLRFacturasEmitidas.cs" />
     <Compile Include="Dto\XSD\SuministroInformacion\BienDeInversionType.cs" />
     <Compile Include="Dto\XSD\SuministroInformacion\CabeceraConsultaSii.cs" />
@@ -282,9 +283,8 @@
     <Compile Include="Dto\XSD\RespuestaSuministro\RespuestaRecibidaType.cs" />
     <Compile Include="Dto\XSD\RespuestaConsultaLR\ResultadoConsultaType.cs" />
     <Compile Include="Dto\XSD\SuministroInformacion\SuministroLRFacturasEmitidas.cs" />
-    <Compile Include="Dto\Wsdl\SupplyIssuedInvoices\siiSOAP.cs" />
-    <Compile Include="Dto\Wsdl\SupplyIssuedInvoices\siiSOAPChannel.cs" />
-    <Compile Include="Dto\Wsdl\SupplyIssuedInvoices\siiSOAPClient.cs" />
+    <Compile Include="Dto\Wsdl\SupplyIssuedInvoices\ISiiSOAPClient.cs" />
+    <Compile Include="Dto\Wsdl\SupplyIssuedInvoices\SiiSoapClient.cs" />
     <Compile Include="Dto\XSD\SuministroInformacion\SimplificadaCualificadaType.cs" />
     <Compile Include="Dto\XSD\SuministroInformacion\SituacionInmuebleType.cs" />
     <Compile Include="Dto\XSD\SuministroInformacion\SujetaPrestacionType.cs" />
@@ -316,6 +316,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Dto\Wsdl\SupplyIssuedInvoices\output.config" />
+    <None Include="Mews.ruleset" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
