@@ -8,6 +8,6 @@
         public string EjercicioImputacion { get; set; }
 
         [System.Xml.Serialization.XmlElementAttribute(Order=1)]
-        public TipoPeriodoType PeriodoImputacion { get; set; }
+        public TimePeriodType PeriodoImputacion { get; set; }
     }
 }

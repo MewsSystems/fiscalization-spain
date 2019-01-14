@@ -10,6 +10,6 @@ namespace Mews.Fiscalization.Spain.Dto.XSD.RespuestaSuministro
         public string Ejercicio { get; set; }
 
         [System.Xml.Serialization.XmlElementAttribute(Order=1)]
-        public TipoPeriodoType Periodo { get; set; }
+        public TimePeriodType Periodo { get; set; }
     }
 }

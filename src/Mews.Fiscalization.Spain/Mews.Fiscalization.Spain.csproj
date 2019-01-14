@@ -297,11 +297,12 @@
     <Compile Include="Dto\Wsdl\SupplyIssuedInvoices\Responses\SuministroLRFacturasEmitidasResponse.cs" />
     <Compile Include="Dto\XSD\SuministroInformacion\TipoConDesgloseType.cs" />
     <Compile Include="Dto\XSD\SuministroInformacion\TipoOperacionSujetaNoExentaType.cs" />
-    <Compile Include="Dto\XSD\SuministroInformacion\TipoPeriodoType.cs" />
+    <Compile Include="Dto\XSD\SuministroInformacion\TimePeriodType.cs" />
     <Compile Include="Dto\XSD\SuministroInformacion\TipoSinDesglosePrestacionType.cs" />
     <Compile Include="Dto\XSD\SuministroInformacion\TipoSinDesgloseType.cs" />
     <Compile Include="Dto\XSD\SuministroInformacion\VariosDestinatariosType.cs" />
     <Compile Include="Dto\XSD\SuministroInformacion\VersionSiiType.cs" />
+    <Compile Include="Environment\Credentials.cs" />
     <Compile Include="SiiEnvironment.cs" />
     <Compile Include="ILogger.cs" />
     <Compile Include="Patterns.cs" />

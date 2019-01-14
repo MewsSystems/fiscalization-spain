@@ -4,6 +4,25 @@
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/ssii/fact/ws/SuministroInformacion.xsd")]
     public class PersonaFisicaJuridicaType
     {
+        public PersonaFisicaJuridicaType()
+        {
+        }
+        public PersonaFisicaJuridicaType(string nif, string nombreRazon)
+            : this(nombreRazon)
+        {
+            Item = nif;
+        }
+        public PersonaFisicaJuridicaType(IDOtroType idOther, string nombreRazon)
+            : this(nombreRazon)
+        {
+            Item = idOther;
+        }
+        private PersonaFisicaJuridicaType(string nombreRazon)
+            : this()
+        {
+            NombreRazon = nombreRazon;
+        }
+
         [System.Xml.Serialization.XmlElementAttribute(Order=0)]
         public string NombreRazon { get; set; }
 

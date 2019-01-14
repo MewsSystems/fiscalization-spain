@@ -1,42 +1,42 @@
 ﻿namespace Mews.Fiscalization.Spain.Dto.XSD.SuministroInformacion
 {
     [System.SerializableAttribute]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/ssii/fact/ws/SuministroInformacion.xsd")]
-    public enum TipoPeriodoType
+    [System.Xml.Serialization.XmlTypeAttribute(TypeName = "TipoPeriodoType", Namespace = "https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/ssii/fact/ws/SuministroInformacion.xsd")]
+    public enum TimePeriodType
     {
         [System.Xml.Serialization.XmlEnumAttribute("01")]
-        Item01,
+        January,
         [System.Xml.Serialization.XmlEnumAttribute("02")]
-        Item02,
+        February,
         [System.Xml.Serialization.XmlEnumAttribute("03")]
-        Item03,
+        March,
         [System.Xml.Serialization.XmlEnumAttribute("04")]
-        Item04,
+        April,
         [System.Xml.Serialization.XmlEnumAttribute("05")]
-        Item05,
+        May,
         [System.Xml.Serialization.XmlEnumAttribute("06")]
-        Item06,
+        June,
         [System.Xml.Serialization.XmlEnumAttribute("07")]
-        Item07,
+        July,
         [System.Xml.Serialization.XmlEnumAttribute("08")]
-        Item08,
+        August,
         [System.Xml.Serialization.XmlEnumAttribute("09")]
-        Item09,
+        September,
         [System.Xml.Serialization.XmlEnumAttribute("10")]
-        Item10,
+        October,
         [System.Xml.Serialization.XmlEnumAttribute("11")]
-        Item11,
+        November,
         [System.Xml.Serialization.XmlEnumAttribute("12")]
-        Item12,
+        December,
         [System.Xml.Serialization.XmlEnumAttribute("0A")]
-        Item0A,
+        FullYear,
         [System.Xml.Serialization.XmlEnumAttribute("1T")]
-        Item1T,
+        Q1,
         [System.Xml.Serialization.XmlEnumAttribute("2T")]
-        Item2T,
+        Q2,
         [System.Xml.Serialization.XmlEnumAttribute("3T")]
-        Item3T,
+        Q3,
         [System.Xml.Serialization.XmlEnumAttribute("4T")]
-        Item4T,
+        Q4,
     }
 }
