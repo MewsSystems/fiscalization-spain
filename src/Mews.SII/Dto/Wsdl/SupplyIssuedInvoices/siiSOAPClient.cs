@@ -48,19 +48,6 @@ public class SiiSoapClient : System.ServiceModel.ClientBase<ISiiSOAPClient>, ISi
     }
 
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    System.Threading.Tasks.Task<SuministroLRFacturasEmitidasResponse> ISiiSOAPClient.SuministroLRFacturasEmitidasAsync(SuministroLRFacturasEmitidasRequest request)
-    {
-        return Channel.SuministroLRFacturasEmitidasAsync(request);
-    }
-
-    public System.Threading.Tasks.Task<SuministroLRFacturasEmitidasResponse> SuministroLRFacturasEmitidasAsync(SuministroLRFacturasEmitidas suministroLRFacturasEmitidas)
-    {
-        SuministroLRFacturasEmitidasRequest inValue = new SuministroLRFacturasEmitidasRequest();
-        inValue.SuministroLRFacturasEmitidas = suministroLRFacturasEmitidas;
-        return ((ISiiSOAPClient)this).SuministroLRFacturasEmitidasAsync(inValue);
-    }
-
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     AnulacionLRFacturasEmitidasResponse ISiiSOAPClient.AnulacionLRFacturasEmitidas(AnulacionLRFacturasEmitidasRequest request)
     {
         return Channel.AnulacionLRFacturasEmitidas(request);
@@ -74,19 +61,6 @@ public class SiiSoapClient : System.ServiceModel.ClientBase<ISiiSOAPClient>, ISi
         });
 
         return response.RespuestaLRBajaFacturasEmitidas;
-    }
-
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    System.Threading.Tasks.Task<AnulacionLRFacturasEmitidasResponse> ISiiSOAPClient.AnulacionLRFacturasEmitidasAsync(AnulacionLRFacturasEmitidasRequest request)
-    {
-        return Channel.AnulacionLRFacturasEmitidasAsync(request);
-    }
-
-    public System.Threading.Tasks.Task<AnulacionLRFacturasEmitidasResponse> AnulacionLRFacturasEmitidasAsync(BajaLRFacturasEmitidas bajaLRFacturasEmitidas)
-    {
-        AnulacionLRFacturasEmitidasRequest inValue = new AnulacionLRFacturasEmitidasRequest();
-        inValue.BajaLRFacturasEmitidas = bajaLRFacturasEmitidas;
-        return ((ISiiSOAPClient)this).AnulacionLRFacturasEmitidasAsync(inValue);
     }
 
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -104,19 +78,6 @@ public class SiiSoapClient : System.ServiceModel.ClientBase<ISiiSOAPClient>, ISi
     }
 
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    System.Threading.Tasks.Task<ConsultaLRFacturasEmitidasResponse> ISiiSOAPClient.ConsultaLRFacturasEmitidasAsync(ConsultaLRFacturasEmitidasRequest request)
-    {
-        return Channel.ConsultaLRFacturasEmitidasAsync(request);
-    }
-
-    public System.Threading.Tasks.Task<ConsultaLRFacturasEmitidasResponse> ConsultaLRFacturasEmitidasAsync(LRConsultaEmitidasType consultaLRFacturasEmitidas)
-    {
-        ConsultaLRFacturasEmitidasRequest inValue = new ConsultaLRFacturasEmitidasRequest();
-        inValue.ConsultaLRFacturasEmitidas = consultaLRFacturasEmitidas;
-        return ((ISiiSOAPClient)this).ConsultaLRFacturasEmitidasAsync(inValue);
-    }
-
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     ConsultaLRFactInformadasClienteResponse ISiiSOAPClient.ConsultaLRFactInformadasCliente(ConsultaLRFactInformadasClienteRequest request)
     {
         return Channel.ConsultaLRFactInformadasCliente(request);
@@ -131,19 +92,6 @@ public class SiiSoapClient : System.ServiceModel.ClientBase<ISiiSOAPClient>, ISi
     }
 
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    System.Threading.Tasks.Task<ConsultaLRFactInformadasClienteResponse> ISiiSOAPClient.ConsultaLRFactInformadasClienteAsync(ConsultaLRFactInformadasClienteRequest request)
-    {
-        return Channel.ConsultaLRFactInformadasClienteAsync(request);
-    }
-
-    public System.Threading.Tasks.Task<ConsultaLRFactInformadasClienteResponse> ConsultaLRFactInformadasClienteAsync(ConsultaLRFactInformadasClienteType consultaLRFactInformadasCliente)
-    {
-        ConsultaLRFactInformadasClienteRequest inValue = new ConsultaLRFactInformadasClienteRequest();
-        inValue.ConsultaLRFactInformadasCliente = consultaLRFactInformadasCliente;
-        return ((ISiiSOAPClient)this).ConsultaLRFactInformadasClienteAsync(inValue);
-    }
-
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     ConsultaLRFactInformadasAgrupadasClienteResponse ISiiSOAPClient.ConsultaLRFactInformadasAgrupadasCliente(ConsultaLRFactInformadasAgrupadasClienteRequest request)
     {
         return Channel.ConsultaLRFactInformadasAgrupadasCliente(request);
@@ -155,18 +103,5 @@ public class SiiSoapClient : System.ServiceModel.ClientBase<ISiiSOAPClient>, ISi
         inValue.ConsultaLRFactInformadasAgrupadasCliente = consultaLRFactInformadasAgrupadasCliente1;
         ConsultaLRFactInformadasAgrupadasClienteResponse retVal = ((ISiiSOAPClient)this).ConsultaLRFactInformadasAgrupadasCliente(inValue);
         return retVal.RespuestaConsultaLRFactInformadasAgrupadasCliente;
-    }
-
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    System.Threading.Tasks.Task<ConsultaLRFactInformadasAgrupadasClienteResponse> ISiiSOAPClient.ConsultaLRFactInformadasAgrupadasClienteAsync(ConsultaLRFactInformadasAgrupadasClienteRequest request)
-    {
-        return Channel.ConsultaLRFactInformadasAgrupadasClienteAsync(request);
-    }
-
-    public System.Threading.Tasks.Task<ConsultaLRFactInformadasAgrupadasClienteResponse> ConsultaLRFactInformadasAgrupadasClienteAsync(ConsultaLRFactInformadasAgrupadasClienteType consultaLRFactInformadasAgrupadasCliente)
-    {
-        ConsultaLRFactInformadasAgrupadasClienteRequest inValue = new ConsultaLRFactInformadasAgrupadasClienteRequest();
-        inValue.ConsultaLRFactInformadasAgrupadasCliente = consultaLRFactInformadasAgrupadasCliente;
-        return ((ISiiSOAPClient)this).ConsultaLRFactInformadasAgrupadasClienteAsync(inValue);
     }
 }
