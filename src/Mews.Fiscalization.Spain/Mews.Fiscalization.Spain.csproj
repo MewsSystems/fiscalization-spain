@@ -282,7 +282,7 @@
     <Compile Include="Dto\XSD\RespuestaSuministro\RespuestaRecibidaPagoType.cs" />
     <Compile Include="Dto\XSD\RespuestaSuministro\RespuestaRecibidaType.cs" />
     <Compile Include="Dto\XSD\RespuestaConsultaLR\ResultadoConsultaType.cs" />
-    <Compile Include="Dto\XSD\SuministroInformacion\SuministroLRFacturasEmitidas.cs" />
+    <Compile Include="Dto\XSD\SuministroInformacion\IssuedInvoices.cs" />
     <Compile Include="Dto\Wsdl\SupplyIssuedInvoices\ISiiSOAPClient.cs" />
     <Compile Include="Dto\Wsdl\SupplyIssuedInvoices\SiiSoapClient.cs" />
     <Compile Include="Dto\XSD\SuministroInformacion\SimplificadaCualificadaType.cs" />

@@ -1,5 +1,6 @@
-﻿using Mews.Fiscalization.Spain.Dto.Wsdl.SupplyIssuedInvoices;
-using Mews.Fiscalization.Spain.Dto.Wsdl.SupplyIssuedInvoices.Requests;
+﻿using System.Xml;
+using System.Xml.Serialization;
+using Mews.Fiscalization.Spain.Dto.Wsdl.SupplyIssuedInvoices;
 using Mews.Fiscalization.Spain.Dto.XSD.SuministroInformacion;
 using Mews.Fiscalization.Spain.Dto.XSD.SuministroLR;
 using Mews.Fiscalization.Spain.Environment;
@@ -12,9 +13,8 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
         [Fact]
         public void SendRevenueSimple()
         {
-            ISiiSOAPClient client = new SiiSoapClient();
-            var client2 = new SiiSoapClient();
-            var request = new SuministroLRFacturasEmitidasRequest(new SuministroLRFacturasEmitidas
+            var client = new SiiSoapClient();
+            var data = new SuministroLRFacturasEmitidas
             {
                 Cabecera = Credentials.GeneratorCabecera,
                 RegistroLRFacturasEmitidas = new []{ new LRfacturasEmitidasType
@@ -24,7 +24,7 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
                     {
                         FechaExpedicionFacturaEmisor = "10-05-2017",
                         IDEmisorFactura = new IDFacturaExpedidaTypeIDEmisorFactura(Credentials.GeneratorNIF),
-                        NumSerieFacturaEmisor = "03"
+                        NumSerieFacturaEmisor = "05"
                     },
                     FacturaExpedida = new FacturaExpedidaType
                     {
@@ -55,25 +55,32 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
 
                     }
                 }}
-            });
+            };
 
-            var tmp2 = Test(request);
-            var response2 = client.SuministroLRFacturasEmitidas(request);
-            //Assert.NotNull(response);
+            var tmp = Test(Credentials.GeneratorCabecera);
+            var tmp2 = Test(data);
+            var response = client.SuministroLRFacturasEmitidas(data);
+
+            Assert.NotNull(response);
             //Assert.NotNull(response.RespuestaLRFacturasEmitidas);
         }
 
-        private string Test<T>(T val)
+        private string Test<T>(T value)
             where T : class
         {
-            var serialized = XmlManipulator.Serialize(val);
-            var tmp = serialized.InnerXml;
-            var tmp2 = serialized.OuterXml;
-            var tmp3 = serialized.InnerText;
-            var tmp4 = serialized.ToString();
-            var tmp5 = serialized.Value;
+            var xmlDocument = new XmlDocument();
+            var navigator = xmlDocument.CreateNavigator();
 
-            return serialized.OuterXml;
+            var nameSpaces = new XmlSerializerNamespaces();
+            nameSpaces.Add("sii", "https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/ssii/fact/ws/SuministroInformacion.xsd");
+            nameSpaces.Add("siiLR", "https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/ssii/fact/ws/SuministroLR.xsd");
+
+            using (var writer = navigator.AppendChild())
+            {
+                var xmlSerializer = new XmlSerializer(typeof(T));
+                xmlSerializer.Serialize(writer, value, nameSpaces);
+            }
+            return xmlDocument.DocumentElement.OuterXml;
         }
     }
 }
