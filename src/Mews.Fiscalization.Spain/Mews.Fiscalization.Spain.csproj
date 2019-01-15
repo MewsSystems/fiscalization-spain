@@ -303,6 +303,7 @@
     <Compile Include="Dto\XSD\SuministroInformacion\VariosDestinatariosType.cs" />
     <Compile Include="Dto\XSD\SuministroInformacion\VersionSiiType.cs" />
     <Compile Include="Environment\Credentials.cs" />
+    <Compile Include="Model\Model.cs" />
     <Compile Include="SiiEnvironment.cs" />
     <Compile Include="ILogger.cs" />
     <Compile Include="Patterns.cs" />
