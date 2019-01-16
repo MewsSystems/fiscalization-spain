@@ -25,6 +25,11 @@
         /// <summary>
         /// 06
         /// </summary>
-        OtherSupportingDocument
+        OtherSupportingDocument,
+
+        /// <summary>
+        /// 07
+        /// </summary>
+        NotSelected
     }
 }

@@ -3,7 +3,7 @@
     public enum InvoiceType
     {
         /// <summary>
-        /// f1
+        /// F1
         /// </summary>
         Invoice,
 

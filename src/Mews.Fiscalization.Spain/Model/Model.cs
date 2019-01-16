@@ -7,6 +7,11 @@ namespace Mews.Fiscalization.Spain.Model
     {
         public InvoicesToRegister(Header header, Invoice[] invoices)
         {
+            if (invoices.Length > 10000)
+            {
+                throw new ArgumentException("Maximal count of invoices is 10000.");
+            }
+
             Header = header;
             Invoices = invoices;
         }
@@ -17,7 +22,7 @@ namespace Mews.Fiscalization.Spain.Model
         public Header Header { get; }
 
         /// <summary>
-        /// RegistroLRfacturasRecibidas
+        /// RegistroLRfacturasEmitidas
         /// </summary>
         public Invoice[] Invoices { get; }
     }
@@ -89,6 +94,7 @@ namespace Mews.Fiscalization.Spain.Model
         #endregion
     }
 
+    // TODO: Use Coproduct...
     public class BreakdownKind
     {
         public BreakdownKind(InvoiceBreakdown invoiceBreakdown)
@@ -125,6 +131,7 @@ namespace Mews.Fiscalization.Spain.Model
         public Item Item { get; }
     }
 
+    // TODO: Use Coproduct...
     public class Item
     {
         public Item(TaxFreeItem[] taxFree)
@@ -242,6 +249,7 @@ namespace Mews.Fiscalization.Spain.Model
         public InvoiceBreakdown Delivery { get; }
     }
 
+    // TODO: Use Coproduct...
     public class CounterPartyCompany
     {
         public CounterPartyCompany(CompanyTitle companyTitle)
@@ -267,12 +275,18 @@ namespace Mews.Fiscalization.Spain.Model
 
     public class ForeignCompany
     {
-        public ForeignCompany(Country country, ResidenceCountryIdentificatorType identificatiorType, LimitedString20 id)
+        public ForeignCompany(LimitedString120 name, Country country, ResidenceCountryIdentificatorType identificatiorType, LimitedString20 id)
         {
+            Name = name;
             Country = country;
-            IdentificatiorType = identificatiorType;
+            IdentificatorType = identificatiorType;
             Id = id;
         }
+
+        /// <summary>
+        /// NombreRazon
+        /// </summary>
+        public LimitedString120 Name { get; }
 
         /// <summary>
         /// CodigoPais
@@ -282,7 +296,7 @@ namespace Mews.Fiscalization.Spain.Model
         /// <summary>
         /// IDType
         /// </summary>
-        public ResidenceCountryIdentificatorType IdentificatiorType { get; }
+        public ResidenceCountryIdentificatorType IdentificatorType { get; }
 
         /// <summary>
         /// ID
@@ -336,11 +350,6 @@ namespace Mews.Fiscalization.Spain.Model
 
     public class Header
     {
-        /// <summary>
-        /// IDVersionSii
-        /// </summary>
-        public readonly string ApiVersion = "1.1";
-
         public Header(CompanyTitle companyTitle, CommunicationType communicationType)
         {
             CompanyTitle = companyTitle;

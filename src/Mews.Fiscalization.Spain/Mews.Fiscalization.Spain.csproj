@@ -302,6 +302,7 @@
     <Compile Include="Environment\SiiEnvironment.cs" />
     <Compile Include="Environment\Credentials.cs" />
     <Compile Include="Events\HttpRequestFinishedEventArgs.cs" />
+    <Compile Include="ModelToDtoConverter.cs" />
     <Compile Include="Model\Types\Amount.cs" />
     <Compile Include="Model\Enums\CauseOfExemption.cs" />
     <Compile Include="Model\Enums\CommunicationType.cs" />

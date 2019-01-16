@@ -10,6 +10,11 @@
         /// <summary>
         /// S2
         /// </summary>
-        InvTaxablePerson
+        InvTaxablePerson,
+
+        /// <summary>
+        /// S3
+        /// </summary>
+        NotExemptWithPassiveSubject
     }
 }
