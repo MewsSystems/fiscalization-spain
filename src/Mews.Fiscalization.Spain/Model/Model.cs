@@ -4,10 +4,29 @@ namespace Mews.Fiscalization.Spain.Model
 {
     public enum ResidenceCountryIdentificatorType
     {
+        /// <summary>
+        /// 02
+        /// </summary>
         NifVat,
+
+        /// <summary>
+        /// 03
+        /// </summary>
         Passport,
+
+        /// <summary>
+        /// 04
+        /// </summary>
         OfficialIdentificationDocumentIssuedByTheCountry,
+
+        /// <summary>
+        /// 05
+        /// </summary>
         ResidenceCertificate,
+
+        /// <summary>
+        /// 06
+        /// </summary>
         OtherSupportingDocument
     }
 
@@ -218,6 +237,52 @@ namespace Mews.Fiscalization.Spain.Model
         December
     }
 
+    public enum CauseOfExemption
+    {
+        /// <summary>
+        /// E1
+        /// </summary>
+        ExemptOnAccountOfArticle20,
+
+        /// <summary>
+        /// E2
+        /// </summary>
+        ExemptOnAccountOfArticle21,
+
+        /// <summary>
+        /// E3
+        /// </summary>
+        ExemptOnAccountOfArticle22,
+
+        /// <summary>
+        /// E4
+        /// </summary>
+        ExemptOnAccountOfArticle24,
+
+        /// <summary>
+        /// E5
+        /// </summary>
+        ExemptOnAccountOfArticle25,
+
+        /// <summary>
+        /// E6
+        /// </summary>
+        ExemptOnOtherGrounds,
+    }
+
+    public enum TransactionType
+    {
+        /// <summary>
+        /// S1
+        /// </summary>
+        NotExempt,
+
+        /// <summary>
+        /// S2
+        /// </summary>
+        InvTaxablePerson
+    }
+
     public class InvoicesToRegister
     {
         public InvoicesToRegister(Header header, Invoice[] invoices)
@@ -236,6 +301,26 @@ namespace Mews.Fiscalization.Spain.Model
 
     public class Invoice
     {
+        public Invoice(
+            TaxPeriod taxPeriod,
+            InvoiceId id,
+            InvoiceType type,
+            SchemeOrEffect schemeOrEffect,
+            decimal totalAmount,
+            string description,
+            CounterPartyCompany counterparty,
+            BreakdownKind breakdown)
+        {
+            TaxPeriod = taxPeriod;
+            Id = id;
+            Type = type;
+            SchemeOrEffect = schemeOrEffect;
+            TotalAmount = totalAmount;
+            Description = description;
+            Counterparty = counterparty;
+            Breakdown = breakdown;
+        }
+
         /// <summary>
         /// PeriodoImpositivo
         /// </summary>
@@ -273,7 +358,165 @@ namespace Mews.Fiscalization.Spain.Model
         /// </summary>
         public CounterPartyCompany Counterparty { get; }
 
+        /// <summary>
+        /// TipoDesglose
+        /// </summary>
+        public BreakdownKind Breakdown { get; }
+
         #endregion
+    }
+
+    public class BreakdownKind
+    {
+        public BreakdownKind(InvoiceBreakdown invoiceBreakdown)
+        {
+            InvoiceBreakdown = invoiceBreakdown;
+        }
+
+        public BreakdownKind(OperationTypeBreakdown operationTypeBreakdown)
+        {
+            OperationTypeBreakdown = operationTypeBreakdown;
+        }
+
+        /// <summary>
+        /// DesgloseFactura
+        /// </summary>
+        public InvoiceBreakdown InvoiceBreakdown { get; }
+
+        /// <summary>
+        /// DesgloseTipoOperacion
+        /// </summary>
+        public OperationTypeBreakdown OperationTypeBreakdown { get; }
+    }
+
+    public class InvoiceBreakdown
+    {
+        public InvoiceBreakdown(Item item)
+        {
+            Item = item;
+        }
+
+        /// <summary>
+        /// Sujeta
+        /// </summary>
+        public Item Item { get; }
+    }
+
+    public class Item
+    {
+        public Item(TaxFreeItem[] taxFree)
+        {
+            TaxFree = taxFree;
+        }
+
+        public Item(WithTaxItem withTax)
+        {
+            WithTax = withTax;
+        }
+
+        /// <summary>
+        /// Exenta
+        /// </summary>
+        public TaxFreeItem[] TaxFree { get; }
+
+        /// <summary>
+        /// NoExenta
+        /// </summary>
+        public WithTaxItem WithTax { get; }
+    }
+
+    public class TaxFreeItem
+    {
+        public TaxFreeItem(decimal amount, CauseOfExemption? cause = null)
+        {
+            Cause = cause;
+            Amount = amount;
+        }
+
+        /// <summary>
+        /// CausaExencion
+        /// </summary>
+        public CauseOfExemption? Cause { get; }
+
+        /// <summary>
+        /// BaseImponible
+        /// </summary>
+        public decimal Amount { get; }
+    }
+
+    public class WithTaxItem
+    {
+        public WithTaxItem(TransactionType transactionType, VATBreakdown[] vatBreakdowns)
+        {
+            TransactionType = transactionType;
+            VatBreakdowns = vatBreakdowns;
+        }
+
+        /// <summary>
+        /// TipoNoExenta
+        /// </summary>
+        public TransactionType TransactionType { get; }
+
+        /// <summary>
+        /// DesgloseIVA -> DetalleIVA
+        /// </summary>
+        public VATBreakdown[] VatBreakdowns { get; }
+    }
+
+    public class VATBreakdown
+    {
+        public VATBreakdown(decimal taxRate, decimal taxBaseAmount, decimal taxAmount, decimal equivalenceSurchargePercentage, decimal equivalenceSurchargeTaxAmount)
+        {
+            TaxRate = taxRate;
+            TaxBaseAmount = taxBaseAmount;
+            TaxAmount = taxAmount;
+            EquivalenceSurchargePercentage = equivalenceSurchargePercentage;
+            EquivalenceSurchargeTaxAmount = equivalenceSurchargeTaxAmount;
+        }
+
+        /// <summary>
+        /// TipoImpositivo
+        /// </summary>
+        public decimal TaxRate { get; }
+
+        /// <summary>
+        /// BaseImponible
+        /// </summary>
+        public decimal TaxBaseAmount { get; }
+
+        /// <summary>
+        /// CuotaRepercutida
+        /// </summary>
+        public decimal TaxAmount { get; }
+
+        /// <summary>
+        /// TipoRecargoEquivalencia
+        /// </summary>
+        public decimal EquivalenceSurchargePercentage { get; }
+
+        /// <summary>
+        /// CuotaRecargoEquivalencia
+        /// </summary>
+        public decimal EquivalenceSurchargeTaxAmount { get; }
+    }
+
+    public class OperationTypeBreakdown
+    {
+        public OperationTypeBreakdown(InvoiceBreakdown serviceProvision, InvoiceBreakdown delivery)
+        {
+            ServiceProvision = serviceProvision;
+            Delivery = delivery;
+        }
+
+        /// <summary>
+        /// PrestacionServicios
+        /// </summary>
+        public InvoiceBreakdown ServiceProvision { get; }
+
+        /// <summary>
+        /// Entrega
+        /// </summary>
+        public InvoiceBreakdown Delivery { get; }
     }
 
     public class CounterPartyCompany
