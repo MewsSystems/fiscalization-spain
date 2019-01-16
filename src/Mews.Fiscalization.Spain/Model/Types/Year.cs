@@ -6,7 +6,8 @@ namespace Mews.Fiscalization.Spain.Model
     {
         public Year(int value)
         {
-            if (value >= 1000 && value <= 10000)
+            var isValidYear = value >= 1000 && value <= 10000;
+            if (!isValidYear)
             {
                 throw new ArgumentException($"Value is not valid year.");
             }
