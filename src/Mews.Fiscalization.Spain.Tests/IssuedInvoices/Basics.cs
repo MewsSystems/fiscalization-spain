@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
@@ -90,8 +92,9 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
 
         private X509Certificate GeneratorCertificate()
         {
+            string password = File.ReadAllText("C:\\Users\\PavelKalandra\\Documents\\SII\\GenBCN1 2017.iso", Encoding.UTF8);
             X509Certificate cert = new X509Certificate();
-            cert.Import("C:\\Users\\PavelKalandra\\Documents\\SII\\GenBCN1 2017.pfx", "", X509KeyStorageFlags.UserKeySet);
+            cert.Import("C:\\Users\\PavelKalandra\\Documents\\SII\\GenBCN1 2017.pfx", password, X509KeyStorageFlags.UserKeySet);
             return cert;
         }
     }
