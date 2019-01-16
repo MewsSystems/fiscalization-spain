@@ -184,7 +184,7 @@ namespace Mews.Fiscalization.Spain
         {
             return new RegistroSiiPeriodoLiquidacion
             {
-                Ejercicio = taxPeriod.Year.ToString(),
+                Ejercicio = Convert(taxPeriod.Year),
                 Periodo = taxPeriod.Month.Match(
                     Month.January, _ => TimePeriodType.January,
                     Month.February, _ => TimePeriodType.January,
@@ -296,6 +296,11 @@ namespace Mews.Fiscalization.Spain
         private string Convert(DateTime date)
         {
             return date.ToString("dd-MM-yyyy");
+        }
+
+        private string Convert(Year year)
+        {
+            return year.Value.ToString();
         }
     }
 }

@@ -3,8 +3,6 @@ using System.IO;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Serialization;
 using Mews.Fiscalization.Spain.Communication;
 using Mews.Fiscalization.Spain.Environment;
 using Mews.Fiscalization.Spain.Model;
@@ -25,25 +23,6 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
             var response = await client.SendRevenueAsync(dtoModel);
             Assert.NotNull(response);
         }
-
-        private string Test<T>(T value)
-            where T : class
-        {
-            var xmlDocument = new XmlDocument();
-            var navigator = xmlDocument.CreateNavigator();
-
-            var nameSpaces = new XmlSerializerNamespaces();
-            nameSpaces.Add("sii", "https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/ssii/fact/ws/SuministroInformacion.xsd");
-            nameSpaces.Add("siiLR", "https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/ssii/fact/ws/SuministroLR.xsd");
-
-            using (var writer = navigator.AppendChild())
-            {
-                var xmlSerializer = new XmlSerializer(typeof(T));
-                xmlSerializer.Serialize(writer, value, nameSpaces);
-            }
-            return xmlDocument.DocumentElement.OuterXml;
-        }
-
 
         private InvoicesToRegister GetSampleInvoiceData(int invoiceNumber)
         {
