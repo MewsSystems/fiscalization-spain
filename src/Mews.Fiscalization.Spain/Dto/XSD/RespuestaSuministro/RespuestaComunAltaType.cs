@@ -1,4 +1,5 @@
-﻿using Mews.Fiscalization.Spain.Dto.XSD.SuministroInformacion;
+﻿using Mews.Fiscalization.Spain.Dto.Responses;
+using Mews.Fiscalization.Spain.Dto.XSD.SuministroInformacion;
 
 namespace Mews.Fiscalization.Spain.Dto.XSD.RespuestaSuministro
 {
@@ -8,7 +9,7 @@ namespace Mews.Fiscalization.Spain.Dto.XSD.RespuestaSuministro
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(RespuestaLROComunitariasType))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(RespuestaLRBienesInversionType))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(RespuestaLRFRecibidasType))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(RespuestaLRFEmitidasType))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(SubmitInvoicesResponse))]
     [System.SerializableAttribute]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/ssii/fact/ws/RespuestaSuministro.xsd")]
     public class RespuestaComunAltaType

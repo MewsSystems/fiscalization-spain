@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
-using Mews.Fiscalization.Spain.Dto.Requests;
 using Mews.Fiscalization.Spain.Dto.Responses;
+using Mews.Fiscalization.Spain.Dto.XSD.RespuestaSuministro;
+using Mews.Fiscalization.Spain.Dto.XSD.SuministroInformacion;
 using Mews.Fiscalization.Spain.Environment;
 using Mews.Fiscalization.Spain.Events;
 
@@ -25,9 +26,9 @@ namespace Mews.Fiscalization.Spain.Communication
 
         private SoapClient Client { get; }
 
-        public async Task<SubmitInvoicesResponse> SendRevenueAsync(SubmitInvoicesRequest request)
+        public async Task<SubmitInvoicesResponse> SendRevenueAsync(SubmitIssuedInvoicesRequest request)
         {
-            return await Client.SendAsync<SubmitInvoicesRequest, SubmitInvoicesResponse>(request).ConfigureAwait(continueOnCapturedContext: false);
+            return await Client.SendAsync<SubmitIssuedInvoicesRequest, SubmitInvoicesResponse>(request).ConfigureAwait(continueOnCapturedContext: false);
         }
     }
 }

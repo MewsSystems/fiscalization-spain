@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
 using Mews.Fiscalization.Spain.Communication;
-using Mews.Fiscalization.Spain.Dto.Requests;
 using Mews.Fiscalization.Spain.Dto.XSD.SuministroInformacion;
 using Mews.Fiscalization.Spain.Dto.XSD.SuministroLR;
 using Mews.Fiscalization.Spain.Environment;
@@ -21,9 +20,10 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
         {
             var certificate = GeneratorCertificate();
             var client = new SiiSoapClient(certificate, SiiEnvironment.Test, TimeSpan.FromSeconds(30));
-            var data = GetSampleInvoiceData(6);
+            var data = GetSampleInvoiceData(11);
 
-            var x = await client.SendRevenueAsync(new SubmitInvoicesRequest(data));
+            var response = await client.SendRevenueAsync(data);
+            Assert.NotNull(response);
         }
 
         private string Test<T>(T value)
@@ -45,14 +45,14 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
         }
 
 
-        private SuministroLRFacturasEmitidas GetSampleInvoiceData(int invoiceNumber)
+        private SubmitIssuedInvoicesRequest GetSampleInvoiceData(int invoiceNumber)
         {
-            return new SuministroLRFacturasEmitidas
+            return new SubmitIssuedInvoicesRequest
             {
                 Cabecera = Credentials.GeneratorCabecera,
                 RegistroLRFacturasEmitidas = new[]{ new LRfacturasEmitidasType
                 {
-                    PeriodoLiquidacion = new RegistroSiiPeriodoLiquidacion(2017, TimePeriodType.May),
+                    PeriodoLiquidacion = new RegistroSiiPeriodoLiquidacion(2017, TimePeriodType.December),
                     IDFactura = new IDFacturaExpedidaType
                     {
                         FechaExpedicionFacturaEmisor = "10-05-2017",
@@ -85,7 +85,6 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
                                 }
                             }
                         })
-
                     }
                 }}
             };

@@ -32,7 +32,7 @@ namespace Mews.Fiscalization.Spain.Communication
             var xml = xmlDocument.OuterXml;
             Console.WriteLine("Created soap request. " + xml);
 
-            var response = await HttpClient.SendAsync(WorkingRequest()).ConfigureAwait(continueOnCapturedContext: false);
+            var response = await HttpClient.SendAsync(xml).ConfigureAwait(continueOnCapturedContext: false);
 
             var soapBody = GetSoapBody(response);
             return XmlManipulator.Deserialize<TOut>(soapBody);
@@ -128,7 +128,7 @@ namespace Mews.Fiscalization.Spain.Communication
                            <sii:TipoNoExenta>S1</sii:TipoNoExenta>
                            <sii:DesgloseIVA>
                               <sii:DetalleIVA>
-                                 <sii:TipoImpositivo>21.12</sii:TipoImpositivo>
+                                 <sii:TipoImpositivo>21</sii:TipoImpositivo>
                                  <sii:BaseImponible>10</sii:BaseImponible>
                                  <sii:CuotaRepercutida>2.1</sii:CuotaRepercutida>
                               </sii:DetalleIVA>
