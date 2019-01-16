@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Net.Http;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using Mews.Fiscalization.Spain.Events;
@@ -9,12 +10,12 @@ namespace Mews.Fiscalization.Spain.Communication
 {
     public class SoapHttpClient
     {
-        public SoapHttpClient(Certificate certificate, Uri endpointUri, TimeSpan timeout)
+        public SoapHttpClient(X509Certificate certificate, Uri endpointUri, TimeSpan timeout)
         {
             EndpointUri = endpointUri;
 
             var requestHandler = new WebRequestHandler();
-            requestHandler.ClientCertificates.Add(certificate.X509Certificate2);
+            requestHandler.ClientCertificates.Add(certificate);
             HttpClient = new HttpClient(requestHandler) { Timeout = timeout };
         }
 

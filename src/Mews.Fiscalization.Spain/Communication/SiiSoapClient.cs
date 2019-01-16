@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
+using Mews.Fiscalization.Spain.Dto.XSD.RespuestaSuministro;
+using Mews.Fiscalization.Spain.Dto.XSD.SuministroInformacion;
 using Mews.Fiscalization.Spain.Events;
 
 namespace Mews.Fiscalization.Spain.Communication
 {
     public class SiiSoapClient
     {
-        public SiiSoapClient(Certificate certificate, SiiEnvironment environment, TimeSpan httpTimeout)
+        public SiiSoapClient(X509Certificate certificate, SiiEnvironment environment, TimeSpan httpTimeout)
         {
             Environment = environment;
             var domain = environment == SiiEnvironment.Production ? "www1.agenciatributaria.gob.es" : "www7.aeat.es";
@@ -21,9 +24,9 @@ namespace Mews.Fiscalization.Spain.Communication
 
         private SoapClient Client { get; }
 
-        public async Task<object> SendRevenueAsync(object message)
+        public async Task<RespuestaLRFEmitidasType> SendRevenueAsync(SuministroLRFacturasEmitidas message)
         {
-            return await Client.SendAsync<object, object>(message).ConfigureAwait(continueOnCapturedContext: false);
+            return await Client.SendAsync<SuministroLRFacturasEmitidas, RespuestaLRFEmitidasType>(message).ConfigureAwait(continueOnCapturedContext: false);
         }
     }
 }

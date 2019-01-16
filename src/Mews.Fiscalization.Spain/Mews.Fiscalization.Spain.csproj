@@ -49,7 +49,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Communication\Certificate.cs" />
     <Compile Include="Communication\SiiSoapClient.cs" />
     <Compile Include="Communication\SoapClient.cs" />
     <Compile Include="Communication\SoapHttpClient.cs" />
@@ -67,7 +66,6 @@
     <Compile Include="DateTimeProvider.cs" />
     <Compile Include="Dto\Wsdl\SupplyIssuedInvoices\Requests\AnulacionLRFacturasEmitidasRequest.cs" />
     <Compile Include="Dto\Wsdl\SupplyIssuedInvoices\Responses\AnulacionLRFacturasEmitidasResponse.cs" />
-    <Compile Include="Dto\Wsdl\SupplyIssuedInvoices\ISiiSOAPChannel.cs" />
     <Compile Include="Dto\XSD\SuministroLR\BajaLRFacturasEmitidas.cs" />
     <Compile Include="Dto\XSD\SuministroInformacion\BienDeInversionType.cs" />
     <Compile Include="Dto\XSD\SuministroInformacion\CabeceraConsultaSii.cs" />
@@ -290,8 +288,6 @@
     <Compile Include="Dto\XSD\RespuestaSuministro\RespuestaRecibidaType.cs" />
     <Compile Include="Dto\XSD\RespuestaConsultaLR\ResultadoConsultaType.cs" />
     <Compile Include="Dto\XSD\SuministroInformacion\IssuedInvoices.cs" />
-    <Compile Include="Dto\Wsdl\SupplyIssuedInvoices\ISiiSOAPClient.cs" />
-    <Compile Include="Dto\Wsdl\SupplyIssuedInvoices\SiiSoapClient.cs" />
     <Compile Include="Dto\XSD\SuministroInformacion\SimplificadaCualificadaType.cs" />
     <Compile Include="Dto\XSD\SuministroInformacion\SituacionInmuebleType.cs" />
     <Compile Include="Dto\XSD\SuministroInformacion\SujetaPrestacionType.cs" />

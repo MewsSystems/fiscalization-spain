@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using System.Xml;
 using Mews.Fiscalization.Spain.Events;
@@ -7,10 +8,9 @@ namespace Mews.Fiscalization.Spain.Communication
 {
     public class SoapClient
     {
-        public SoapClient(Uri endpointUri, Certificate certificate, TimeSpan httpTimeout)
+        public SoapClient(Uri endpointUri, X509Certificate certificate, TimeSpan httpTimeout)
         {
             HttpClient = new SoapHttpClient(certificate, endpointUri, httpTimeout);
-            Certificate = certificate;
             XmlManipulator = new XmlManipulator();
             HttpClient.HttpRequestFinished += (sender, args) => HttpRequestFinished?.Invoke(this, args);
         }
@@ -18,8 +18,6 @@ namespace Mews.Fiscalization.Spain.Communication
         public event EventHandler<HttpRequestFinishedEventArgs> HttpRequestFinished;
 
         private SoapHttpClient HttpClient { get; }
-
-        private Certificate Certificate { get; }
 
         private XmlManipulator XmlManipulator { get; }
 

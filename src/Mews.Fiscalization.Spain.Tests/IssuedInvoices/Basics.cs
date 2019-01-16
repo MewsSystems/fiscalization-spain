@@ -1,6 +1,8 @@
-﻿using System.Xml;
+﻿using System;
+using System.Security.Cryptography.X509Certificates;
+using System.Xml;
 using System.Xml.Serialization;
-using Mews.Fiscalization.Spain.Dto.Wsdl.SupplyIssuedInvoices;
+using Mews.Fiscalization.Spain.Communication;
 using Mews.Fiscalization.Spain.Dto.XSD.SuministroInformacion;
 using Mews.Fiscalization.Spain.Dto.XSD.SuministroLR;
 using Mews.Fiscalization.Spain.Environment;
@@ -13,18 +15,45 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
         [Fact]
         public void SendRevenueSimple()
         {
-            var client = new SiiSoapClient();
-            var data = new SuministroLRFacturasEmitidas
+            var certificate = GeneratorCertificate();
+            var client = new SiiSoapClient(certificate, SiiEnvironment.Test, TimeSpan.FromSeconds(30));
+            var data = GetSampleInvoiceData(6);
+
+            var x = client.SendRevenueAsync(data).Result;
+        }
+
+        private string Test<T>(T value)
+            where T : class
+        {
+            var xmlDocument = new XmlDocument();
+            var navigator = xmlDocument.CreateNavigator();
+
+            var nameSpaces = new XmlSerializerNamespaces();
+            nameSpaces.Add("sii", "https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/ssii/fact/ws/SuministroInformacion.xsd");
+            nameSpaces.Add("siiLR", "https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/ssii/fact/ws/SuministroLR.xsd");
+
+            using (var writer = navigator.AppendChild())
+            {
+                var xmlSerializer = new XmlSerializer(typeof(T));
+                xmlSerializer.Serialize(writer, value, nameSpaces);
+            }
+            return xmlDocument.DocumentElement.OuterXml;
+        }
+
+
+        private SuministroLRFacturasEmitidas GetSampleInvoiceData(int invoiceNumber)
+        {
+            return new SuministroLRFacturasEmitidas
             {
                 Cabecera = Credentials.GeneratorCabecera,
-                RegistroLRFacturasEmitidas = new []{ new LRfacturasEmitidasType
+                RegistroLRFacturasEmitidas = new[]{ new LRfacturasEmitidasType
                 {
                     PeriodoLiquidacion = new RegistroSiiPeriodoLiquidacion(2017, TimePeriodType.May),
                     IDFactura = new IDFacturaExpedidaType
                     {
                         FechaExpedicionFacturaEmisor = "10-05-2017",
                         IDEmisorFactura = new IDFacturaExpedidaTypeIDEmisorFactura(Credentials.GeneratorNIF),
-                        NumSerieFacturaEmisor = "05"
+                        NumSerieFacturaEmisor = invoiceNumber.ToString("D2")
                     },
                     FacturaExpedida = new FacturaExpedidaType
                     {
@@ -56,31 +85,13 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
                     }
                 }}
             };
-
-            var tmp = Test(Credentials.GeneratorCabecera);
-            var tmp2 = Test(data);
-            var response = client.SuministroLRFacturasEmitidas(data);
-
-            Assert.NotNull(response);
-            //Assert.NotNull(response.RespuestaLRFacturasEmitidas);
         }
 
-        private string Test<T>(T value)
-            where T : class
+        private X509Certificate GeneratorCertificate()
         {
-            var xmlDocument = new XmlDocument();
-            var navigator = xmlDocument.CreateNavigator();
-
-            var nameSpaces = new XmlSerializerNamespaces();
-            nameSpaces.Add("sii", "https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/ssii/fact/ws/SuministroInformacion.xsd");
-            nameSpaces.Add("siiLR", "https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/ssii/fact/ws/SuministroLR.xsd");
-
-            using (var writer = navigator.AppendChild())
-            {
-                var xmlSerializer = new XmlSerializer(typeof(T));
-                xmlSerializer.Serialize(writer, value, nameSpaces);
-            }
-            return xmlDocument.DocumentElement.OuterXml;
+            X509Certificate cert = new X509Certificate();
+            cert.Import("C:\\Users\\PavelKalandra\\Documents\\SII\\GenBCN1 2017.pfx", "", X509KeyStorageFlags.UserKeySet);
+            return cert;
         }
     }
 }
