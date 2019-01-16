@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
 using Mews.Fiscalization.Spain.Communication;
@@ -13,13 +14,13 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
     public class Basics
     {
         [Fact]
-        public void SendRevenueSimple()
+        public async Task SendRevenueSimple()
         {
             var certificate = GeneratorCertificate();
             var client = new SiiSoapClient(certificate, SiiEnvironment.Test, TimeSpan.FromSeconds(30));
             var data = GetSampleInvoiceData(6);
 
-            var x = client.SendRevenueAsync(data).Result;
+            var x = await client.SendRevenueAsync(data);
         }
 
         private string Test<T>(T value)
