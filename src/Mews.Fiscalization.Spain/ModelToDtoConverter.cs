@@ -8,7 +8,7 @@ using Mews.Fiscalization.Spain.Model;
 
 namespace Mews.Fiscalization.Spain
 {
-    internal class ModelToDtoConverter
+    public class ModelToDtoConverter
     {
         public SubmitIssuedInvoicesRequest Convert(InvoicesToRegister model)
         {

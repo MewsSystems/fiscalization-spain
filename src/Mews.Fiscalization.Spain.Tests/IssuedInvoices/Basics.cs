@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
 using Mews.Fiscalization.Spain.Communication;
-using Mews.Fiscalization.Spain.Dto.XSD.SuministroInformacion;
-using Mews.Fiscalization.Spain.Dto.XSD.SuministroLR;
 using Mews.Fiscalization.Spain.Environment;
+using Mews.Fiscalization.Spain.Model;
 using Xunit;
 
 namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
@@ -20,9 +19,10 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
         {
             var certificate = GeneratorCertificate();
             var client = new SiiSoapClient(certificate, SiiEnvironment.Test, TimeSpan.FromSeconds(30));
-            var data = GetSampleInvoiceData(11);
+            var model = GetSampleInvoiceData(11);
+            var dtoModel = new ModelToDtoConverter().Convert(model);
 
-            var response = await client.SendRevenueAsync(data);
+            var response = await client.SendRevenueAsync(dtoModel);
             Assert.NotNull(response);
         }
 
@@ -45,49 +45,28 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
         }
 
 
-        private SubmitIssuedInvoicesRequest GetSampleInvoiceData(int invoiceNumber)
+        private InvoicesToRegister GetSampleInvoiceData(int invoiceNumber)
         {
-            return new SubmitIssuedInvoicesRequest
-            {
-                Cabecera = Credentials.GeneratorCabecera,
-                RegistroLRFacturasEmitidas = new[]{ new LRfacturasEmitidasType
+            var generatorTitle = new CompanyTitle(new LimitedString120("GENERATOR BCN 1, S.L."), new TaxPayerNumber("B65374811"));
+            return new InvoicesToRegister(
+                new Header(generatorTitle, CommunicationType.Registration),
+                new[]
                 {
-                    PeriodoLiquidacion = new RegistroSiiPeriodoLiquidacion(2017, TimePeriodType.December),
-                    IDFactura = new IDFacturaExpedidaType
-                    {
-                        FechaExpedicionFacturaEmisor = "10-05-2017",
-                        IDEmisorFactura = new IDFacturaExpedidaTypeIDEmisorFactura(Credentials.GeneratorNIF),
-                        NumSerieFacturaEmisor = invoiceNumber.ToString("D2")
-                    },
-                    FacturaExpedida = new FacturaExpedidaType
-                    {
-                        TipoFactura = ClaveTipoFacturaType.F1,
-                        ClaveRegimenEspecialOTrascendencia = IdOperacionesTrascendenciaTributariaType.Item01,
-                        ImporteTotal = "26.70",
-                        DescripcionOperacion = "This is a test invoice.",
-                        Contraparte = Credentials.MicrosoftCompany,
-                        TipoDesglose = new FacturaExpedidaTypeTipoDesglose(new TipoSinDesgloseType
+                    new Invoice(
+                        new TaxPeriod(new Year(2017), Month.December),
+                        new InvoiceId(generatorTitle.TaxPayerNumber, new LimitedString1to60(invoiceNumber.ToString("D2")), new DateTime(2017,5,10)),
+                        InvoiceType.Invoice,
+                        SchemeOrEffect.GeneralTaxRegimeActivity,
+                        new Amount(26.7M),
+                        new LimitedString500("This is a test invoice."),
+                        new CounterPartyCompany(new CompanyTitle(new LimitedString120("Microsoft test company"), new TaxPayerNumber("A08433179"))),
+                        new BreakdownKind(new InvoiceBreakdown(new Item(new WithTaxItem(TransactionType.NotExempt, new []
                         {
-                            Sujeta = new SujetaType
-                            {
-                                NoExenta = new SujetaTypeNoExenta
-                                {
-                                    TipoNoExenta = TipoOperacionSujetaNoExentaType.S1,
-                                    DesgloseIVA = new []
-                                    {
-                                        new DetalleIVAEmitidaType
-                                        {
-                                            TipoImpositivo = "21",
-                                            BaseImponible = "22.07",
-                                            CuotaRepercutida = "4.63"
-                                        }
-                                    }
-                                }
-                            }
-                        })
-                    }
-                }}
-            };
+                            new VATBreakdown(new Percentage(21), new Amount(22.07M), new Amount(4.63M), new Percentage(0), new Amount(0))
+                        }))))
+                    )
+                }
+            );
         }
 
         private X509Certificate GeneratorCertificate()
