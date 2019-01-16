@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Mews.Fiscalization.Spain.Tests</RootNamespace>
     <AssemblyName>Mews.Fiscalization.Spain.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -75,17 +75,17 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Mews.Fiscalization.Spain\Mews.Fiscalization.Spain.csproj">
-      <Project>{7AF7AD2F-069E-4A2E-9A44-0D12C33AEBCC}</Project>
-      <Name>Mews.Eet</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Configuration\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Mews.Fiscalization.Spain\Mews.Fiscalization.Spain.csproj">
+      <Project>{7af7ad2f-069e-4a2e-9a44-0d12c33aebcc}</Project>
+      <Name>Mews.Fiscalization.Spain</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
