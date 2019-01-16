@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 
 namespace Mews.Fiscalization.Spain.Model
 {
@@ -234,7 +235,7 @@ namespace Mews.Fiscalization.Spain.Model
         /// <summary>
         /// 12
         /// </summary>
-        December
+        December,
     }
 
     public enum CauseOfExemption
@@ -283,6 +284,1308 @@ namespace Mews.Fiscalization.Spain.Model
         InvTaxablePerson
     }
 
+    public enum Country
+    {
+        /// <summary>
+        /// AD
+        /// <summary>
+        Andorra,
+
+        /// <summary>
+        /// AE
+        /// <summary>
+        UnitedArabEmirates,
+
+        /// <summary>
+        /// AF
+        /// <summary>
+        Afghanistan,
+
+        /// <summary>
+        /// AG
+        /// <summary>
+        AntiguaandBarbuda,
+
+        /// <summary>
+        /// AI
+        /// <summary>
+        Anguilla,
+
+        /// <summary>
+        /// AL
+        /// <summary>
+        Albania,
+
+        /// <summary>
+        /// AM
+        /// <summary>
+        Armenia,
+
+        /// <summary>
+        /// AO
+        /// <summary>
+        Angola,
+
+        /// <summary>
+        /// AQ
+        /// <summary>
+        Antarctica,
+
+        /// <summary>
+        /// AR
+        /// <summary>
+        Argentina,
+
+        /// <summary>
+        /// AS
+        /// <summary>
+        AmericanSamoa,
+
+        /// <summary>
+        /// AT
+        /// <summary>
+        Austria,
+
+        /// <summary>
+        /// AU
+        /// <summary>
+        Australia,
+
+        /// <summary>
+        /// AW
+        /// <summary>
+        Aruba,
+
+        /// <summary>
+        /// AZ
+        /// <summary>
+        Azerbaijan,
+
+        /// <summary>
+        /// BA
+        /// <summary>
+        BosniaandHerzegovina,
+
+        /// <summary>
+        /// BB
+        /// <summary>
+        Barbados,
+
+        /// <summary>
+        /// BD
+        /// <summary>
+        Bangladesh,
+
+        /// <summary>
+        /// BE
+        /// <summary>
+        Belgium,
+
+        /// <summary>
+        /// BF
+        /// <summary>
+        BurkinaFaso,
+
+        /// <summary>
+        /// BG
+        /// <summary>
+        Bulgaria,
+
+        /// <summary>
+        /// BH
+        /// <summary>
+        Bahrain,
+
+        /// <summary>
+        /// BI
+        /// <summary>
+        Burundi,
+
+        /// <summary>
+        /// BJ
+        /// <summary>
+        Benin,
+
+        /// <summary>
+        /// BM
+        /// <summary>
+        Bermuda,
+
+        /// <summary>
+        /// BN
+        /// <summary>
+        BruneiDarussalam,
+
+        /// <summary>
+        /// BO
+        /// <summary>
+        Bolivia,
+
+        /// <summary>
+        /// BQ
+        /// <summary>
+        Bonaire, SintEustatiusandSaba,
+
+        /// <summary>
+        /// BR
+        /// <summary>
+        Brazil,
+
+        /// <summary>
+        /// BS
+        /// <summary>
+        Bahamas,
+
+        /// <summary>
+        /// BT
+        /// <summary>
+        Bhutan,
+
+        /// <summary>
+        /// BV
+        /// <summary>
+        BouvetIsland,
+
+        /// <summary>
+        /// BW
+        /// <summary>
+        Botswana,
+
+        /// <summary>
+        /// BY
+        /// <summary>
+        Belarus,
+
+        /// <summary>
+        /// BZ
+        /// <summary>
+        Belize,
+
+        /// <summary>
+        /// CA
+        /// <summary>
+        Canada,
+
+        /// <summary>
+        /// CC
+        /// <summary>
+        CocosKeelingIslands,
+
+        /// <summary>
+        /// CD
+        /// <summary>
+        DemocraticRepublicOfTheCongo,
+
+        /// <summary>
+        /// CF
+        /// <summary>
+        CentralAfricanRepublic,
+
+        /// <summary>
+        /// CG
+        /// <summary>
+        RepublicOfTheCongo,
+
+        /// <summary>
+        /// CH
+        /// <summary>
+        Switzerland,
+
+        /// <summary>
+        /// CI
+        /// <summary>
+        IvoryCoast,
+
+        /// <summary>
+        /// CK
+        /// <summary>
+        CookIslands,
+
+        /// <summary>
+        /// CL
+        /// <summary>
+        Chile,
+
+        /// <summary>
+        /// CM
+        /// <summary>
+        Cameroon,
+
+        /// <summary>
+        /// CN
+        /// <summary>
+        China,
+
+        /// <summary>
+        /// CO
+        /// <summary>
+        Colombia,
+
+        /// <summary>
+        /// CR
+        /// <summary>
+        CostaRica,
+
+        /// <summary>
+        /// CU
+        /// <summary>
+        Cuba,
+
+        /// <summary>
+        /// CV
+        /// <summary>
+        CaboVerde,
+
+        /// <summary>
+        /// CW
+        /// <summary>
+        Curaçao,
+
+        /// <summary>
+        /// CX
+        /// <summary>
+        ChristmasIsland,
+
+        /// <summary>
+        /// CY
+        /// <summary>
+        Cyprus,
+
+        /// <summary>
+        /// CZ
+        /// <summary>
+        Czechia,
+
+        /// <summary>
+        /// DE
+        /// <summary>
+        Germany,
+
+        /// <summary>
+        /// DJ
+        /// <summary>
+        Djibouti,
+
+        /// <summary>
+        /// DK
+        /// <summary>
+        Denmark,
+
+        /// <summary>
+        /// DM
+        /// <summary>
+        Dominica,
+
+        /// <summary>
+        /// DO
+        /// <summary>
+        DominicanRepublic,
+
+        /// <summary>
+        /// DZ
+        /// <summary>
+        Algeria,
+
+        /// <summary>
+        /// EC
+        /// <summary>
+        Ecuador,
+
+        /// <summary>
+        /// EE
+        /// <summary>
+        Estonia,
+
+        /// <summary>
+        /// EG
+        /// <summary>
+        Egypt,
+
+        /// <summary>
+        /// ER
+        /// <summary>
+        Eritrea,
+
+        /// <summary>
+        /// ES
+        /// <summary>
+        Spain,
+
+        /// <summary>
+        /// ET
+        /// <summary>
+        Ethiopia,
+
+        /// <summary>
+        /// FI
+        /// <summary>
+        Finland,
+
+        /// <summary>
+        /// FJ
+        /// <summary>
+        Fiji,
+
+        /// <summary>
+        /// FK
+        /// <summary>
+        FalklandIslands,
+
+        /// <summary>
+        /// FM
+        /// <summary>
+        Micronesia,
+
+        /// <summary>
+        /// FO
+        /// <summary>
+        FaroeIslands,
+
+        /// <summary>
+        /// FR
+        /// <summary>
+        France,
+
+        /// <summary>
+        /// GA
+        /// <summary>
+        Gabon,
+
+        /// <summary>
+        /// GB
+        /// <summary>
+        UnitedKingdomofGreatBritainandNorthernIreland,
+
+        /// <summary>
+        /// GD
+        /// <summary>
+        Grenada,
+
+        /// <summary>
+        /// GE
+        /// <summary>
+        Georgia,
+
+        /// <summary>
+        /// GG
+        /// <summary>
+        Guernsey,
+
+        /// <summary>
+        /// GH
+        /// <summary>
+        Ghana,
+
+        /// <summary>
+        /// GI
+        /// <summary>
+        Gibraltar,
+
+        /// <summary>
+        /// GL
+        /// <summary>
+        Greenland,
+
+        /// <summary>
+        /// GM
+        /// <summary>
+        Gambia,
+
+        /// <summary>
+        /// GN
+        /// <summary>
+        Guinea,
+
+        /// <summary>
+        /// GQ
+        /// <summary>
+        EquatorialGuinea,
+
+        /// <summary>
+        /// GR
+        /// <summary>
+        Greece,
+
+        /// <summary>
+        /// GS
+        /// <summary>
+        SouthGeorgiaandtheSouthSandwichIslands,
+
+        /// <summary>
+        /// GT
+        /// <summary>
+        Guatemala,
+
+        /// <summary>
+        /// GU
+        /// <summary>
+        Guam,
+
+        /// <summary>
+        /// GW
+        /// <summary>
+        GuineaBissau,
+
+        /// <summary>
+        /// GY
+        /// <summary>
+        Guyana,
+
+        /// <summary>
+        /// HK
+        /// <summary>
+        HongKong,
+
+        /// <summary>
+        /// HM
+        /// <summary>
+        HeardIslandandMcDonaldIslands,
+
+        /// <summary>
+        /// HN
+        /// <summary>
+        Honduras,
+
+        /// <summary>
+        /// HR
+        /// <summary>
+        Croatia,
+
+        /// <summary>
+        /// HT
+        /// <summary>
+        Haiti,
+
+        /// <summary>
+        /// HU
+        /// <summary>
+        Hungary,
+
+        /// <summary>
+        /// ID
+        /// <summary>
+        Indonesia,
+
+        /// <summary>
+        /// IE
+        /// <summary>
+        Ireland,
+
+        /// <summary>
+        /// IL
+        /// <summary>
+        Israel,
+
+        /// <summary>
+        /// IM
+        /// <summary>
+        IsleofMan,
+
+        /// <summary>
+        /// IN
+        /// <summary>
+        India,
+
+        /// <summary>
+        /// IO
+        /// <summary>
+        BritishIndianOceanTerritory,
+
+        /// <summary>
+        /// IQ
+        /// <summary>
+        Iraq,
+
+        /// <summary>
+        /// IR
+        /// <summary>
+        Iran,
+
+        /// <summary>
+        /// IS
+        /// <summary>
+        Iceland,
+
+        /// <summary>
+        /// IT
+        /// <summary>
+        Italy,
+
+        /// <summary>
+        /// JE
+        /// <summary>
+        Jersey,
+
+        /// <summary>
+        /// JM
+        /// <summary>
+        Jamaica,
+
+        /// <summary>
+        /// JO
+        /// <summary>
+        Jordan,
+
+        /// <summary>
+        /// JP
+        /// <summary>
+        Japan,
+
+        /// <summary>
+        /// KE
+        /// <summary>
+        Kenya,
+
+        /// <summary>
+        /// KG
+        /// <summary>
+        Kyrgyzstan,
+
+        /// <summary>
+        /// KH
+        /// <summary>
+        Cambodia,
+
+        /// <summary>
+        /// KI
+        /// <summary>
+        Kiribati,
+
+        /// <summary>
+        /// KM
+        /// <summary>
+        Comoros,
+
+        /// <summary>
+        /// KN
+        /// <summary>
+        SaintKittsandNevis,
+
+        /// <summary>
+        /// KP
+        /// <summary>
+        NorthKorea,
+
+        /// <summary>
+        /// KR
+        /// <summary>
+        SouthKorea,
+
+        /// <summary>
+        /// KW
+        /// <summary>
+        Kuwait,
+
+        /// <summary>
+        /// KY
+        /// <summary>
+        CaymanIslands,
+
+        /// <summary>
+        /// KZ
+        /// <summary>
+        Kazakhstan,
+
+        /// <summary>
+        /// LA
+        /// <summary>
+        Laos,
+
+        /// <summary>
+        /// LB
+        /// <summary>
+        Lebanon,
+
+        /// <summary>
+        /// LC
+        /// <summary>
+        SaintLucia,
+
+        /// <summary>
+        /// LI
+        /// <summary>
+        Liechtenstein,
+
+        /// <summary>
+        /// LK
+        /// <summary>
+        SriLanka,
+
+        /// <summary>
+        /// LR
+        /// <summary>
+        Liberia,
+
+        /// <summary>
+        /// LS
+        /// <summary>
+        Lesotho,
+
+        /// <summary>
+        /// LT
+        /// <summary>
+        Lithuania,
+
+        /// <summary>
+        /// LU
+        /// <summary>
+        Luxembourg,
+
+        /// <summary>
+        /// LV
+        /// <summary>
+        Latvia,
+
+        /// <summary>
+        /// LY
+        /// <summary>
+        Libya,
+
+        /// <summary>
+        /// MA
+        /// <summary>
+        Morocco,
+
+        /// <summary>
+        /// MC
+        /// <summary>
+        Monaco,
+
+        /// <summary>
+        /// MD
+        /// <summary>
+        Moldova,
+
+        /// <summary>
+        /// ME
+        /// <summary>
+        Montenegro,
+
+        /// <summary>
+        /// MG
+        /// <summary>
+        Madagascar,
+
+        /// <summary>
+        /// MH
+        /// <summary>
+        MarshallIslands,
+
+        /// <summary>
+        /// MK
+        /// <summary>
+        Macedonia,
+
+        /// <summary>
+        /// ML
+        /// <summary>
+        Mali,
+
+        /// <summary>
+        /// MM
+        /// <summary>
+        Myanmar,
+
+        /// <summary>
+        /// MN
+        /// <summary>
+        Mongolia,
+
+        /// <summary>
+        /// MO
+        /// <summary>
+        Macao,
+
+        /// <summary>
+        /// MP
+        /// <summary>
+        NorthernMarianaIslands,
+
+        /// <summary>
+        /// MR
+        /// <summary>
+        Mauritania,
+
+        /// <summary>
+        /// MS
+        /// <summary>
+        Montserrat,
+
+        /// <summary>
+        /// MT
+        /// <summary>
+        Malta,
+
+        /// <summary>
+        /// MU
+        /// <summary>
+        Mauritius,
+
+        /// <summary>
+        /// MV
+        /// <summary>
+        Maldives,
+
+        /// <summary>
+        /// MW
+        /// <summary>
+        Malawi,
+
+        /// <summary>
+        /// MX
+        /// <summary>
+        Mexico,
+
+        /// <summary>
+        /// MY
+        /// <summary>
+        Malaysia,
+
+        /// <summary>
+        /// MZ
+        /// <summary>
+        Mozambique,
+
+        /// <summary>
+        /// NA
+        /// <summary>
+        Namibia,
+
+        /// <summary>
+        /// NC
+        /// <summary>
+        NewCaledonia,
+
+        /// <summary>
+        /// NE
+        /// <summary>
+        Niger,
+
+        /// <summary>
+        /// NF
+        /// <summary>
+        NorfolkIsland,
+
+        /// <summary>
+        /// NG
+        /// <summary>
+        Nigeria,
+
+        /// <summary>
+        /// NI
+        /// <summary>
+        Nicaragua,
+
+        /// <summary>
+        /// NL
+        /// <summary>
+        Netherlands,
+
+        /// <summary>
+        /// NO
+        /// <summary>
+        Norway,
+
+        /// <summary>
+        /// NP
+        /// <summary>
+        Nepal,
+
+        /// <summary>
+        /// NR
+        /// <summary>
+        Nauru,
+
+        /// <summary>
+        /// NU
+        /// <summary>
+        Niue,
+
+        /// <summary>
+        /// NZ
+        /// <summary>
+        NewZealand,
+
+        /// <summary>
+        /// OM
+        /// <summary>
+        Oman,
+
+        /// <summary>
+        /// PA
+        /// <summary>
+        Panama,
+
+        /// <summary>
+        /// PE
+        /// <summary>
+        Peru,
+
+        /// <summary>
+        /// PF
+        /// <summary>
+        FrenchPolynesia,
+
+        /// <summary>
+        /// PG
+        /// <summary>
+        PapuaNewGuinea,
+
+        /// <summary>
+        /// PH
+        /// <summary>
+        Philippines,
+
+        /// <summary>
+        /// PK
+        /// <summary>
+        Pakistan,
+
+        /// <summary>
+        /// PL
+        /// <summary>
+        Poland,
+
+        /// <summary>
+        /// PM
+        /// <summary>
+        SaintPierreandMiquelon,
+
+        /// <summary>
+        /// PN
+        /// <summary>
+        Pitcairn,
+
+        /// <summary>
+        /// PR
+        /// <summary>
+        PuertoRico,
+
+        /// <summary>
+        /// PS
+        /// <summary>
+        Palestine, Stateof,
+
+        /// <summary>
+        /// PT
+        /// <summary>
+        Portugal,
+
+        /// <summary>
+        /// PW
+        /// <summary>
+        Palau,
+
+        /// <summary>
+        /// PY
+        /// <summary>
+        Paraguay,
+
+        /// <summary>
+        /// QA
+        /// <summary>
+        Qatar,
+
+        /// <summary>
+        /// RO
+        /// <summary>
+        Romania,
+
+        /// <summary>
+        /// RS
+        /// <summary>
+        Serbia,
+
+        /// <summary>
+        /// RU
+        /// <summary>
+        RussianFederation,
+
+        /// <summary>
+        /// RW
+        /// <summary>
+        Rwanda,
+
+        /// <summary>
+        /// SA
+        /// <summary>
+        SaudiArabia,
+
+        /// <summary>
+        /// SB
+        /// <summary>
+        SolomonIslands,
+
+        /// <summary>
+        /// SC
+        /// <summary>
+        Seychelles,
+
+        /// <summary>
+        /// SD
+        /// <summary>
+        Sudan,
+
+        /// <summary>
+        /// SE
+        /// <summary>
+        Sweden,
+
+        /// <summary>
+        /// SG
+        /// <summary>
+        Singapore,
+
+        /// <summary>
+        /// SH
+        /// <summary>
+        SaintHelena, AscensionandTristandaCunha,
+
+        /// <summary>
+        /// SI
+        /// <summary>
+        Slovenia,
+
+        /// <summary>
+        /// SK
+        /// <summary>
+        Slovakia,
+
+        /// <summary>
+        /// SL
+        /// <summary>
+        SierraLeone,
+
+        /// <summary>
+        /// SM
+        /// <summary>
+        SanMarino,
+
+        /// <summary>
+        /// SN
+        /// <summary>
+        Senegal,
+
+        /// <summary>
+        /// SO
+        /// <summary>
+        Somalia,
+
+        /// <summary>
+        /// SR
+        /// <summary>
+        Suriname,
+
+        /// <summary>
+        /// SS
+        /// <summary>
+        SouthSudan,
+
+        /// <summary>
+        /// ST
+        /// <summary>
+        SaoTomeandPrincipe,
+
+        /// <summary>
+        /// SV
+        /// <summary>
+        ElSalvador,
+
+        /// <summary>
+        /// SX
+        /// <summary>
+        SintMaartenDutchpart,
+
+        /// <summary>
+        /// SY
+        /// <summary>
+        SyrianArabRepublic,
+
+        /// <summary>
+        /// SZ
+        /// <summary>
+        Eswatini,
+
+        /// <summary>
+        /// TC
+        /// <summary>
+        TurksandCaicosIslands,
+
+        /// <summary>
+        /// TD
+        /// <summary>
+        Chad,
+
+        /// <summary>
+        /// TF
+        /// <summary>
+        FrenchSouthernTerritories,
+
+        /// <summary>
+        /// TG
+        /// <summary>
+        Togo,
+
+        /// <summary>
+        /// TH
+        /// <summary>
+        Thailand,
+
+        /// <summary>
+        /// TJ
+        /// <summary>
+        Tajikistan,
+
+        /// <summary>
+        /// TK
+        /// <summary>
+        Tokelau,
+
+        /// <summary>
+        /// TL
+        /// <summary>
+        TimorLeste,
+
+        /// <summary>
+        /// TM
+        /// <summary>
+        Turkmenistan,
+
+        /// <summary>
+        /// TN
+        /// <summary>
+        Tunisia,
+
+        /// <summary>
+        /// TO
+        /// <summary>
+        Tonga,
+
+        /// <summary>
+        /// TR
+        /// <summary>
+        Turkey,
+
+        /// <summary>
+        /// TT
+        /// <summary>
+        TrinidadandTobago,
+
+        /// <summary>
+        /// TV
+        /// <summary>
+        Tuvalu,
+
+        /// <summary>
+        /// TW
+        /// <summary>
+        Taiwan, ProvinceofChina,
+
+        /// <summary>
+        /// TZ
+        /// <summary>
+        Tanzania, UnitedRepublicof,
+
+        /// <summary>
+        /// UA
+        /// <summary>
+        Ukraine,
+
+        /// <summary>
+        /// UG
+        /// <summary>
+        Uganda,
+
+        /// <summary>
+        /// UM
+        /// <summary>
+        UnitedStatesMinorOutlyingIslands,
+
+        /// <summary>
+        /// US
+        /// <summary>
+        UnitedStatesofAmerica,
+
+        /// <summary>
+        /// UY
+        /// <summary>
+        Uruguay,
+
+        /// <summary>
+        /// UZ
+        /// <summary>
+        Uzbekistan,
+
+        /// <summary>
+        /// VA
+        /// <summary>
+        HolySee,
+
+        /// <summary>
+        /// VC
+        /// <summary>
+        SaintVincentandtheGrenadines,
+
+        /// <summary>
+        /// VE
+        /// <summary>
+        Venezuela,
+
+        /// <summary>
+        /// VG
+        /// <summary>
+        VirginIslandsBritish,
+
+        /// <summary>
+        /// VI
+        /// <summary>
+        VirginIslandsUS,
+
+        /// <summary>
+        /// VN
+        /// <summary>
+        VietNam,
+
+        /// <summary>
+        /// VU
+        /// <summary>
+        Vanuatu,
+
+        /// <summary>
+        /// WF
+        /// <summary>
+        WallisandFutuna,
+
+        /// <summary>
+        /// WS
+        /// <summary>
+        Samoa,
+
+        /// <summary>
+        /// YE
+        /// <summary>
+        Yemen,
+
+        /// <summary>
+        /// YT
+        /// <summary>
+        Mayotte,
+
+        /// <summary>
+        /// ZA
+        /// <summary>
+        SouthAfrica,
+
+        /// <summary>
+        /// ZM
+        /// <summary>
+        Zambia,
+
+        /// <summary>
+        /// ZW
+        /// <summary>
+        Zimbabwe
+    }
+
+    public class Amount
+    {
+        public Amount(decimal value)
+        {
+            var isValidAmount = value < 1000000000000 && value == Math.Round(value, 2);
+            if (!isValidAmount)
+            {
+                throw new ArgumentException($"{nameof(value)} is not valid amount number.");
+            }
+
+            Value = value;
+        }
+
+        public decimal Value { get; }
+    }
+
+    public class Percentage
+    {
+        public Percentage(decimal value)
+        {
+            var isValidPercentage = value >= 0 && value <= 100 && value == Math.Round(value, 2);
+            if (!isValidPercentage)
+            {
+                throw new ArgumentException($"{nameof(value)} is not valid percentage number.");
+            }
+
+            Value = value;
+        }
+
+        public decimal Value { get; }
+    }
+
+    public abstract class LimitedString
+    {
+        public LimitedString(string value, int minLength, int maxLength)
+        {
+            if (value.Length > maxLength)
+            {
+                throw new ArgumentException($"Max length of string is {maxLength}.");
+            }
+
+            if (value.Length < minLength)
+            {
+                throw new ArgumentException($"Min length of string is {minLength}.");
+            }
+
+            Value = value;
+        }
+
+        public string Value { get; }
+    }
+
+    public class LimitedString500 : LimitedString
+    {
+        public LimitedString500(string value)
+            : base(value, 0, 500)
+        {
+        }
+    }
+
+    public class LimitedString20 : LimitedString
+    {
+        public LimitedString20(string value)
+            : base(value, 0, 20)
+        {
+        }
+    }
+
+    public class LimitedString120 : LimitedString
+    {
+        public LimitedString120(string value)
+            : base(value, 0, 120)
+        {
+        }
+    }
+
+    public class LimitedString1to60 : LimitedString
+    {
+        public LimitedString1to60(string value)
+            : base(value, 1, 60)
+        {
+        }
+    }
+
+    public class Year
+    {
+        public Year(int value)
+        {
+            if (value >= 1000 && value <= 10000)
+            {
+                throw new ArgumentException($"Value is not valid year.");
+            }
+
+            Value = value;
+        }
+
+        public int Value { get; }
+    }
+
     public class InvoicesToRegister
     {
         public InvoicesToRegister(Header header, Invoice[] invoices)
@@ -296,6 +1599,9 @@ namespace Mews.Fiscalization.Spain.Model
         /// </summary>
         public Header Header { get; }
 
+        /// <summary>
+        /// RegistroLRfacturasRecibidas
+        /// </summary>
         public Invoice[] Invoices { get; }
     }
 
@@ -306,8 +1612,8 @@ namespace Mews.Fiscalization.Spain.Model
             InvoiceId id,
             InvoiceType type,
             SchemeOrEffect schemeOrEffect,
-            decimal totalAmount,
-            string description,
+            Amount totalAmount,
+            LimitedString500 description,
             CounterPartyCompany counterparty,
             BreakdownKind breakdown)
         {
@@ -346,12 +1652,12 @@ namespace Mews.Fiscalization.Spain.Model
         /// <summary>
         /// ImporteTotal
         /// </summary>
-        public decimal TotalAmount { get; }
+        public Amount TotalAmount { get; }
 
         /// <summary>
         /// DescripciónOperación
         /// </summary>
-        public string Description { get; }
+        public LimitedString500 Description { get; }
 
         /// <summary>
         /// Contraparte
@@ -427,7 +1733,7 @@ namespace Mews.Fiscalization.Spain.Model
 
     public class TaxFreeItem
     {
-        public TaxFreeItem(decimal amount, CauseOfExemption? cause = null)
+        public TaxFreeItem(Amount amount, CauseOfExemption? cause = null)
         {
             Cause = cause;
             Amount = amount;
@@ -441,7 +1747,7 @@ namespace Mews.Fiscalization.Spain.Model
         /// <summary>
         /// BaseImponible
         /// </summary>
-        public decimal Amount { get; }
+        public Amount Amount { get; }
     }
 
     public class WithTaxItem
@@ -465,7 +1771,7 @@ namespace Mews.Fiscalization.Spain.Model
 
     public class VATBreakdown
     {
-        public VATBreakdown(decimal taxRate, decimal taxBaseAmount, decimal taxAmount, decimal equivalenceSurchargePercentage, decimal equivalenceSurchargeTaxAmount)
+        public VATBreakdown(Percentage taxRate, Amount taxBaseAmount, Amount taxAmount, Percentage equivalenceSurchargePercentage, Amount equivalenceSurchargeTaxAmount)
         {
             TaxRate = taxRate;
             TaxBaseAmount = taxBaseAmount;
@@ -477,27 +1783,27 @@ namespace Mews.Fiscalization.Spain.Model
         /// <summary>
         /// TipoImpositivo
         /// </summary>
-        public decimal TaxRate { get; }
+        public Percentage TaxRate { get; }
 
         /// <summary>
         /// BaseImponible
         /// </summary>
-        public decimal TaxBaseAmount { get; }
+        public Amount TaxBaseAmount { get; }
 
         /// <summary>
         /// CuotaRepercutida
         /// </summary>
-        public decimal TaxAmount { get; }
+        public Amount TaxAmount { get; }
 
         /// <summary>
         /// TipoRecargoEquivalencia
         /// </summary>
-        public decimal EquivalenceSurchargePercentage { get; }
+        public Percentage EquivalenceSurchargePercentage { get; }
 
         /// <summary>
         /// CuotaRecargoEquivalencia
         /// </summary>
-        public decimal EquivalenceSurchargeTaxAmount { get; }
+        public Amount EquivalenceSurchargeTaxAmount { get; }
     }
 
     public class OperationTypeBreakdown
@@ -544,14 +1850,9 @@ namespace Mews.Fiscalization.Spain.Model
 
     public class ForeignCompany
     {
-        public ForeignCompany(string countryCode, ResidenceCountryIdentificatorType identificatiorType, string id)
+        public ForeignCompany(Country country, ResidenceCountryIdentificatorType identificatiorType, LimitedString20 id)
         {
-            if (countryCode.Length != 2)
-            {
-                throw new ArgumentException($"{nameof(countryCode)} is not valid ISO 3166-1 alpha-2 country code.");
-            }
-
-            CountryCode = countryCode;
+            Country = country;
             IdentificatiorType = identificatiorType;
             Id = id;
         }
@@ -559,7 +1860,7 @@ namespace Mews.Fiscalization.Spain.Model
         /// <summary>
         /// CodigoPais
         /// </summary>
-        public string CountryCode { get; }
+        public Country Country { get; }
 
         /// <summary>
         /// IDType
@@ -569,18 +1870,13 @@ namespace Mews.Fiscalization.Spain.Model
         /// <summary>
         /// ID
         /// </summary>
-        public string Id { get; }
+        public LimitedString20 Id { get; }
     }
 
     public class InvoiceId
     {
-        public InvoiceId(TaxPayerNumber issuer, string number, DateTime date)
+        public InvoiceId(TaxPayerNumber issuer, LimitedString1to60 number, DateTime date)
         {
-            if (number.Length > 60)
-            {
-                throw new ArgumentException($"{nameof(number)} cannot be longer than 60.");
-            }
-
             Issuer = issuer;
             Number = number;
             Date = date;
@@ -594,7 +1890,7 @@ namespace Mews.Fiscalization.Spain.Model
         /// <summary>
         /// NumSerieFacturaEmisor
         /// </summary>
-        public string Number { get; }
+        public LimitedString1to60 Number { get; }
 
         /// <summary>
         /// FechaExpedicionFacturaEmisor
@@ -604,7 +1900,7 @@ namespace Mews.Fiscalization.Spain.Model
 
     public class TaxPeriod
     {
-        public TaxPeriod(int year, Month month)
+        public TaxPeriod(Year year, Month month)
         {
             Year = year;
             Month = month;
@@ -613,7 +1909,7 @@ namespace Mews.Fiscalization.Spain.Model
         /// <summary>
         /// Ejercicio
         /// </summary>
-        public int Year { get; }
+        public Year Year { get; }
 
         /// <summary>
         /// Periodo
@@ -647,13 +1943,8 @@ namespace Mews.Fiscalization.Spain.Model
 
     public class CompanyTitle
     {
-        public CompanyTitle(string name, TaxPayerNumber taxPayerNumber)
+        public CompanyTitle(LimitedString120 name, TaxPayerNumber taxPayerNumber)
         {
-            if (name.Length > 40)
-            {
-                throw new ArgumentException($"{nameof(name)} cannot be longer than 40.");
-            }
-
             Name = name;
             TaxPayerNumber = taxPayerNumber;
         }
@@ -661,7 +1952,7 @@ namespace Mews.Fiscalization.Spain.Model
         /// <summary>
         /// NombreRazon
         /// </summary>
-        public string Name { get; }
+        public LimitedString120 Name { get; }
 
         /// <summary>
         /// NIF
@@ -673,9 +1964,11 @@ namespace Mews.Fiscalization.Spain.Model
     {
         public TaxPayerNumber(string number)
         {
-            if (number.Length != 9)
+            var pattern = @"(([a-z|A-Z]{1}\d{7}[a-z|A-Z]{1})|(\d{8}[a-z|A-Z]{1})|([a-z|A-Z]{1}\d{8}))";
+            var isValid = Regex.IsMatch(number, pattern) && number.Length == 9;
+            if (!isValid)
             {
-                throw new ArgumentException($"{nameof(number)} should be 9 characters.");
+                throw new ArgumentException($"{nameof(number)} is not valid tax payer number.");
             }
 
             Number = number;
