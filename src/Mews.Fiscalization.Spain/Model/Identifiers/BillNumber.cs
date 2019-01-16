@@ -1,4 +1,4 @@
-﻿namespace Mews.Fiscalization.Spain.Dto.Identifiers
+﻿namespace Mews.Fiscalization.Spain.Model.Identifiers
 {
     public class BillNumber : StringIdentifier
     {

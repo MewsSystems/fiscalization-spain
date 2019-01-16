@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 
-namespace Mews.Fiscalization.Spain.Dto.Identifiers
+namespace Mews.Fiscalization.Spain.Model.Identifiers
 {
     public class StringIdentifier : Identifier<string>
     {

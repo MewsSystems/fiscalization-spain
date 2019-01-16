@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
 using Mews.Fiscalization.Spain.Communication;
+using Mews.Fiscalization.Spain.Dto.Requests;
 using Mews.Fiscalization.Spain.Dto.XSD.SuministroInformacion;
 using Mews.Fiscalization.Spain.Dto.XSD.SuministroLR;
 using Mews.Fiscalization.Spain.Environment;
@@ -22,7 +23,7 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
             var client = new SiiSoapClient(certificate, SiiEnvironment.Test, TimeSpan.FromSeconds(30));
             var data = GetSampleInvoiceData(6);
 
-            var x = await client.SendRevenueAsync(data);
+            var x = await client.SendRevenueAsync(new SubmitInvoicesRequest(data));
         }
 
         private string Test<T>(T value)

@@ -1,6 +1,6 @@
 ﻿using Mews.Fiscalization.Spain.Dto.XSD.ConsultaLR;
 
-namespace Mews.Fiscalization.Spain.Dto.Wsdl.SupplyIssuedInvoices.Requests
+namespace Mews.Fiscalization.Spain.Dto.Requests
 {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]

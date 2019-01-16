@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace Mews.Fiscalization.Spain
+namespace Mews.Fiscalization.Spain.Model
 {
     public class Patterns
     {

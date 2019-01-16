@@ -296,8 +296,8 @@
     <Compile Include="Dto\XSD\SuministroInformacion\SujetaTypeNoExenta.cs" />
     <Compile Include="Dto\XSD\SuministroInformacion\SuministroInformacion.cs" />
     <Compile Include="Dto\XSD\SuministroInformacion\SuministroInformacionBaja.cs" />
-    <Compile Include="Dto\Requests\SuministroLRFacturasEmitidasRequest.cs" />
-    <Compile Include="Dto\Responses\SuministroLRFacturasEmitidasResponse.cs" />
+    <Compile Include="Dto\Requests\SubmitInvoicesRequest.cs" />
+    <Compile Include="Dto\Responses\SubmitInvoicesResponse.cs" />
     <Compile Include="Dto\XSD\SuministroInformacion\TipoConDesgloseType.cs" />
     <Compile Include="Dto\XSD\SuministroInformacion\TipoOperacionSujetaNoExentaType.cs" />
     <Compile Include="Dto\XSD\SuministroInformacion\TimePeriodType.cs" />
