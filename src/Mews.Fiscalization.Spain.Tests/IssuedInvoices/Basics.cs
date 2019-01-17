@@ -41,7 +41,7 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
                         new CounterPartyCompany(new CompanyTitle(new LimitedString120("Microsoft test company"), new TaxPayerNumber("A08433179"))),
                         new BreakdownKind(new InvoiceBreakdown(new Item(new WithTaxItem(TransactionType.NotExempt, new []
                         {
-                            new VATBreakdown(new Percentage(21), new Amount(22.07M), new Amount(4.63M), new Percentage(0), new Amount(0))
+                            new VATBreakdown(new Percentage(21), new Amount(22.07M), new Amount(4.63M))
                         }))))
                     )
                 }
