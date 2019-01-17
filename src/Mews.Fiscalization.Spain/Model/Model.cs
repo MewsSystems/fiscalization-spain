@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text.RegularExpressions;
+using FuncSharp;
 
 namespace Mews.Fiscalization.Spain.Model
 {
@@ -195,13 +196,13 @@ namespace Mews.Fiscalization.Spain.Model
 
     public class VATBreakdown
     {
-        public VATBreakdown(Percentage taxRate, Amount taxBaseAmount, Amount taxAmount, Percentage equivalenceSurchargePercentage, Amount equivalenceSurchargeTaxAmount)
+        public VATBreakdown(Percentage taxRate, Amount taxBaseAmount, Amount taxAmount, Percentage equivalenceSurchargePercentage = null, Amount equivalenceSurchargeTaxAmount = null)
         {
             TaxRate = taxRate;
             TaxBaseAmount = taxBaseAmount;
             TaxAmount = taxAmount;
-            EquivalenceSurchargePercentage = equivalenceSurchargePercentage;
-            EquivalenceSurchargeTaxAmount = equivalenceSurchargeTaxAmount;
+            EquivalenceSurchargePercentage = equivalenceSurchargePercentage.ToOption();
+            EquivalenceSurchargeTaxAmount = equivalenceSurchargeTaxAmount.ToOption();
         }
 
         /// <summary>
@@ -222,12 +223,12 @@ namespace Mews.Fiscalization.Spain.Model
         /// <summary>
         /// TipoRecargoEquivalencia
         /// </summary>
-        public Percentage EquivalenceSurchargePercentage { get; }
+        public IOption<Percentage> EquivalenceSurchargePercentage { get; }
 
         /// <summary>
         /// CuotaRecargoEquivalencia
         /// </summary>
-        public Amount EquivalenceSurchargeTaxAmount { get; }
+        public IOption<Amount> EquivalenceSurchargeTaxAmount { get; }
     }
 
     public class OperationTypeBreakdown

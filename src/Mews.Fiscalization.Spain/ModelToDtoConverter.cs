@@ -130,8 +130,8 @@ namespace Mews.Fiscalization.Spain
                 TipoImpositivo = Convert(breakdown.TaxRate),
                 BaseImponible = Convert(breakdown.TaxBaseAmount),
                 CuotaRepercutida = Convert(breakdown.TaxAmount),
-                TipoRecargoEquivalencia = Convert(breakdown.EquivalenceSurchargePercentage),
-                CuotaRecargoEquivalencia = Convert(breakdown.EquivalenceSurchargeTaxAmount)
+                TipoRecargoEquivalencia = breakdown.EquivalenceSurchargePercentage.Map(p => Convert(p)).GetOrNull(),
+                CuotaRecargoEquivalencia = breakdown.EquivalenceSurchargeTaxAmount.Map(a => Convert(a)).GetOrNull()
             };
         }
 
