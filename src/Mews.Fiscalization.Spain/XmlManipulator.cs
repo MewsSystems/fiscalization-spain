@@ -24,9 +24,20 @@ namespace Mews.Fiscalization.Spain
             using (var writer = navigator.AppendChild())
             {
                 var xmlSerializer = new XmlSerializer(typeof(T));
-                xmlSerializer.Serialize(writer, value);
+                var nameSpaces = GetSiiNameSpaces();
+                xmlSerializer.Serialize(writer, value, nameSpaces);
             }
             return xmlDocument.DocumentElement;
+        }
+
+        public static XmlSerializerNamespaces GetSiiNameSpaces()
+        {
+            var result = new XmlSerializerNamespaces();
+            result.Add("sii", "https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/ssii/fact/ws/SuministroInformacion.xsd");
+            result.Add("siiR", "https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/ssii/fact/ws/RespuestaSuministro.xsd");
+            result.Add("siiLRC", "https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/ssii/fact/ws/ConsultaLR.xsd");
+            result.Add("siiLRRC", "https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/ssii/fact/ws/RespuestaConsultaLR.xsd");
+            return result;
         }
     }
 }

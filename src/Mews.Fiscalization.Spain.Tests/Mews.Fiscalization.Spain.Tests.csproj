@@ -71,6 +71,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="Configuration\Credentials.cs" />
     <Compile Include="IssuedInvoices\Basics.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -78,9 +79,7 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Configuration\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Mews.Fiscalization.Spain\Mews.Fiscalization.Spain.csproj">
       <Project>{7af7ad2f-069e-4a2e-9a44-0d12c33aebcc}</Project>

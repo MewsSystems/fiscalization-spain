@@ -300,7 +300,6 @@
     <Compile Include="Dto\XSD\SuministroInformacion\VariosDestinatariosType.cs" />
     <Compile Include="Dto\XSD\SuministroInformacion\VersionSiiType.cs" />
     <Compile Include="Environment\SiiEnvironment.cs" />
-    <Compile Include="Environment\Credentials.cs" />
     <Compile Include="Events\HttpRequestFinishedEventArgs.cs" />
     <Compile Include="ModelToDtoConverter.cs" />
     <Compile Include="Model\Types\Amount.cs" />
