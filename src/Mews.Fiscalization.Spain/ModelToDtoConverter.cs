@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Linq;
 using FuncSharp;
+using Mews.Fiscalization.Spain.Dto.Requests;
 using Mews.Fiscalization.Spain.Dto.XSD.SuministroInformacion;
 using Mews.Fiscalization.Spain.Dto.XSD.SuministroLR;
 using Mews.Fiscalization.Spain.Model;

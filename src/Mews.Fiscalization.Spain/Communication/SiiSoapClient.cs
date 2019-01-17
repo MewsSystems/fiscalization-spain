@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
+using Mews.Fiscalization.Spain.Dto.Requests;
 using Mews.Fiscalization.Spain.Dto.Responses;
-using Mews.Fiscalization.Spain.Dto.XSD.SuministroInformacion;
 using Mews.Fiscalization.Spain.Environment;
 using Mews.Fiscalization.Spain.Events;
 
