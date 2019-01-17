@@ -327,6 +327,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="Mews.Fiscalization.Spain.nuspec" />
     <None Include="Mews.ruleset" />
     <None Include="packages.config" />
   </ItemGroup>

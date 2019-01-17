@@ -4,12 +4,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Mews.Eet")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Mews.Fiscalization.Spain")]
+[assembly: AssemblyDescription("A package for issued invoices for spanish fiscalization. (Sii)")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Mews")]
-[assembly: AssemblyProduct("Mews.Eet")]
-[assembly: AssemblyCopyright("Copyright ©  2016")]
+[assembly: AssemblyProduct("Mews.Fiscalization.Spain")]
+[assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -19,7 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("7af7ad2f-069e-4a2e-9a44-0d12c33aebcc")]
+[assembly: Guid("db8b78bc-6e26-4aed-8a0b-ac1d22f2eddd")]
 
 // Version information for an assembly consists of the following four values:
 //
