@@ -17,10 +17,11 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
         {
             var certificate = GeneratorCertificate();
             var client = new SiiSoapClient(certificate, SiiEnvironment.Test, TimeSpan.FromSeconds(30));
-            var model = GetSampleInvoiceData(11);
-            var dtoModel = new ModelToDtoConverter().Convert(model);
 
-            var response = await client.SendRevenueAsync(dtoModel);
+            var model = GetSampleInvoiceData(11);
+            var dto = new ModelToDtoConverter().Convert(model);
+
+            var response = await client.SendRevenueAsync(dto);
             Assert.NotNull(response);
         }
 
