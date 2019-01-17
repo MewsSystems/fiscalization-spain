@@ -2,11 +2,11 @@
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace Mews.Fiscalization.Spain
+namespace Mews.Fiscalization.Spain.Communication
 {
-    public class XmlManipulator
+    internal class XmlManipulator
     {
-        public static T Deserialize<T>(XmlElement xmlElement)
+        internal static T Deserialize<T>(XmlElement xmlElement)
             where T : class, new()
         {
             using (var reader = new StringReader(xmlElement.OuterXml))
@@ -16,7 +16,7 @@ namespace Mews.Fiscalization.Spain
             }
         }
 
-        public static XmlElement Serialize<T>(T value)
+        internal static XmlElement Serialize<T>(T value)
             where T : class
         {
             var xmlDocument = new XmlDocument();
@@ -30,7 +30,7 @@ namespace Mews.Fiscalization.Spain
             return xmlDocument.DocumentElement;
         }
 
-        public static XmlSerializerNamespaces GetSiiNameSpaces()
+        internal static XmlSerializerNamespaces GetSiiNameSpaces()
         {
             var result = new XmlSerializerNamespaces();
             result.Add("sii", "https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/ssii/fact/ws/SuministroInformacion.xsd");

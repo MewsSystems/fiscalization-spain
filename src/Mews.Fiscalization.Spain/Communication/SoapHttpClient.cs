@@ -4,13 +4,12 @@ using System.Net.Http;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
-using Mews.Fiscalization.Spain.Events;
 
 namespace Mews.Fiscalization.Spain.Communication
 {
-    public class SoapHttpClient
+    internal class SoapHttpClient
     {
-        public SoapHttpClient(X509Certificate certificate, Uri endpointUri, TimeSpan timeout)
+        internal SoapHttpClient(X509Certificate certificate, Uri endpointUri, TimeSpan timeout)
         {
             EndpointUri = endpointUri;
 
@@ -19,13 +18,13 @@ namespace Mews.Fiscalization.Spain.Communication
             HttpClient = new HttpClient(requestHandler) { Timeout = timeout };
         }
 
-        public event EventHandler<HttpRequestFinishedEventArgs> HttpRequestFinished;
+        internal event EventHandler<HttpRequestFinishedEventArgs> HttpRequestFinished;
 
         private Uri EndpointUri { get; }
 
         private HttpClient HttpClient { get; }
 
-        public async Task<string> SendAsync(string body)
+        internal async Task<string> SendAsync(string body)
         {
             var requestContent = new StringContent(body, Encoding.UTF8, "application/x-www-form-urlencoded");
 

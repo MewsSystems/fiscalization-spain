@@ -3,8 +3,6 @@ using System.IO;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
-using Mews.Fiscalization.Spain.Communication;
-using Mews.Fiscalization.Spain.Environment;
 using Mews.Fiscalization.Spain.Model;
 using Mews.Fiscalization.Spain.Tests.Configuration;
 using Xunit;
@@ -17,12 +15,10 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
         public async Task SendRevenueSimple()
         {
             var certificate = GeneratorCertificate();
-            var client = new SiiSoapClient(certificate, SiiEnvironment.Test, TimeSpan.FromSeconds(30));
+            var client = new Client(certificate, Environment.Test, TimeSpan.FromSeconds(30));
 
             var model = GetSampleInvoiceData(13);
-            var dto = new ModelToDtoConverter().Convert(model);
-
-            var response = await client.SendRevenueAsync(dto);
+            var response = await client.SendRevenueAsync(model);
             Assert.NotNull(response);
         }
 

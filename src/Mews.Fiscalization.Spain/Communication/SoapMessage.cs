@@ -3,35 +3,35 @@ using System.Xml;
 
 namespace Mews.Fiscalization.Spain.Communication
 {
-    public class SoapMessage
+    internal class SoapMessage
     {
-        public SoapMessage(SoapMessagePart body)
+        internal SoapMessage(XmlElement body)
             : this(null, body)
         {
         }
 
-        public SoapMessage(SoapMessagePart header, SoapMessagePart body)
+        internal SoapMessage(XmlElement header, XmlElement body)
         {
             Header = header;
             Body = body ?? throw new ArgumentException("No body found.");
         }
 
-        public SoapMessagePart Body { get; }
+        internal XmlElement Body { get; }
 
-        private SoapMessagePart Header { get; }
+        private XmlElement Header { get; }
 
-        public static SoapMessage FromSoapXml(XmlDocument document)
+        internal static SoapMessage FromSoapXml(XmlDocument document)
         {
             var ns = new XmlNamespaceManager(document.NameTable);
             ns.AddNamespace("s", "http://schemas.xmlsoap.org/soap/envelope/");
 
             return new SoapMessage(
-                new SoapMessagePart(document.DocumentElement.SelectSingleNode("//s:Header", ns) as XmlElement),
-                new SoapMessagePart(document.DocumentElement.SelectSingleNode("//s:Body", ns) as XmlElement)
+                document.DocumentElement.SelectSingleNode("//s:Header", ns) as XmlElement,
+                document.DocumentElement.SelectSingleNode("//s:Body", ns) as XmlElement
             );
         }
 
-        public XmlDocument GetXmlDocument()
+        internal XmlDocument GetXmlDocument()
         {
             var xmlDocument = new XmlDocument();
             xmlDocument.PreserveWhitespace = true;
@@ -40,13 +40,13 @@ namespace Mews.Fiscalization.Spain.Communication
             var soapHeaderElement = xmlDocument.CreateElement("s", "Header", "http://schemas.xmlsoap.org/soap/envelope/");
             if (Header != null)
             {
-                var importedHeader = xmlDocument.ImportNode(Header.XmlElement, true);
+                var importedHeader = xmlDocument.ImportNode(Header, true);
                 soapHeaderElement.AppendChild(importedHeader);
             }
             soapEnvelopeElement.AppendChild(soapHeaderElement);
 
             var soapBodyElement = xmlDocument.CreateElement("s", "Body", "http://schemas.xmlsoap.org/soap/envelope/");
-            var importedBody = xmlDocument.ImportNode(Body.XmlElement, true);
+            var importedBody = xmlDocument.ImportNode(Body, true);
             soapBodyElement.AppendChild(importedBody);
 
             soapEnvelopeElement.AppendChild(soapBodyElement);

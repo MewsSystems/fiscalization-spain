@@ -2,16 +2,16 @@
 
 namespace Mews.Fiscalization.Spain
 {
-    public class SiiLogger
+    public class Logger
     {
-        public SiiLogger(Action<string, object> onError, Action<string, object> onInfo = null, Action<string, object> onDebug = null)
+        public Logger(Action<string, object> onError, Action<string, object> onInfo = null, Action<string, object> onDebug = null)
         {
             OnError = onError;
             OnInfo = onInfo;
             OnDebug = onDebug;
         }
 
-        public SiiLogger(Action<string, object> eagerLogger)
+        public Logger(Action<string, object> eagerLogger)
         {
             OnError = eagerLogger;
             OnInfo = eagerLogger;

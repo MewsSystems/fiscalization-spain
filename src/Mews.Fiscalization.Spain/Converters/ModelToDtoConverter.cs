@@ -7,9 +7,9 @@ using Mews.Fiscalization.Spain.Dto.XSD.SuministroInformacion;
 using Mews.Fiscalization.Spain.Dto.XSD.SuministroLR;
 using Mews.Fiscalization.Spain.Model;
 
-namespace Mews.Fiscalization.Spain
+namespace Mews.Fiscalization.Spain.Converters
 {
-    public class ModelToDtoConverter
+    internal class ModelToDtoConverter
     {
         public SubmitIssuedInvoicesRequest Convert(InvoicesToRegister model)
         {
