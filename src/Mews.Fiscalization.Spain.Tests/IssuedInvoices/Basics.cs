@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,35 +18,58 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
             var certificate = GeneratorCertificate();
             var client = new Client(certificate, Environment.Test, TimeSpan.FromSeconds(30));
 
-            var model = GetSampleInvoiceData(13);
+            var model = GetSampleInvoiceData();
             var response = await client.SendRevenueAsync(model);
-            Assert.NotNull(response);
+            Console.WriteLine(response.Result.ToString());
+            Assert.Equal(RegisterResult.Correct, response.Result);
         }
 
-        private InvoicesToRegister GetSampleInvoiceData(int invoiceNumber)
+        private InvoicesToRegister GetSampleInvoiceData()
         {
             var issuingCompany = Credentials.GeneratorCompany;
             var payingCompany = Credentials.MicrosoftCompany;
+            var firstInvoiceNumber = 18;
 
             return new InvoicesToRegister(
                 new Header(issuingCompany, CommunicationType.Registration),
                 new[]
                 {
-                    new Invoice(
-                        new TaxPeriod(new Year(2017), Month.December),
-                        new InvoiceId(issuingCompany.TaxPayerNumber, new LimitedString1to60(invoiceNumber.ToString("D2")), new DateTime(2017,5,10)),
-                        InvoiceType.Invoice,
-                        SchemeOrEffect.GeneralTaxRegimeActivity,
-                        new Amount(26.7M),
-                        new LimitedString500("This is a test invoice."),
-                        new CounterPartyCompany(payingCompany),
-                        new BreakdownKind(new InvoiceBreakdown(new Item(new WithTaxItem(TransactionType.NotExempt, new []
-                        {
-                            new VATBreakdown(new Percentage(21), new Amount(22.07M), new Amount(4.63M))
-                        }))))
-                    )
+                    GetInvoice(firstInvoiceNumber++, issuingCompany, payingCompany),
+                    GetInvoice(firstInvoiceNumber++, issuingCompany, payingCompany),
+                    GetInvoice(firstInvoiceNumber++, issuingCompany, payingCompany)
                 }
             );
+        }
+
+        private Invoice GetInvoice(int invoiceNumber, CompanyTitle issuingCompany, CompanyTitle payingCompany)
+        {
+            var breakdowns = GetBreakdowns();
+            return new Invoice(
+                new TaxPeriod(new Year(2017), Month.December),
+                new InvoiceId(issuingCompany.TaxPayerNumber, new LimitedString1to60(invoiceNumber.ToString("D2")), new DateTime(2017, 5, 10)),
+                InvoiceType.Invoice,
+                SchemeOrEffect.GeneralTaxRegimeActivity,
+                new Amount(Math.Round(breakdowns.Sum(b => b.TaxAmount.Value + b.TaxBaseAmount.Value), 2)),
+                new LimitedString500("This is a test invoice."),
+                new CounterPartyCompany(payingCompany),
+                new BreakdownKind(new InvoiceBreakdown(new Item(new WithTaxItem(TransactionType.NotExempt, breakdowns))))
+            );
+        }
+
+        private VATBreakdown[] GetBreakdowns()
+        {
+            return new[]
+            {
+                GetBreakdown(21m, 22.07M),
+                GetBreakdown(21m, 32.07M),
+                GetBreakdown(21m, 42.07M),
+                GetBreakdown(21m, 52.07M)
+            };
+        }
+
+        private VATBreakdown GetBreakdown(decimal vat, decimal baseValue)
+        {
+            return new VATBreakdown(new Percentage(vat), new Amount(baseValue), new Amount( Math.Round(baseValue * vat / 100, 2)));
         }
 
         private X509Certificate GeneratorCertificate()
