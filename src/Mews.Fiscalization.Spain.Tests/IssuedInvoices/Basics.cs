@@ -44,12 +44,14 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
         private Invoice GetInvoice(int invoiceNumber, CompanyTitle issuingCompany, CompanyTitle payingCompany)
         {
             var breakdowns = GetBreakdowns();
+            var totalValue = Math.Round(breakdowns.Sum(b => b.TaxAmount.Value + b.TaxBaseAmount.Value), 2);
+
             return new Invoice(
                 new TaxPeriod(new Year(2017), Month.December),
                 new InvoiceId(issuingCompany.TaxPayerNumber, new LimitedString1to60(invoiceNumber.ToString("D2")), new DateTime(2017, 5, 10)),
                 InvoiceType.Invoice,
                 SchemeOrEffect.GeneralTaxRegimeActivity,
-                new Amount(Math.Round(breakdowns.Sum(b => b.TaxAmount.Value + b.TaxBaseAmount.Value), 2)),
+                new Amount(totalValue),
                 new LimitedString500("This is a test invoice."),
                 new CounterPartyCompany(payingCompany),
                 new BreakdownKind(new InvoiceBreakdown(new Item(new WithTaxItem(TransactionType.NotExempt, breakdowns))))
