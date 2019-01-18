@@ -27,7 +27,7 @@ namespace Mews.Fiscalization.Spain
 
         private SoapClient SoapClient { get; }
 
-        public async Task<object> SendRevenueAsync(InvoicesToRegister model)
+        public async Task<ReceivedInvoices> SendRevenueAsync(InvoicesToRegister model)
         {
             var request = new ModelToDtoConverter().Convert(model);
             var response = await SoapClient.SendAsync<SubmitIssuedInvoicesRequest, SubmitInvoicesResponse>(request).ConfigureAwait(continueOnCapturedContext: false);

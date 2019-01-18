@@ -299,6 +299,9 @@
     <Compile Include="Environment.cs" />
     <Compile Include="HttpRequestFinishedEventArgs.cs" />
     <Compile Include="Converters\ModelToDtoConverter.cs" />
+    <Compile Include="Model\Enums\RegisterResult.cs" />
+    <Compile Include="Model\Enums\InvoiceRegisterResult.cs" />
+    <Compile Include="Model\ResponseModel.cs" />
     <Compile Include="Model\Types\Amount.cs" />
     <Compile Include="Model\Enums\CauseOfExemption.cs" />
     <Compile Include="Model\Enums\CommunicationType.cs" />
@@ -309,7 +312,7 @@
     <Compile Include="Model\Types\LimitedString1to60.cs" />
     <Compile Include="Model\Types\LimitedString20.cs" />
     <Compile Include="Model\Types\LimitedString500.cs" />
-    <Compile Include="Model\Model.cs" />
+    <Compile Include="Model\RequestModel.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Model\Enums\Month.cs" />
     <Compile Include="Model\Types\Percentage.cs" />
