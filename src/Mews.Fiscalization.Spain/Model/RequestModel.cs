@@ -38,7 +38,7 @@ namespace Mews.Fiscalization.Spain.Model
             Amount totalAmount,
             LimitedString500 description,
             CounterPartyCompany counterparty,
-            BreakdownKind breakdown)
+            BreakdownItem breakdown)
         {
             TaxPeriod = taxPeriod;
             Id = id;
@@ -90,70 +90,35 @@ namespace Mews.Fiscalization.Spain.Model
         /// <summary>
         /// TipoDesglose
         /// </summary>
-        public BreakdownKind Breakdown { get; }
+        public BreakdownItem Breakdown { get; }
 
         #endregion
     }
 
-    // TODO: Use Coproduct...
-    public class BreakdownKind
+    public class BreakdownItem : Coproduct2<InvoiceItem, OperationTypeBreakdown>
     {
-        public BreakdownKind(InvoiceBreakdown invoiceBreakdown)
+        public BreakdownItem(InvoiceItem firstValue)
+            : base(firstValue)
         {
-            InvoiceBreakdown = invoiceBreakdown;
         }
 
-        public BreakdownKind(OperationTypeBreakdown operationTypeBreakdown)
+        public BreakdownItem(OperationTypeBreakdown secondValue)
+            : base(secondValue)
         {
-            OperationTypeBreakdown = operationTypeBreakdown;
         }
-
-        /// <summary>
-        /// DesgloseFactura
-        /// </summary>
-        public InvoiceBreakdown InvoiceBreakdown { get; }
-
-        /// <summary>
-        /// DesgloseTipoOperacion
-        /// </summary>
-        public OperationTypeBreakdown OperationTypeBreakdown { get; }
     }
 
-    public class InvoiceBreakdown
+    public class InvoiceItem : Coproduct2<TaxFreeItem[], WithTaxItem>
     {
-        public InvoiceBreakdown(Item item)
+        public InvoiceItem(TaxFreeItem[] taxFree)
+            : base(taxFree)
         {
-            Item = item;
         }
 
-        /// <summary>
-        /// Sujeta
-        /// </summary>
-        public Item Item { get; }
-    }
-
-    // TODO: Use Coproduct...
-    public class Item
-    {
-        public Item(TaxFreeItem[] taxFree)
+        public InvoiceItem(WithTaxItem withTax)
+            : base(withTax)
         {
-            TaxFree = taxFree;
         }
-
-        public Item(WithTaxItem withTax)
-        {
-            WithTax = withTax;
-        }
-
-        /// <summary>
-        /// Exenta
-        /// </summary>
-        public TaxFreeItem[] TaxFree { get; }
-
-        /// <summary>
-        /// NoExenta
-        /// </summary>
-        public WithTaxItem WithTax { get; }
     }
 
     public class TaxFreeItem
@@ -233,7 +198,7 @@ namespace Mews.Fiscalization.Spain.Model
 
     public class OperationTypeBreakdown
     {
-        public OperationTypeBreakdown(InvoiceBreakdown serviceProvision, InvoiceBreakdown delivery)
+        public OperationTypeBreakdown(InvoiceItem serviceProvision, InvoiceItem delivery)
         {
             ServiceProvision = serviceProvision;
             Delivery = delivery;
@@ -242,36 +207,25 @@ namespace Mews.Fiscalization.Spain.Model
         /// <summary>
         /// PrestacionServicios
         /// </summary>
-        public InvoiceBreakdown ServiceProvision { get; }
+        public InvoiceItem ServiceProvision { get; }
 
         /// <summary>
         /// Entrega
         /// </summary>
-        public InvoiceBreakdown Delivery { get; }
+        public InvoiceItem Delivery { get; }
     }
 
-    // TODO: Use Coproduct...
-    public class CounterPartyCompany
+    public class CounterPartyCompany : Coproduct2<CompanyTitle, ForeignCompany>
     {
         public CounterPartyCompany(CompanyTitle companyTitle)
+            : base(companyTitle)
         {
-            CompanyTitle = companyTitle;
         }
 
         public CounterPartyCompany(ForeignCompany foreignCompany)
+            : base(foreignCompany)
         {
-            ForeignCompany = foreignCompany;
         }
-
-        /// <summary>
-        /// NombreRazón, NIFRepresentante, NIF
-        /// </summary>
-        public CompanyTitle CompanyTitle { get; }
-
-        /// <summary>
-        /// IDOtro
-        /// </summary>
-        public ForeignCompany ForeignCompany { get; }
     }
 
     public class ForeignCompany

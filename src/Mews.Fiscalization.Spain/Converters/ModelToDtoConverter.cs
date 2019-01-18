@@ -39,73 +39,67 @@ namespace Mews.Fiscalization.Spain.Converters
             };
         }
 
-        private FacturaExpedidaTypeTipoDesglose Convert(BreakdownKind breakdown)
+        private FacturaExpedidaTypeTipoDesglose Convert(BreakdownItem breakdown)
         {
-            if (breakdown.OperationTypeBreakdown != null)
-            {
-                return new FacturaExpedidaTypeTipoDesglose
+            return breakdown.Match(
+                i => new FacturaExpedidaTypeTipoDesglose
+                {
+                    Item = new TipoSinDesgloseType
+                    {
+                        Sujeta = Convert(i)
+                    }
+                },
+                o => new FacturaExpedidaTypeTipoDesglose
                 {
                     Item = new TipoConDesgloseType
                     {
                         Entrega = new TipoSinDesgloseType
                         {
-                            Sujeta = Convert(breakdown.OperationTypeBreakdown.Delivery.Item)
+                            Sujeta = Convert(o.Delivery)
                         },
                         PrestacionServicios = new TipoSinDesglosePrestacionType
                         {
-                            Sujeta = ConvertProvision(breakdown.OperationTypeBreakdown.ServiceProvision.Item)
+                            Sujeta = ConvertProvision(o.ServiceProvision)
                         }
                     }
-                };
-            }
-
-            return new FacturaExpedidaTypeTipoDesglose
-            {
-                Item = new TipoSinDesgloseType
-                {
-                    Sujeta = Convert(breakdown.InvoiceBreakdown.Item)
                 }
-            };
+            );
         }
 
-        private SujetaType Convert(Item item)
+        private SujetaType Convert(InvoiceItem item)
         {
-            if (item.TaxFree != null)
-            {
-                return new SujetaType
+            return item.Match(
+                f => new SujetaType
                 {
-                    Exenta = item.TaxFree.Select(i => Convert(i)).ToArray()
-                };
-            }
-
-            return new SujetaType
-            {
-                NoExenta = new SujetaTypeNoExenta
+                    Exenta = f.Select(i => Convert(i)).ToArray()
+                },
+                t => new SujetaType
                 {
-                    TipoNoExenta = Convert(item.WithTax.TransactionType),
-                    DesgloseIVA = item.WithTax.VatBreakdowns.Select(b => Convert(b)).ToArray()
+                    NoExenta = new SujetaTypeNoExenta
+                    {
+                        TipoNoExenta = Convert(t.TransactionType),
+                        DesgloseIVA = t.VatBreakdowns.Select(b => Convert(b)).ToArray()
+                    }
                 }
-            };
+            );
         }
 
-        private SujetaPrestacionType ConvertProvision(Item item)
+        private SujetaPrestacionType ConvertProvision(InvoiceItem item)
         {
-            if (item.TaxFree != null)
-            {
-                return new SujetaPrestacionType
+            return item.Match(
+                f => new SujetaPrestacionType
                 {
-                    Exenta = item.TaxFree.Select(i => Convert(i)).ToArray()
-                };
-            }
-
-            return new SujetaPrestacionType
-            {
-                NoExenta = new SujetaPrestacionTypeNoExenta
+                    Exenta = f.Select(i => Convert(i)).ToArray()
+                },
+                t => new SujetaPrestacionType
                 {
-                    TipoNoExenta = Convert(item.WithTax.TransactionType),
-                    DesgloseIVA = item.WithTax.VatBreakdowns.Select(b => ConvertProvision(b)).ToArray()
+                    NoExenta = new SujetaPrestacionTypeNoExenta
+                    {
+                        TipoNoExenta = Convert(t.TransactionType),
+                        DesgloseIVA = t.VatBreakdowns.Select(b => ConvertProvision(b)).ToArray()
+                    }
                 }
-            };
+            );
         }
 
         private DetalleExentaType Convert(TaxFreeItem item)
@@ -146,22 +140,20 @@ namespace Mews.Fiscalization.Spain.Converters
             };
         }
 
-        private PersonaFisicaJuridicaType Convert(CounterPartyCompany counterparty)
+        private PersonaFisicaJuridicaType Convert(CounterPartyCompany counterParty)
         {
-            if (counterparty.ForeignCompany != null)
-            {
-                return new PersonaFisicaJuridicaType
+            return counterParty.Match(
+                t => new PersonaFisicaJuridicaType
                 {
-                    NombreRazon = counterparty.ForeignCompany.Name.Value,
-                    Item = Convert(counterparty.ForeignCompany)
-                };
-            }
-
-            return new PersonaFisicaJuridicaType
-            {
-                NombreRazon = counterparty.CompanyTitle.Name.Value,
-                Item = counterparty.CompanyTitle.TaxPayerNumber.Number
-            };
+                    NombreRazon = t.Name.Value,
+                    Item = t.TaxPayerNumber.Number
+                },
+                c => new PersonaFisicaJuridicaType
+                {
+                    NombreRazon = c.Name.Value,
+                    Item = Convert(c)
+                }
+            );
         }
 
         private IDOtroType Convert(ForeignCompany foreignCompany)

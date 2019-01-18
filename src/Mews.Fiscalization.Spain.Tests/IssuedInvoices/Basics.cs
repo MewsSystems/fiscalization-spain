@@ -39,10 +39,10 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
                         new Amount(26.7M),
                         new LimitedString500("This is a test invoice."),
                         new CounterPartyCompany(payingCompany),
-                        new BreakdownKind(new InvoiceBreakdown(new Item(new WithTaxItem(TransactionType.NotExempt, new []
+                        new BreakdownItem(new InvoiceItem(new WithTaxItem(TransactionType.NotExempt, new []
                         {
                             new VATBreakdown(new Percentage(21), new Amount(22.07M), new Amount(4.63M))
-                        }))))
+                        })))
                     )
                 }
             );
