@@ -12,30 +12,23 @@ namespace Mews.Fiscalization.Spain.Model
             SuccessfulRequestId = secureVerificationCode.ToOption();
         }
 
-        /// <summary>
-        /// Cabecera
-        /// </summary>
         public Header Header { get; }
 
-        /// <summary>
-        /// EstadoEnvio
-        /// </summary>
         public RegisterResult Result { get; }
 
-        /// <summary>
-        /// RespuestaLinea
-        /// </summary>
         public InvoiceResult[] Invoices { get; }
 
-        /// <summary>
-        /// CSV
-        /// </summary>
         public IOption<string> SuccessfulRequestId { get; }
     }
 
     public class InvoiceResult
     {
-        public InvoiceResult(InvoiceId id, InvoiceRegisterResult result, int? errorCode = null, string errorMessage = null, string secureVerificationCodeForOriginalInvoice = null)
+        public InvoiceResult(
+            InvoiceId id,
+            InvoiceRegisterResult result,
+            int? errorCode = null,
+            string errorMessage = null,
+            string secureVerificationCodeForOriginalInvoice = null)
         {
             Id = id;
             Result = result;
@@ -44,29 +37,14 @@ namespace Mews.Fiscalization.Spain.Model
             OriginalInvoiceRequestId = secureVerificationCodeForOriginalInvoice.ToOption();
         }
 
-        /// <summary>
-        /// IDFactura
-        /// </summary>
         public InvoiceId Id { get; }
 
-        /// <summary>
-        /// EstadoRegistro
-        /// </summary>
         public InvoiceRegisterResult Result { get; }
 
-        /// <summary>
-        /// CodigoErrorRegistro
-        /// </summary>
         public IOption<int> ErrorCode { get; }
 
-        /// <summary>
-        /// DescripcionErrorRegistro
-        /// </summary>
         public IOption<string> ErrorMessage { get; }
 
-        /// <summary>
-        /// CSV
-        /// </summary>
         public IOption<string> OriginalInvoiceRequestId { get; }
     }
 }

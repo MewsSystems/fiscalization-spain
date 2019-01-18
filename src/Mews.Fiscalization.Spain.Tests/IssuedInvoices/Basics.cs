@@ -27,24 +27,22 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
             var issuingCompany = Credentials.GeneratorCompany;
             var payingCompany = Credentials.MicrosoftCompany;
 
+            var invoice = new Invoice(
+                taxPeriod: new TaxPeriod(new Year(2017), Month.December),
+                id: new InvoiceId(issuingCompany.TaxPayerNumber, new LimitedString1to60(invoiceNumber.ToString("D2")), new DateTime(2017, 5, 10)),
+                type: InvoiceType.Invoice,
+                schemeOrEffect: SchemeOrEffect.GeneralTaxRegimeActivity,
+                totalAmount: new Amount(26.7M),
+                description: new LimitedString500("This is a test invoice."),
+                counterParty: new CounterPartyCompany(payingCompany),
+                breakdown: new BreakdownItem(new InvoiceItem(new WithTaxItem(TransactionType.NotExempt, new[]
+                {
+                    new VATBreakdown(new Percentage(21), new Amount(22.07M), new Amount(4.63M))
+                })))
+            );
             return new InvoicesToRegister(
                 new Header(issuingCompany, CommunicationType.Registration),
-                new[]
-                {
-                    new Invoice(
-                        new TaxPeriod(new Year(2017), Month.December),
-                        new InvoiceId(issuingCompany.TaxPayerNumber, new LimitedString1to60(invoiceNumber.ToString("D2")), new DateTime(2017,5,10)),
-                        InvoiceType.Invoice,
-                        SchemeOrEffect.GeneralTaxRegimeActivity,
-                        new Amount(26.7M),
-                        new LimitedString500("This is a test invoice."),
-                        new CounterPartyCompany(payingCompany),
-                        new BreakdownItem(new InvoiceItem(new WithTaxItem(TransactionType.NotExempt, new []
-                        {
-                            new VATBreakdown(new Percentage(21), new Amount(22.07M), new Amount(4.63M))
-                        })))
-                    )
-                }
+                new[] { invoice }
             );
         }
 

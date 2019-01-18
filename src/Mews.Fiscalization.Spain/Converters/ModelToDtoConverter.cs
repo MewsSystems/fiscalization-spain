@@ -22,7 +22,6 @@ namespace Mews.Fiscalization.Spain.Converters
 
         private LRfacturasEmitidasType Convert(Invoice invoice)
         {
-            CounterPartyCompany counterparty = invoice.Counterparty;
             return new LRfacturasEmitidasType
             {
                 PeriodoLiquidacion = Convert(invoice.TaxPeriod),
@@ -33,7 +32,7 @@ namespace Mews.Fiscalization.Spain.Converters
                     ClaveRegimenEspecialOTrascendencia = Convert(invoice.SchemeOrEffect),
                     ImporteTotal = Convert(invoice.TotalAmount),
                     DescripcionOperacion = invoice.Description.Value,
-                    Contraparte = Convert(counterparty),
+                    Contraparte = Convert(invoice.Counterparty),
                     TipoDesglose = Convert(invoice.Breakdown)
                 }
             };
@@ -107,12 +106,12 @@ namespace Mews.Fiscalization.Spain.Converters
             return new DetalleExentaType
             {
                 CausaExencion = item.Cause.Match(
-                    CauseOfExemption.ExemptOnAccountOfArticle20, _ => CausaExencionType.E1,
-                    CauseOfExemption.ExemptOnAccountOfArticle21, _ => CausaExencionType.E2,
-                    CauseOfExemption.ExemptOnAccountOfArticle22, _ => CausaExencionType.E3,
-                    CauseOfExemption.ExemptOnAccountOfArticle24, _ => CausaExencionType.E4,
-                    CauseOfExemption.ExemptOnAccountOfArticle25, _ => CausaExencionType.E5,
-                    CauseOfExemption.ExemptOnOtherGrounds, _ => CausaExencionType.E6
+                    CauseOfExemption.Article20, _ => CausaExencionType.E1,
+                    CauseOfExemption.Article21, _ => CausaExencionType.E2,
+                    CauseOfExemption.Article22, _ => CausaExencionType.E3,
+                    CauseOfExemption.Article24, _ => CausaExencionType.E4,
+                    CauseOfExemption.Article25, _ => CausaExencionType.E5,
+                    CauseOfExemption.OtherGrounds, _ => CausaExencionType.E6
                 ),
                 BaseImponible = Convert(item.Amount)
             };
@@ -213,11 +212,11 @@ namespace Mews.Fiscalization.Spain.Converters
             return new CabeceraSii
             {
                 IDVersionSii = VersionSiiType.Item11,
-                Titular = Convert(header.CompanyTitle)
+                Titular = Convert(header.Company)
             };
         }
 
-        private PersonaFisicaJuridicaESType Convert(CompanyTitle companyTitle)
+        private PersonaFisicaJuridicaESType Convert(LocalCompany companyTitle)
         {
             return new PersonaFisicaJuridicaESType
             {

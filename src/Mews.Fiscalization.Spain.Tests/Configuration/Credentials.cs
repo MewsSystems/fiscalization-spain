@@ -4,12 +4,12 @@ namespace Mews.Fiscalization.Spain.Tests.Configuration
 {
     public static class Credentials
     {
-        public static CompanyTitle GeneratorCompany => new CompanyTitle(
+        public static LocalCompany GeneratorCompany => new LocalCompany(
             new LimitedString120("GENERATOR BCN 1, S.L."),
             new TaxPayerNumber("B65374811")
         );
 
-        public static CompanyTitle MicrosoftCompany => new CompanyTitle(
+        public static LocalCompany MicrosoftCompany => new LocalCompany(
             new LimitedString120("Microsoft test company"),
             new TaxPayerNumber("A08433179")
         );

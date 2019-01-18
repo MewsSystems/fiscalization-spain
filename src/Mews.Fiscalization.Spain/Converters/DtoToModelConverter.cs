@@ -43,7 +43,7 @@ namespace Mews.Fiscalization.Spain.Converters
         private Header Convert(CabeceraSii cabecera)
         {
             return new Header(
-                new CompanyTitle(new LimitedString120(cabecera.Titular.NombreRazon), new TaxPayerNumber(cabecera.Titular.NIF)),
+                new LocalCompany(new LimitedString120(cabecera.Titular.NombreRazon), new TaxPayerNumber(cabecera.Titular.NIF)),
                 cabecera.TipoComunicacion.Match(
                     ClaveTipoComunicacionType.A0, _ => CommunicationType.Registration,
                     ClaveTipoComunicacionType.A1, _ => CommunicationType.Amendment,

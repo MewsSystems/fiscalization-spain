@@ -2,34 +2,11 @@
 {
     public enum CauseOfExemption
     {
-        /// <summary>
-        /// E1
-        /// </summary>
-        ExemptOnAccountOfArticle20,
-
-        /// <summary>
-        /// E2
-        /// </summary>
-        ExemptOnAccountOfArticle21,
-
-        /// <summary>
-        /// E3
-        /// </summary>
-        ExemptOnAccountOfArticle22,
-
-        /// <summary>
-        /// E4
-        /// </summary>
-        ExemptOnAccountOfArticle24,
-
-        /// <summary>
-        /// E5
-        /// </summary>
-        ExemptOnAccountOfArticle25,
-
-        /// <summary>
-        /// E6
-        /// </summary>
-        ExemptOnOtherGrounds,
+        Article20,
+        Article21,
+        Article22,
+        Article24,
+        Article25,
+        OtherGrounds
     }
 }

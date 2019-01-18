@@ -2,19 +2,8 @@
 {
     public enum TransactionType
     {
-        /// <summary>
-        /// S1
-        /// </summary>
         NotExempt,
-
-        /// <summary>
-        /// S2
-        /// </summary>
         InvTaxablePerson,
-
-        /// <summary>
-        /// S3
-        /// </summary>
         NotExemptWithPassiveSubject
     }
 }

@@ -17,14 +17,8 @@ namespace Mews.Fiscalization.Spain.Model
             Invoices = invoices;
         }
 
-        /// <summary>
-        /// Cabecera
-        /// </summary>
         public Header Header { get; }
 
-        /// <summary>
-        /// RegistroLRfacturasEmitidas
-        /// </summary>
         public Invoice[] Invoices { get; }
     }
 
@@ -37,7 +31,7 @@ namespace Mews.Fiscalization.Spain.Model
             SchemeOrEffect schemeOrEffect,
             Amount totalAmount,
             LimitedString500 description,
-            CounterPartyCompany counterparty,
+            CounterPartyCompany counterParty,
             BreakdownItem breakdown)
         {
             TaxPeriod = taxPeriod;
@@ -46,53 +40,25 @@ namespace Mews.Fiscalization.Spain.Model
             SchemeOrEffect = schemeOrEffect;
             TotalAmount = totalAmount;
             Description = description;
-            Counterparty = counterparty;
+            Counterparty = counterParty;
             Breakdown = breakdown;
         }
 
-        /// <summary>
-        /// PeriodoImpositivo
-        /// </summary>
         public TaxPeriod TaxPeriod { get; }
 
-        /// <summary>
-        /// IDFactura
-        /// </summary>
         public InvoiceId Id { get; }
 
-        #region FacturaExpedida
-
-        /// <summary>
-        /// TipoFactura
-        /// </summary>
         public InvoiceType Type { get; }
 
-        /// <summary>
-        /// ClaveRegimenEspecialOTrascendencia
-        /// </summary>
         public SchemeOrEffect SchemeOrEffect { get; }
 
-        /// <summary>
-        /// ImporteTotal
-        /// </summary>
         public Amount TotalAmount { get; }
 
-        /// <summary>
-        /// DescripciónOperación
-        /// </summary>
         public LimitedString500 Description { get; }
 
-        /// <summary>
-        /// Contraparte
-        /// </summary>
         public CounterPartyCompany Counterparty { get; }
 
-        /// <summary>
-        /// TipoDesglose
-        /// </summary>
         public BreakdownItem Breakdown { get; }
-
-        #endregion
     }
 
     public class BreakdownItem : Coproduct2<InvoiceItem, OperationTypeBreakdown>
@@ -129,14 +95,8 @@ namespace Mews.Fiscalization.Spain.Model
             Amount = amount;
         }
 
-        /// <summary>
-        /// CausaExencion
-        /// </summary>
         public CauseOfExemption? Cause { get; }
 
-        /// <summary>
-        /// BaseImponible
-        /// </summary>
         public Amount Amount { get; }
     }
 
@@ -148,14 +108,8 @@ namespace Mews.Fiscalization.Spain.Model
             VatBreakdowns = vatBreakdowns;
         }
 
-        /// <summary>
-        /// TipoNoExenta
-        /// </summary>
         public TransactionType TransactionType { get; }
 
-        /// <summary>
-        /// DesgloseIVA -> DetalleIVA
-        /// </summary>
         public VATBreakdown[] VatBreakdowns { get; }
     }
 
@@ -170,29 +124,14 @@ namespace Mews.Fiscalization.Spain.Model
             EquivalenceSurchargeTaxAmount = equivalenceSurchargeTaxAmount.ToOption();
         }
 
-        /// <summary>
-        /// TipoImpositivo
-        /// </summary>
         public Percentage TaxRate { get; }
 
-        /// <summary>
-        /// BaseImponible
-        /// </summary>
         public Amount TaxBaseAmount { get; }
 
-        /// <summary>
-        /// CuotaRepercutida
-        /// </summary>
         public Amount TaxAmount { get; }
 
-        /// <summary>
-        /// TipoRecargoEquivalencia
-        /// </summary>
         public IOption<Percentage> EquivalenceSurchargePercentage { get; }
 
-        /// <summary>
-        /// CuotaRecargoEquivalencia
-        /// </summary>
         public IOption<Amount> EquivalenceSurchargeTaxAmount { get; }
     }
 
@@ -204,20 +143,14 @@ namespace Mews.Fiscalization.Spain.Model
             Delivery = delivery;
         }
 
-        /// <summary>
-        /// PrestacionServicios
-        /// </summary>
         public InvoiceItem ServiceProvision { get; }
 
-        /// <summary>
-        /// Entrega
-        /// </summary>
         public InvoiceItem Delivery { get; }
     }
 
-    public class CounterPartyCompany : Coproduct2<CompanyTitle, ForeignCompany>
+    public class CounterPartyCompany : Coproduct2<LocalCompany, ForeignCompany>
     {
-        public CounterPartyCompany(CompanyTitle companyTitle)
+        public CounterPartyCompany(LocalCompany companyTitle)
             : base(companyTitle)
         {
         }
@@ -238,24 +171,12 @@ namespace Mews.Fiscalization.Spain.Model
             Id = id;
         }
 
-        /// <summary>
-        /// NombreRazon
-        /// </summary>
         public LimitedString120 Name { get; }
 
-        /// <summary>
-        /// CodigoPais
-        /// </summary>
         public Country Country { get; }
 
-        /// <summary>
-        /// IDType
-        /// </summary>
         public ResidenceCountryIdentificatorType IdentificatorType { get; }
 
-        /// <summary>
-        /// ID
-        /// </summary>
         public LimitedString20 Id { get; }
     }
 
@@ -268,19 +189,10 @@ namespace Mews.Fiscalization.Spain.Model
             Date = date;
         }
 
-        /// <summary>
-        /// IDEmisorFactura
-        /// </summary>
         public TaxPayerNumber Issuer { get; }
 
-        /// <summary>
-        /// NumSerieFacturaEmisor
-        /// </summary>
         public LimitedString1to60 Number { get; }
 
-        /// <summary>
-        /// FechaExpedicionFacturaEmisor
-        /// </summary>
         public DateTime Date { get; }
     }
 
@@ -292,52 +204,34 @@ namespace Mews.Fiscalization.Spain.Model
             Month = month;
         }
 
-        /// <summary>
-        /// Ejercicio
-        /// </summary>
         public Year Year { get; }
 
-        /// <summary>
-        /// Periodo
-        /// </summary>
         public Month Month { get; }
     }
 
     public class Header
     {
-        public Header(CompanyTitle companyTitle, CommunicationType communicationType)
+        public Header(LocalCompany company, CommunicationType communicationType)
         {
-            CompanyTitle = companyTitle;
+            Company = company;
             CommunicationType = communicationType;
         }
 
-        /// <summary>
-        /// Titular
-        /// </summary>
-        public CompanyTitle CompanyTitle { get; }
+        public LocalCompany Company { get; }
 
-        /// <summary>
-        /// TipoComunicacion
-        /// </summary>
         public CommunicationType CommunicationType { get; }
     }
 
-    public class CompanyTitle
+    public class LocalCompany
     {
-        public CompanyTitle(LimitedString120 name, TaxPayerNumber taxPayerNumber)
+        public LocalCompany(LimitedString120 name, TaxPayerNumber taxPayerNumber)
         {
             Name = name;
             TaxPayerNumber = taxPayerNumber;
         }
 
-        /// <summary>
-        /// NombreRazon
-        /// </summary>
         public LimitedString120 Name { get; }
 
-        /// <summary>
-        /// NIF
-        /// </summary>
         public TaxPayerNumber TaxPayerNumber { get; }
     }
 
