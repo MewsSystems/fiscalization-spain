@@ -140,7 +140,7 @@
         /// <summary>
         /// BQ
         /// <summary>
-        Bonaire, SintEustatiusandSaba,
+        Bonaire,
 
         /// <summary>
         /// BR
@@ -880,7 +880,7 @@
         /// <summary>
         /// PS
         /// <summary>
-        Palestine, Stateof,
+        Palestine,
 
         /// <summary>
         /// PT
@@ -955,7 +955,7 @@
         /// <summary>
         /// SH
         /// <summary>
-        SaintHelena, AscensionandTristandaCunha,
+        SaintHelena,
 
         /// <summary>
         /// SI
@@ -1095,12 +1095,12 @@
         /// <summary>
         /// TW
         /// <summary>
-        Taiwan, ProvinceofChina,
+        Taiwan,
 
         /// <summary>
         /// TZ
         /// <summary>
-        Tanzania, UnitedRepublicof,
+        Tanzania,
 
         /// <summary>
         /// UA
