@@ -5,7 +5,7 @@
     public class DetalleExentaType
     {
         [System.Xml.Serialization.XmlElementAttribute(Order=0)]
-        public CausaExencionType CausaExencion { get; set; }
+        public CausaExencionType? CausaExencion { get; set; }
 
         [System.Xml.Serialization.XmlIgnoreAttribute]
         public bool CausaExencionSpecified { get; set; }

@@ -91,13 +91,13 @@ namespace Mews.Fiscalization.Spain.Model
     {
         public TaxFreeItem(Amount amount, CauseOfExemption? cause = null)
         {
-            Cause = cause;
             Amount = amount;
+            Cause = cause.ToOption();
         }
 
-        public CauseOfExemption? Cause { get; }
-
         public Amount Amount { get; }
+
+        public IOption<CauseOfExemption> Cause { get; }
     }
 
     public class WithTaxItem

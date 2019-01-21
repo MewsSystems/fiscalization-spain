@@ -96,13 +96,17 @@ namespace Mews.Fiscalization.Spain.Converters
         {
             return new DetalleExentaType
             {
+                CausaExencionSpecified = item.Cause.NonEmpty,
                 CausaExencion = item.Cause.Match(
-                    CauseOfExemption.Article20, _ => CausaExencionType.E1,
-                    CauseOfExemption.Article21, _ => CausaExencionType.E2,
-                    CauseOfExemption.Article22, _ => CausaExencionType.E3,
-                    CauseOfExemption.Article24, _ => CausaExencionType.E4,
-                    CauseOfExemption.Article25, _ => CausaExencionType.E5,
-                    CauseOfExemption.OtherGrounds, _ => CausaExencionType.E6
+                    c => c.Match(
+                        CauseOfExemption.Article20, _ => CausaExencionType.E1,
+                        CauseOfExemption.Article21, _ => CausaExencionType.E2,
+                        CauseOfExemption.Article22, _ => CausaExencionType.E3,
+                        CauseOfExemption.Article24, _ => CausaExencionType.E4,
+                        CauseOfExemption.Article25, _ => CausaExencionType.E5,
+                        CauseOfExemption.OtherGrounds, _ => CausaExencionType.E6
+                    ),
+                    _ => (CausaExencionType?)null
                 ),
                 BaseImponible = Convert(item.Amount)
             };
