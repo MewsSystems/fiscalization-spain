@@ -13,8 +13,13 @@ namespace Mews.Fiscalization.Spain.Model
                 throw new ArgumentException("Maximal count of invoices is 10000.");
             }
 
-            Header = header;
-            Invoices = invoices;
+            if (invoices.Length < 1)
+            {
+                throw new ArgumentException("Minimal count of invoices is 1.");
+            }
+
+            Header = header ?? throw new ArgumentNullException(nameof(header));
+            Invoices = invoices ?? throw new ArgumentNullException(nameof(invoices));
         }
 
         public Header Header { get; }
@@ -34,14 +39,14 @@ namespace Mews.Fiscalization.Spain.Model
             CounterPartyCompany counterParty,
             BreakdownItem breakdown)
         {
-            TaxPeriod = taxPeriod;
-            Id = id;
+            TaxPeriod = taxPeriod ?? throw new ArgumentNullException(nameof(taxPeriod));
+            Id = id ?? throw new ArgumentNullException(nameof(id));
             Type = type;
             SchemeOrEffect = schemeOrEffect;
-            TotalAmount = totalAmount;
-            Description = description;
-            Counterparty = counterParty;
-            Breakdown = breakdown;
+            TotalAmount = totalAmount ?? throw new ArgumentNullException(nameof(totalAmount));
+            Description = description ?? throw new ArgumentNullException(nameof(description));
+            Counterparty = counterParty ?? throw new ArgumentNullException(nameof(counterParty));
+            Breakdown = breakdown ?? throw new ArgumentNullException(nameof(breakdown));
         }
 
         public TaxPeriod TaxPeriod { get; }
@@ -66,11 +71,19 @@ namespace Mews.Fiscalization.Spain.Model
         public BreakdownItem(InvoiceItem firstValue)
             : base(firstValue)
         {
+            if (firstValue == null)
+            {
+                throw new ArgumentNullException(nameof(firstValue));
+            }
         }
 
         public BreakdownItem(OperationTypeBreakdown secondValue)
             : base(secondValue)
         {
+            if (secondValue == null)
+            {
+                throw new ArgumentNullException(nameof(secondValue));
+            }
         }
     }
 
@@ -78,6 +91,11 @@ namespace Mews.Fiscalization.Spain.Model
     {
         public InvoiceItem(TaxFreeItem[] taxFree = null, WithTaxItem withTax = null)
         {
+            if (taxFree == null && withTax == null)
+            {
+                throw new ArgumentException("Item cannot be empty");
+            }
+
             TaxFree = taxFree.ToOption();
             WithTax = withTax.ToOption();
         }
@@ -91,7 +109,7 @@ namespace Mews.Fiscalization.Spain.Model
     {
         public TaxFreeItem(Amount amount, CauseOfExemption? cause = null)
         {
-            Amount = amount;
+            Amount = amount ?? throw new ArgumentNullException(nameof(amount));
             Cause = cause.ToOption();
         }
 
@@ -105,7 +123,7 @@ namespace Mews.Fiscalization.Spain.Model
         public WithTaxItem(TransactionType transactionType, VATBreakdown[] vatBreakdowns)
         {
             TransactionType = transactionType;
-            VatBreakdowns = vatBreakdowns;
+            VatBreakdowns = vatBreakdowns ?? throw new ArgumentNullException(nameof(vatBreakdowns));
         }
 
         public TransactionType TransactionType { get; }
@@ -117,9 +135,9 @@ namespace Mews.Fiscalization.Spain.Model
     {
         public VATBreakdown(Percentage taxRate, Amount taxBaseAmount, Amount taxAmount, Percentage equivalenceSurchargePercentage = null, Amount equivalenceSurchargeTaxAmount = null)
         {
-            TaxRate = taxRate;
-            TaxBaseAmount = taxBaseAmount;
-            TaxAmount = taxAmount;
+            TaxRate = taxRate ?? throw new ArgumentNullException(nameof(taxRate));
+            TaxBaseAmount = taxBaseAmount ?? throw new ArgumentNullException(nameof(taxBaseAmount));
+            TaxAmount = taxAmount ?? throw new ArgumentNullException(nameof(taxAmount));
             EquivalenceSurchargePercentage = equivalenceSurchargePercentage.ToOption();
             EquivalenceSurchargeTaxAmount = equivalenceSurchargeTaxAmount.ToOption();
         }
@@ -139,8 +157,8 @@ namespace Mews.Fiscalization.Spain.Model
     {
         public OperationTypeBreakdown(InvoiceItem serviceProvision, InvoiceItem delivery)
         {
-            ServiceProvision = serviceProvision;
-            Delivery = delivery;
+            ServiceProvision = serviceProvision ?? throw new ArgumentNullException(nameof(serviceProvision));
+            Delivery = delivery ?? throw new ArgumentNullException(nameof(delivery));
         }
 
         public InvoiceItem ServiceProvision { get; }
@@ -153,11 +171,19 @@ namespace Mews.Fiscalization.Spain.Model
         public CounterPartyCompany(LocalCompany companyTitle)
             : base(companyTitle)
         {
+            if (companyTitle == null)
+            {
+                throw new ArgumentNullException(nameof(companyTitle));
+            }
         }
 
         public CounterPartyCompany(ForeignCompany foreignCompany)
             : base(foreignCompany)
         {
+            if (foreignCompany == null)
+            {
+                throw new ArgumentNullException(nameof(foreignCompany));
+            }
         }
     }
 
@@ -165,10 +191,10 @@ namespace Mews.Fiscalization.Spain.Model
     {
         public ForeignCompany(LimitedString120 name, Country country, ResidenceCountryIdentificatorType identificatiorType, LimitedString20 id)
         {
-            Name = name;
+            Name = name ?? throw new ArgumentNullException(nameof(name));
             Country = country;
             IdentificatorType = identificatiorType;
-            Id = id;
+            Id = id ?? throw new ArgumentNullException(nameof(id));
         }
 
         public LimitedString120 Name { get; }
@@ -184,8 +210,8 @@ namespace Mews.Fiscalization.Spain.Model
     {
         public InvoiceId(TaxPayerNumber issuer, LimitedString1to60 number, DateTime date)
         {
-            Issuer = issuer;
-            Number = number;
+            Issuer = issuer ?? throw new ArgumentNullException(nameof(issuer));
+            Number = number ?? throw new ArgumentNullException(nameof(number));
             Date = date;
         }
 
@@ -200,7 +226,7 @@ namespace Mews.Fiscalization.Spain.Model
     {
         public TaxPeriod(Year year, Month month)
         {
-            Year = year;
+            Year = year ?? throw new ArgumentNullException(nameof(year));
             Month = month;
         }
 
@@ -213,7 +239,7 @@ namespace Mews.Fiscalization.Spain.Model
     {
         public Header(LocalCompany company, CommunicationType communicationType)
         {
-            Company = company;
+            Company = company ?? throw new ArgumentNullException(nameof(company));
             CommunicationType = communicationType;
         }
 
@@ -226,8 +252,8 @@ namespace Mews.Fiscalization.Spain.Model
     {
         public LocalCompany(LimitedString120 name, TaxPayerNumber taxPayerNumber)
         {
-            Name = name;
-            TaxPayerNumber = taxPayerNumber;
+            Name = name ?? throw new ArgumentNullException(nameof(name));
+            TaxPayerNumber = taxPayerNumber ?? throw new ArgumentNullException(nameof(taxPayerNumber));
         }
 
         public LimitedString120 Name { get; }
@@ -239,6 +265,10 @@ namespace Mews.Fiscalization.Spain.Model
     {
         public TaxPayerNumber(string number)
         {
+            if (number == null)
+            {
+                throw new ArgumentNullException(nameof(number));
+            }
             var pattern = @"(([a-z|A-Z]{1}\d{7}[a-z|A-Z]{1})|(\d{8}[a-z|A-Z]{1})|([a-z|A-Z]{1}\d{8}))";
             var isValid = Regex.IsMatch(number, pattern) && number.Length == 9;
             if (!isValid)
