@@ -26,7 +26,7 @@ namespace Mews.Fiscalization.Spain
 
         public event EventHandler<HttpRequestFinishedEventArgs> HttpRequestFinished;
 
-        internal event EventHandler<XmlMessageSerializedEventArgs> XmlMessageSerialized;
+        public event EventHandler<XmlMessageSerializedEventArgs> XmlMessageSerialized;
 
         private SoapClient SoapClient { get; }
 
