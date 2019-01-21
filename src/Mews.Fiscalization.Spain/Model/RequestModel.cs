@@ -74,17 +74,17 @@ namespace Mews.Fiscalization.Spain.Model
         }
     }
 
-    public class InvoiceItem : Coproduct2<TaxFreeItem[], WithTaxItem>
+    public class InvoiceItem
     {
-        public InvoiceItem(TaxFreeItem[] taxFree)
-            : base(taxFree)
+        public InvoiceItem(TaxFreeItem[] taxFree = null, WithTaxItem withTax = null)
         {
+            TaxFree = taxFree.ToOption();
+            WithTax = withTax.ToOption();
         }
 
-        public InvoiceItem(WithTaxItem withTax)
-            : base(withTax)
-        {
-        }
+        public IOption<TaxFreeItem[]> TaxFree { get; }
+
+        public IOption<WithTaxItem> WithTax { get; }
     }
 
     public class TaxFreeItem

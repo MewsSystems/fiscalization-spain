@@ -68,38 +68,28 @@ namespace Mews.Fiscalization.Spain.Converters
 
         private SujetaType Convert(InvoiceItem item)
         {
-            return item.Match(
-                f => new SujetaType
+            return new SujetaType
+            {
+                Exenta = item.TaxFree.Map(f => f.Select(i => Convert(i)).ToArray()).GetOrNull(),
+                NoExenta = item.WithTax.Map(t => new SujetaTypeNoExenta
                 {
-                    Exenta = f.Select(i => Convert(i)).ToArray()
-                },
-                t => new SujetaType
-                {
-                    NoExenta = new SujetaTypeNoExenta
-                    {
-                        TipoNoExenta = Convert(t.TransactionType),
-                        DesgloseIVA = t.VatBreakdowns.Select(b => Convert(b)).ToArray()
-                    }
-                }
-            );
+                    TipoNoExenta = Convert(t.TransactionType),
+                    DesgloseIVA = t.VatBreakdowns.Select(b => Convert(b)).ToArray()
+                }).GetOrNull()
+            };
         }
 
         private SujetaPrestacionType ConvertProvision(InvoiceItem item)
         {
-            return item.Match(
-                f => new SujetaPrestacionType
+            return new SujetaPrestacionType
+            {
+                Exenta = item.TaxFree.Map(f => f.Select(i => Convert(i)).ToArray()).GetOrNull(),
+                NoExenta = item.WithTax.Map(t => new SujetaPrestacionTypeNoExenta
                 {
-                    Exenta = f.Select(i => Convert(i)).ToArray()
-                },
-                t => new SujetaPrestacionType
-                {
-                    NoExenta = new SujetaPrestacionTypeNoExenta
-                    {
-                        TipoNoExenta = Convert(t.TransactionType),
-                        DesgloseIVA = t.VatBreakdowns.Select(b => ConvertProvision(b)).ToArray()
-                    }
-                }
-            );
+                    TipoNoExenta = Convert(t.TransactionType),
+                    DesgloseIVA = t.VatBreakdowns.Select(b => ConvertProvision(b)).ToArray()
+                }).GetOrNull()
+            };
         }
 
         private DetalleExentaType Convert(TaxFreeItem item)

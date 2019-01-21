@@ -54,7 +54,7 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
                 new Amount(totalValue),
                 new LimitedString500("This is a test invoice."),
                 new CounterPartyCompany(payingCompany),
-                new BreakdownItem(new InvoiceItem(new WithTaxItem(TransactionType.NotExempt, breakdowns)))
+                new BreakdownItem(new InvoiceItem(withTax: new WithTaxItem(TransactionType.NotExempt, breakdowns)))
             );
         }
 
@@ -71,7 +71,7 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
 
         private VATBreakdown GetBreakdown(decimal vat, decimal baseValue)
         {
-            return new VATBreakdown(new Percentage(vat), new Amount(baseValue), new Amount( Math.Round(baseValue * vat / 100, 2)));
+            return new VATBreakdown(new Percentage(vat), new Amount(baseValue), new Amount(Math.Round(baseValue * vat / 100, 2)));
         }
 
         private X509Certificate GeneratorCertificate()
