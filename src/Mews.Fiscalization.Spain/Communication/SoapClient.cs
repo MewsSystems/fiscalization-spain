@@ -10,21 +10,21 @@ namespace Mews.Fiscalization.Spain.Communication
         internal SoapClient(Uri endpointUri, X509Certificate certificate, TimeSpan httpTimeout)
         {
             HttpClient = new SoapHttpClient(certificate, endpointUri, httpTimeout);
-            XmlManipulator = new XmlManipulator();
             HttpClient.HttpRequestFinished += (sender, args) => HttpRequestFinished?.Invoke(this, args);
         }
 
         internal event EventHandler<HttpRequestFinishedEventArgs> HttpRequestFinished;
 
-        private SoapHttpClient HttpClient { get; }
+        internal event EventHandler<XmlMessageSerializedEventArgs> XmlMessageSerialized;
 
-        private XmlManipulator XmlManipulator { get; }
+        private SoapHttpClient HttpClient { get; }
 
         internal async Task<TOut> SendAsync<TIn, TOut>(TIn messageBodyObject)
             where TIn : class, new()
             where TOut : class, new()
         {
             var messageBodyXmlElement = XmlManipulator.Serialize(messageBodyObject);
+            XmlMessageSerialized?.Invoke(this, new XmlMessageSerializedEventArgs(messageBodyXmlElement));
 
             var soapMessage = new SoapMessage(messageBodyXmlElement);
             var xmlDocument = soapMessage.GetXmlDocument();

@@ -21,9 +21,12 @@ namespace Mews.Fiscalization.Spain
             var endpointUri = new Uri($"https://{domain}/wlpl/SSII-FACT/ws/fe/SiiFactFEV1SOAP");
             SoapClient = new SoapClient(endpointUri, certificate, httpTimeout);
             SoapClient.HttpRequestFinished += (sender, args) => HttpRequestFinished?.Invoke(this, args);
+            SoapClient.XmlMessageSerialized += (sender, args) => XmlMessageSerialized?.Invoke(this, args);
         }
 
         public event EventHandler<HttpRequestFinishedEventArgs> HttpRequestFinished;
+
+        internal event EventHandler<XmlMessageSerializedEventArgs> XmlMessageSerialized;
 
         private SoapClient SoapClient { get; }
 

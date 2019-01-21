@@ -322,6 +322,7 @@
     <Compile Include="Model\Types\Year.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Communication\XmlManipulator.cs" />
+    <Compile Include="XmlMessageSerializedEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\Newtonsoft.Json.dll" />

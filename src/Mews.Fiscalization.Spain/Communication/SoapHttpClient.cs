@@ -37,7 +37,7 @@ namespace Mews.Fiscalization.Spain.Communication
 
                 stopwatch.Stop();
                 var duration = stopwatch.ElapsedMilliseconds;
-                HttpRequestFinished?.Invoke(this, new HttpRequestFinishedEventArgs(duration));
+                HttpRequestFinished?.Invoke(this, new HttpRequestFinishedEventArgs(result, duration));
 
                 return result;
             }
