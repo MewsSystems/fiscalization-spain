@@ -189,17 +189,17 @@ namespace Mews.Fiscalization.Spain.Model
 
     public class ForeignCompany
     {
-        public ForeignCompany(LimitedString120 name, Country country, ResidenceCountryIdentificatorType identificatiorType, LimitedString20 id)
+        public ForeignCompany(LimitedString120 name, ResidenceCountryIdentificatorType identificatiorType, LimitedString20 id, Country country = null)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
-            Country = country;
+            Country = country.ToOption();
             IdentificatorType = identificatiorType;
             Id = id ?? throw new ArgumentNullException(nameof(id));
         }
 
         public LimitedString120 Name { get; }
 
-        public Country Country { get; }
+        public IOption<Country> Country { get; }
 
         public ResidenceCountryIdentificatorType IdentificatorType { get; }
 
