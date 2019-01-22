@@ -14,6 +14,11 @@ namespace Mews.Fiscalization.Spain
     {
         public Client(X509Certificate certificate, Environment environment, TimeSpan httpTimeout)
         {
+            if (certificate == null)
+            {
+                throw new ArgumentNullException(nameof(certificate));
+            }
+
             var domain = environment.Match(
                 Environment.Test, _ => "www7.aeat.es",
                 Environment.Production, _ => "www1.agenciatributaria.gob.es"
