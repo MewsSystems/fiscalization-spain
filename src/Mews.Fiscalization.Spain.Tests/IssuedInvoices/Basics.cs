@@ -28,7 +28,7 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
         {
             var issuingCompany = Credentials.GeneratorCompany;
             var payingCompany = Credentials.MicrosoftCompany;
-            var firstInvoiceNumber = 18;
+            var firstInvoiceNumber = 8;
 
             return new InvoicesToRegister(
                 new Header(issuingCompany, CommunicationType.Registration),
