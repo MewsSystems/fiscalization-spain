@@ -36,16 +36,21 @@ namespace Mews.Fiscalization.Spain.Model
             SchemeOrEffect schemeOrEffect,
             Amount totalAmount,
             LimitedString500 description,
-            CounterPartyCompany counterParty,
-            BreakdownItem breakdown)
+            BreakdownItem breakdown,
+            CounterPartyCompany counterParty = null)
         {
+            if (counterParty == null && type != InvoiceType.SimplifiedInvoice)
+            {
+                throw new ArgumentNullException($"{nameof(counterParty)} has to be specified if 'SimplifiedInvoice' is not used.");
+            }
+
             TaxPeriod = taxPeriod ?? throw new ArgumentNullException(nameof(taxPeriod));
             Id = id ?? throw new ArgumentNullException(nameof(id));
             Type = type;
             SchemeOrEffect = schemeOrEffect;
             TotalAmount = totalAmount ?? throw new ArgumentNullException(nameof(totalAmount));
             Description = description ?? throw new ArgumentNullException(nameof(description));
-            Counterparty = counterParty ?? throw new ArgumentNullException(nameof(counterParty));
+            CounterParty = counterParty;
             Breakdown = breakdown ?? throw new ArgumentNullException(nameof(breakdown));
         }
 
@@ -61,7 +66,7 @@ namespace Mews.Fiscalization.Spain.Model
 
         public LimitedString500 Description { get; }
 
-        public CounterPartyCompany Counterparty { get; }
+        public CounterPartyCompany CounterParty { get; }
 
         public BreakdownItem Breakdown { get; }
     }
@@ -91,12 +96,13 @@ namespace Mews.Fiscalization.Spain.Model
     {
         public InvoiceItem(TaxFreeItem[] taxFree = null, WithTaxItem withTax = null)
         {
-            if (taxFree == null && withTax == null)
+            TaxFree = taxFree.ToNonEmptyOption();
+
+            if (TaxFree.IsEmpty && withTax == null)
             {
                 throw new ArgumentException("Item cannot be empty");
             }
 
-            TaxFree = taxFree.ToOption();
             WithTax = withTax.ToOption();
         }
 

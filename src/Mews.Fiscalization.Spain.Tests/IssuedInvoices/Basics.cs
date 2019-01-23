@@ -28,14 +28,14 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
         {
             var issuingCompany = Credentials.GeneratorCompany;
             var payingCompany = Credentials.MicrosoftCompany;
-            var firstInvoiceNumber = 8;
+            var firstInvoiceNumber = 41;
 
             return new InvoicesToRegister(
                 new Header(issuingCompany, CommunicationType.Registration),
                 new[]
                 {
-                    GetInvoice(firstInvoiceNumber++, issuingCompany, payingCompany),
-                    GetInvoice(firstInvoiceNumber++, issuingCompany, payingCompany),
+                    //GetInvoice(firstInvoiceNumber++, issuingCompany, payingCompany),
+                    //GetInvoice(firstInvoiceNumber++, issuingCompany, payingCompany),
                     GetInvoice(firstInvoiceNumber++, issuingCompany, payingCompany)
                 }
             );
@@ -49,12 +49,15 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
             return new Invoice(
                 new TaxPeriod(new Year(2017), Month.December),
                 new InvoiceId(issuingCompany.TaxPayerNumber, new LimitedString1to60(invoiceNumber.ToString("D2")), new DateTime(2017, 5, 10)),
-                InvoiceType.Invoice,
+                InvoiceType.SimplifiedInvoice,
                 SchemeOrEffect.GeneralTaxRegimeActivity,
                 new Amount(totalValue),
                 new LimitedString500("This is a test invoice."),
-                new CounterPartyCompany(payingCompany),
-                new BreakdownItem(new InvoiceItem(withTax: new WithTaxItem(TransactionType.NotExempt, breakdowns)))
+                new BreakdownItem(new InvoiceItem(
+                    withTax: new WithTaxItem(TransactionType.NotExempt, breakdowns),
+                    taxFree: new TaxFreeItem[] {}
+                )),
+                new CounterPartyCompany(payingCompany)
             );
         }
 

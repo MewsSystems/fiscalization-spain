@@ -32,7 +32,7 @@ namespace Mews.Fiscalization.Spain.Converters
                     ClaveRegimenEspecialOTrascendencia = Convert(invoice.SchemeOrEffect),
                     ImporteTotal = Convert(invoice.TotalAmount),
                     DescripcionOperacion = invoice.Description.Value,
-                    Contraparte = Convert(invoice.Counterparty),
+                    Contraparte = Convert(invoice.CounterParty),
                     TipoDesglose = Convert(invoice.Breakdown)
                 }
             };
@@ -135,7 +135,7 @@ namespace Mews.Fiscalization.Spain.Converters
 
         private PersonaFisicaJuridicaType Convert(CounterPartyCompany counterParty)
         {
-            return counterParty.Match(
+            return counterParty?.Match(
                 t => new PersonaFisicaJuridicaType
                 {
                     NombreRazon = t.Name.Value,
