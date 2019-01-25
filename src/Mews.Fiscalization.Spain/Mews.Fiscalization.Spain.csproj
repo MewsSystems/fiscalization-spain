@@ -57,9 +57,8 @@
     <Compile Include="Communication\SoapHttpClient.cs" />
     <Compile Include="Communication\SoapMessage.cs" />
     <Compile Include="Converters\DtoToModelConverter.cs" />
-    <Compile Include="Dto\Requests\AnulacionLRFacturasEmitidasRequest.cs" />
     <Compile Include="Dto\Responses\AnulacionLRFacturasEmitidasResponse.cs" />
-    <Compile Include="Dto\XSD\SuministroLR\BajaLRFacturasEmitidas.cs" />
+    <Compile Include="Dto\Requests\RebateInvoiceRequest.cs" />
     <Compile Include="Dto\XSD\SuministroInformacion\BienDeInversionType.cs" />
     <Compile Include="Dto\XSD\SuministroInformacion\CabeceraConsultaSii.cs" />
     <Compile Include="Dto\XSD\SuministroInformacion\CabeceraConsultaSiiCliente.cs" />
