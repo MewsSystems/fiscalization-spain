@@ -19,7 +19,7 @@ namespace Mews.Fiscalization.Spain
                 Environment.Production, _ => "www1.agenciatributaria.gob.es"
             );
             var endpointUri = new Uri($"https://{domain}/wlpl/SSII-FACT/ws/fe/SiiFactFEV1SOAP");
-            SoapClient = SoapClient.GetInvoicesClient(endpointUri, httpTimeout, certificate);
+            SoapClient = new SoapClient(endpointUri, certificate, httpTimeout);
             SoapClient.HttpRequestFinished += (sender, args) => HttpRequestFinished?.Invoke(this, args);
             SoapClient.XmlMessageSerialized += (sender, args) => XmlMessageSerialized?.Invoke(this, args);
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Mews.Fiscalization.Spain.Communication;
 
@@ -7,10 +8,10 @@ namespace Mews.Fiscalization.Spain.Nif
 {
     public class NifValidator
     {
-        public NifValidator(TimeSpan httpTimeout)
+        public NifValidator(X509Certificate certificate, TimeSpan httpTimeout)
         {
             var endpointUri = new Uri("https://www1.agenciatributaria.gob.es/wlpl/BURT-JDIT/ws/VNifV2SOAP");
-            SoapClient = SoapClient.GetNifValidatorClient(endpointUri, httpTimeout);
+            SoapClient = new SoapClient(endpointUri, certificate, httpTimeout);
         }
         private SoapClient SoapClient { get; }
 

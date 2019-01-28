@@ -28,16 +28,14 @@ namespace Mews.Fiscalization.Spain.Nif
     [XmlRoot(ElementName = "VNifV2Ent", Namespace = "http://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/burt/jdit/ws/VNifV2Ent.xsd")]
     public class Entrada
     {
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace = "http://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/burt/jdit/ws/VNifV2Ent.xsd", Order = 0)]
-        [XmlArrayItem("Contribuyente", IsNullable = false)]
+        [XmlElement("Contribuyente", Order = 0)]
         public VNifV2EntContribuyente[] Contribuyente { get; set; }
     }
 
     [XmlRoot(ElementName = "VNifV2Sal", Namespace = "http://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/burt/jdit/ws/VNifV2Sal.xsd")]
     public class Salida
     {
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/burt/jdit/ws/VNifV2Sal.xsd", Order=0)]
-        [XmlArrayItem("Contribuyente", IsNullable=false)]
+        [XmlElement("Contribuyente", Order = 0)]
         public VNifV2SalContribuyente[] Contribuyente { get; set; }
     }
 }

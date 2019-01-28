@@ -17,13 +17,15 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
         [Fact]
         public async Task CheckNif()
         {
-            var validator = new NifValidator(TimeSpan.FromSeconds(30));
+            var certificate = GeneratorCertificate();
+            var validator = new NifValidator(certificate, TimeSpan.FromSeconds(30));
 
             var entries = new List<NifInfoEntry>
             {
                 new NifInfoEntry(Credentials.GeneratorCompany.TaxPayerNumber.Number, Credentials.GeneratorCompany.Name.Value),
                 new NifInfoEntry(Credentials.MicrosoftCompany.TaxPayerNumber.Number, Credentials.MicrosoftCompany.Name.Value),
-                new NifInfoEntry("99999999R", "ESPAÑOL ESPAÑOL JUAN")
+                new NifInfoEntry("99999999R", "ESPAÑOL ESPAÑOL JUAN"),
+                new NifInfoEntry("12999999R", "Smrdis")
             };
             
             var response = await validator.CheckNif(new Request(entries));

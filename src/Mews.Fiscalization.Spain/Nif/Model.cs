@@ -32,10 +32,11 @@ namespace Mews.Fiscalization.Spain.Nif
             TaxId = taxId;
             Name = name;
             ResultMessage = result;
-            Result = ResultMessage.Match(
-                "Identificado", _ => NifSearchResult.Found,
-                "No identificado", _ => NifSearchResult.NotFound,
-                "No procesado", _ => NifSearchResult.NotProcessed,
+            var lowerCaseResult = ResultMessage?.ToLowerInvariant();
+            Result = lowerCaseResult.Match(
+                "identificado", _ => NifSearchResult.Found,
+                "no identificado", _ => NifSearchResult.NotFound,
+                "no procesado", _ => NifSearchResult.NotProcessed,
                 _ => NifSearchResult.Other
             );
         }
