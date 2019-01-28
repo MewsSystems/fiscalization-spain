@@ -53,8 +53,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Client.cs" />
-    <Compile Include="Communication\SoapClient.cs" />
-    <Compile Include="Communication\SoapHttpClient.cs" />
     <Compile Include="Communication\SoapMessage.cs" />
     <Compile Include="Converters\DtoToModelConverter.cs" />
     <Compile Include="Dto\Requests\RemoveIssuedInvoiceRequest.cs" />
@@ -320,7 +318,7 @@
     <Compile Include="Model\Types\Year.cs" />
     <Compile Include="Nif\Model.cs" />
     <Compile Include="Nif\NifValidator.cs" />
-    <Compile Include="Nif\SoapClient.cs" />
+    <Compile Include="Communication\SoapClient.cs" />
     <Compile Include="Nif\Dto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Communication\XmlManipulator.cs" />

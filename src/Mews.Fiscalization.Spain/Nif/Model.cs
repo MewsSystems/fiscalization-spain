@@ -1,4 +1,6 @@
-﻿using FuncSharp;
+﻿using System.Collections.Generic;
+using System.Linq;
+using FuncSharp;
 
 namespace Mews.Fiscalization.Spain.Nif
 {
@@ -12,23 +14,23 @@ namespace Mews.Fiscalization.Spain.Nif
 
     public class NifInfoEntry
     {
-        public NifInfoEntry(string nif, string nombre)
+        public NifInfoEntry(string taxId, string name)
         {
-            Nif = nif;
-            Nombre = nombre;
+            TaxId = taxId;
+            Name = name;
         }
 
-        public string Nif { get; }
+        public string TaxId { get; }
 
-        public string Nombre { get; }
+        public string Name { get; }
     }
 
     public class NifInfoResults
     {
-        public NifInfoResults(string nif, string nombre, string result)
+        public NifInfoResults(string taxId, string name, string result)
         {
-            Nif = nif;
-            Nombre = nombre;
+            TaxId = taxId;
+            Name = name;
             ResultMessage = result;
             Result = ResultMessage.Match(
                 "Identificado", _ => NifSearchResult.Found,
@@ -38,9 +40,9 @@ namespace Mews.Fiscalization.Spain.Nif
             );
         }
 
-        public string Nif { get; }
+        public string TaxId { get; }
 
-        public string Nombre { get; }
+        public string Name { get; }
 
         public NifSearchResult Result { get; }
 
@@ -49,21 +51,21 @@ namespace Mews.Fiscalization.Spain.Nif
 
     public class Request
     {
-        public Request(NifInfoEntry[] entries)
+        public Request(IEnumerable<NifInfoEntry> entries)
         {
-            Entries = entries;
+            Entries = entries.ToList();
         }
 
-        public NifInfoEntry[] Entries { get; }
+        public IEnumerable<NifInfoEntry> Entries { get; }
     }
 
     public class Response
     {
-        public Response(NifInfoResults[] results)
+        public Response(IEnumerable<NifInfoResults> results)
         {
-            Results = results;
+            Results = results.ToList();
         }
 
-        public NifInfoResults[] Results { get; }
+        public IEnumerable<NifInfoResults> Results { get; }
     }
 }

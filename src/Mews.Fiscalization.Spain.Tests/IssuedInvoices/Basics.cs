@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using Mews.Fiscalization.Spain.Model;
+using Mews.Fiscalization.Spain.Nif;
 using Mews.Fiscalization.Spain.Tests.Configuration;
 using Xunit;
 
@@ -13,15 +15,31 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
     public class Basics
     {
         [Fact]
-        public async Task DeleteInvoice()
+        public async Task CheckNif()
         {
-            var certificate = GeneratorCertificate();
-            var client = new Client(certificate, Environment.Test, TimeSpan.FromSeconds(30));
+            var validator = new NifValidator(TimeSpan.FromSeconds(30));
 
-            var model = GetInvoicesToRemove(firstInvoiceNumber: 09, invoiceCount: 1);
-            var response = await client.RemoveInvoiceAsync(model);
+            var entries = new List<NifInfoEntry>
+            {
+                new NifInfoEntry(Credentials.GeneratorCompany.TaxPayerNumber.Number, Credentials.GeneratorCompany.Name.Value),
+                new NifInfoEntry(Credentials.MicrosoftCompany.TaxPayerNumber.Number, Credentials.MicrosoftCompany.Name.Value),
+                new NifInfoEntry("99999999R", "ESPAÑOL ESPAÑOL JUAN")
+            };
+            
+            var response = await validator.CheckNif(new Request(entries));
             Assert.NotNull(response);
         }
+
+        //[Fact]
+        //public async Task DeleteInvoice()
+        //{
+        //    var certificate = GeneratorCertificate();
+        //    var client = new Client(certificate, Environment.Test, TimeSpan.FromSeconds(30));
+
+        //    var model = GetInvoicesToRemove(firstInvoiceNumber: 09, invoiceCount: 1);
+        //    var response = await client.RemoveInvoiceAsync(model);
+        //    Assert.NotNull(response);
+        //}
 
         [Fact]
         public async Task PostInvoice()

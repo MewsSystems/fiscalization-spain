@@ -1,23 +1,52 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Net.Http;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using FuncSharp;
 
 namespace Mews.Fiscalization.Spain.Communication
 {
     internal class SoapClient
     {
-        internal SoapClient(Uri endpointUri, X509Certificate certificate, TimeSpan httpTimeout)
+        private SoapClient(Uri endpointUri, TimeSpan httpTimeout, X509Certificate certificate = null)
         {
-            HttpClient = new SoapHttpClient(certificate, endpointUri, httpTimeout);
-            HttpClient.HttpRequestFinished += (sender, args) => HttpRequestFinished?.Invoke(this, args);
+            EndpointUri = endpointUri;
+
+            HttpClient = certificate.ToOption().Match(
+                c =>
+                {
+                    var requestHandler = new WebRequestHandler();
+                    requestHandler.ClientCertificates.Add(certificate);
+                    return new HttpClient(requestHandler) { Timeout = httpTimeout };
+                },
+                _ => new HttpClient { Timeout = httpTimeout }
+            );
         }
 
         internal event EventHandler<HttpRequestFinishedEventArgs> HttpRequestFinished;
 
         internal event EventHandler<XmlMessageSerializedEventArgs> XmlMessageSerialized;
 
-        private SoapHttpClient HttpClient { get; }
+        private Uri EndpointUri { get; }
+
+        private HttpClient HttpClient { get; }
+
+        public static SoapClient GetNifValidatorClient(Uri endpointUri, TimeSpan httpTimeout)
+        {
+            return new SoapClient(endpointUri, httpTimeout);
+        }
+
+        public static SoapClient GetInvoicesClient(Uri endpointUri, TimeSpan httpTimeout, X509Certificate certificate)
+        {
+            if (certificate == null)
+            {
+                throw new ArgumentNullException(nameof(certificate));
+            }
+            return new SoapClient(endpointUri, httpTimeout, certificate);
+        }
 
         internal async Task<TOut> SendAsync<TIn, TOut>(TIn messageBodyObject)
             where TIn : class, new()
@@ -30,9 +59,29 @@ namespace Mews.Fiscalization.Spain.Communication
             var xmlDocument = soapMessage.GetXmlDocument();
             var xml = xmlDocument.OuterXml;
 
-            var response = await HttpClient.SendAsync(xml).ConfigureAwait(continueOnCapturedContext: false);
+            var response = await GetResponseAsync(xml).ConfigureAwait(continueOnCapturedContext: false);
+
             var soapBody = GetSoapBody(response);
             return XmlManipulator.Deserialize<TOut>(soapBody);
+        }
+
+        private async Task<string> GetResponseAsync(string body)
+        {
+            var requestContent = new StringContent(body, Encoding.UTF8, "application/x-www-form-urlencoded");
+
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            using (var response = await HttpClient.PostAsync(EndpointUri, requestContent).ConfigureAwait(continueOnCapturedContext: false))
+            {
+                var result = await response.Content.ReadAsStringAsync().ConfigureAwait(continueOnCapturedContext: false);
+
+                stopwatch.Stop();
+                var duration = stopwatch.ElapsedMilliseconds;
+                HttpRequestFinished?.Invoke(this, new HttpRequestFinishedEventArgs(result, duration));
+
+                return result;
+            }
         }
 
         private XmlElement GetSoapBody(string soapXmlString)

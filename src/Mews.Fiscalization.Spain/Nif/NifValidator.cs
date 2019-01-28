@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
+using Mews.Fiscalization.Spain.Communication;
 
 namespace Mews.Fiscalization.Spain.Nif
 {
@@ -8,15 +10,37 @@ namespace Mews.Fiscalization.Spain.Nif
         public NifValidator(TimeSpan httpTimeout)
         {
             var endpointUri = new Uri("https://www1.agenciatributaria.gob.es/wlpl/BURT-JDIT/ws/VNifV2SOAP");
-            SoapClient = new SoapClient(endpointUri, certificate, httpTimeout);
+            SoapClient = SoapClient.GetNifValidatorClient(endpointUri, httpTimeout);
         }
         private SoapClient SoapClient { get; }
 
-        public async Task<VNifV2SalContribuyente[]> CheckNif(VNifV2EntContribuyente[] values)
+        public async Task<Response> CheckNif(Request model)
         {
-            Task task = null;
-            await task;
-            return null;
+            var request = Convert(model);
+            var response = await SoapClient.SendAsync<Entrada, Salida>(request).ConfigureAwait(continueOnCapturedContext: false);
+            return Convert(response);
+        }
+
+        private Response Convert(Salida value)
+        {
+            return new Response(value.Contribuyente.Select(Convert));
+        }
+
+        private NifInfoResults Convert(VNifV2SalContribuyente value)
+        {
+            return new NifInfoResults(value.Nif, value.Nombre, value.Resultado);
+        }
+
+        private Entrada Convert(Request value)
+        {
+            return new Entrada
+            {
+                Contribuyente = value.Entries.Select(e => new VNifV2EntContribuyente
+                {
+                    Nombre = e.Name,
+                    Nif = e.TaxId
+                }).ToArray()
+            };
         }
     }
 }
