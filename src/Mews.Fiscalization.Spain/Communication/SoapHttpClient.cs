@@ -4,18 +4,25 @@ using System.Net.Http;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using FuncSharp;
 
 namespace Mews.Fiscalization.Spain.Communication
 {
     internal class SoapHttpClient
     {
-        internal SoapHttpClient(X509Certificate certificate, Uri endpointUri, TimeSpan timeout)
+        internal SoapHttpClient(Uri endpointUri, TimeSpan timeout, X509Certificate certificate = null)
         {
             EndpointUri = endpointUri;
 
-            var requestHandler = new WebRequestHandler();
-            requestHandler.ClientCertificates.Add(certificate);
-            HttpClient = new HttpClient(requestHandler) { Timeout = timeout };
+            HttpClient = certificate.ToOption().Match(
+                c =>
+                {
+                    var requestHandler = new WebRequestHandler();
+                    requestHandler.ClientCertificates.Add(certificate);
+                    return new HttpClient(requestHandler) { Timeout = timeout };
+                },
+                _ => new HttpClient { Timeout = timeout }
+            );
         }
 
         internal event EventHandler<HttpRequestFinishedEventArgs> HttpRequestFinished;

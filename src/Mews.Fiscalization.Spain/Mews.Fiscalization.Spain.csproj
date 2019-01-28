@@ -318,6 +318,10 @@
     <Compile Include="Model\Enums\SchemeOrEffect.cs" />
     <Compile Include="Model\Enums\TransactionType.cs" />
     <Compile Include="Model\Types\Year.cs" />
+    <Compile Include="Nif\Model.cs" />
+    <Compile Include="Nif\NifValidator.cs" />
+    <Compile Include="Nif\SoapClient.cs" />
+    <Compile Include="Nif\Dto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Communication\XmlManipulator.cs" />
     <Compile Include="XmlMessageSerializedEventArgs.cs" />
