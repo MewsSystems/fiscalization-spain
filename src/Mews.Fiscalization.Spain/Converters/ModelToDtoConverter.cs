@@ -11,30 +11,48 @@ namespace Mews.Fiscalization.Spain.Converters
 {
     internal class ModelToDtoConverter
     {
-        public SubmitIssuedInvoicesRequest Convert(InvoicesToRegister model)
+        public SubmitIssuedInvoicesRequest Convert(InvoicesToSubmit model)
         {
             return new SubmitIssuedInvoicesRequest
             {
                 Cabecera = Convert(model.Header),
-                RegistroLRFacturasEmitidas = model.Invoices.Select(i => Convert(i)).ToArray()
+                RegistroLRFacturasEmitidas = model.AddedInvoices.Select(i => Convert(i)).ToArray()
             };
         }
 
-        private LRfacturasEmitidasType Convert(Invoice invoice)
+        public RemoveIssuedInvoiceRequest Convert(InvoicesToDelete model)
+        {
+            return new RemoveIssuedInvoiceRequest
+            {
+                Cabecera = Convert2(model.Header),
+                RegistroLRBajaExpedidas = model.Invoices.Select(i => Convert(i)).ToArray()
+            };
+        }
+
+        private LRfacturasEmitidasType Convert(AddedInvoice addedInvoice)
         {
             return new LRfacturasEmitidasType
             {
-                PeriodoLiquidacion = Convert(invoice.TaxPeriod),
-                IDFactura = Convert(invoice.Id),
+                PeriodoLiquidacion = Convert(addedInvoice.TaxPeriod),
+                IDFactura = Convert(addedInvoice.Id),
                 FacturaExpedida = new FacturaExpedidaType
                 {
-                    TipoFactura = Convert(invoice.Type),
-                    ClaveRegimenEspecialOTrascendencia = Convert(invoice.SchemeOrEffect),
-                    ImporteTotal = Convert(invoice.TotalAmount),
-                    DescripcionOperacion = invoice.Description.Value,
-                    Contraparte = Convert(invoice.CounterParty),
-                    TipoDesglose = Convert(invoice.Breakdown)
+                    TipoFactura = Convert(addedInvoice.Type),
+                    ClaveRegimenEspecialOTrascendencia = Convert(addedInvoice.SchemeOrEffect),
+                    ImporteTotal = Convert(addedInvoice.TotalAmount),
+                    DescripcionOperacion = addedInvoice.Description.Value,
+                    Contraparte = Convert(addedInvoice.CounterParty),
+                    TipoDesglose = Convert(addedInvoice.Breakdown)
                 }
+            };
+        }
+
+        private LRBajaExpedidasType Convert(Invoice invoice)
+        {
+            return new LRBajaExpedidasType
+            {
+                PeriodoLiquidacion = Convert(invoice.TaxPeriod),
+                IDFactura = Convert2(invoice.Id)
             };
         }
 
@@ -202,9 +220,31 @@ namespace Mews.Fiscalization.Spain.Converters
             };
         }
 
+        private IDFacturaExpedidaBCType Convert2(InvoiceId id)
+        {
+            return new IDFacturaExpedidaBCType
+            {
+                FechaExpedicionFacturaEmisor = Convert(id.Date),
+                IDEmisorFactura = new IDFacturaExpedidaBCTypeIDEmisorFactura
+                {
+                    NIF = id.Issuer.Number
+                },
+                NumSerieFacturaEmisor = id.Number.Value
+            };
+        }
+
         private CabeceraSii Convert(Header header)
         {
             return new CabeceraSii
+            {
+                IDVersionSii = VersionSiiType.Item11,
+                Titular = Convert(header.Company)
+            };
+        }
+
+        private CabeceraSiiBaja Convert2(Header header)
+        {
+            return new CabeceraSiiBaja
             {
                 IDVersionSii = VersionSiiType.Item11,
                 Titular = Convert(header.Company)

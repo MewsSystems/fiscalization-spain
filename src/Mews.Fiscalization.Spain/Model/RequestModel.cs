@@ -4,10 +4,36 @@ using FuncSharp;
 
 namespace Mews.Fiscalization.Spain.Model
 {
-    public class InvoicesToRegister
+    public class InvoicesToSubmit
     {
-        public InvoicesToRegister(Header header, Invoice[] invoices)
+        public InvoicesToSubmit(Header header, AddedInvoice[] addedInvoices)
         {
+            Header = header ?? throw new ArgumentNullException(nameof(header));
+            AddedInvoices = addedInvoices ?? throw new ArgumentNullException(nameof(addedInvoices));
+
+            if (addedInvoices.Length > 10000)
+            {
+                throw new ArgumentException("Maximal count of invoices is 10000.");
+            }
+
+            if (addedInvoices.Length < 1)
+            {
+                throw new ArgumentException("Minimal count of invoices is 1.");
+            }
+        }
+
+        public Header Header { get; }
+
+        public AddedInvoice[] AddedInvoices { get; }
+    }
+
+    public class InvoicesToDelete
+    {
+        public InvoicesToDelete(Header header, Invoice[] invoices)
+        {
+            Header = header ?? throw new ArgumentNullException(nameof(header));
+            Invoices = invoices ?? throw new ArgumentNullException(nameof(invoices));
+
             if (invoices.Length > 10000)
             {
                 throw new ArgumentException("Maximal count of invoices is 10000.");
@@ -17,9 +43,6 @@ namespace Mews.Fiscalization.Spain.Model
             {
                 throw new ArgumentException("Minimal count of invoices is 1.");
             }
-
-            Header = header ?? throw new ArgumentNullException(nameof(header));
-            Invoices = invoices ?? throw new ArgumentNullException(nameof(invoices));
         }
 
         public Header Header { get; }
@@ -31,6 +54,21 @@ namespace Mews.Fiscalization.Spain.Model
     {
         public Invoice(
             TaxPeriod taxPeriod,
+            InvoiceId id)
+        {
+            TaxPeriod = taxPeriod ?? throw new ArgumentNullException(nameof(taxPeriod));
+            Id = id ?? throw new ArgumentNullException(nameof(id));
+        }
+
+        public TaxPeriod TaxPeriod { get; }
+
+        public InvoiceId Id { get; }
+    }
+
+    public class AddedInvoice : Invoice
+    {
+        public AddedInvoice(
+            TaxPeriod taxPeriod,
             InvoiceId id,
             InvoiceType type,
             SchemeOrEffect schemeOrEffect,
@@ -38,14 +76,13 @@ namespace Mews.Fiscalization.Spain.Model
             LimitedString500 description,
             BreakdownItem breakdown,
             CounterPartyCompany counterParty = null)
+            : base(taxPeriod, id)
         {
             if (counterParty == null && type != InvoiceType.SimplifiedInvoice)
             {
                 throw new ArgumentNullException($"{nameof(counterParty)} has to be specified if 'SimplifiedInvoice' is not used.");
             }
 
-            TaxPeriod = taxPeriod ?? throw new ArgumentNullException(nameof(taxPeriod));
-            Id = id ?? throw new ArgumentNullException(nameof(id));
             Type = type;
             SchemeOrEffect = schemeOrEffect;
             TotalAmount = totalAmount ?? throw new ArgumentNullException(nameof(totalAmount));
@@ -53,10 +90,6 @@ namespace Mews.Fiscalization.Spain.Model
             CounterParty = counterParty;
             Breakdown = breakdown ?? throw new ArgumentNullException(nameof(breakdown));
         }
-
-        public TaxPeriod TaxPeriod { get; }
-
-        public InvoiceId Id { get; }
 
         public InvoiceType Type { get; }
 

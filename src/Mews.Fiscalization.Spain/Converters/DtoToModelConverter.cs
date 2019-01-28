@@ -11,7 +11,7 @@ namespace Mews.Fiscalization.Spain.Converters
 {
     internal class DtoToModelConverter
     {
-        public ReceivedInvoices Convert(SubmitInvoicesResponse response)
+        public ReceivedInvoices Convert(SubmitIssuedInvoicesResponse response)
         {
             return new ReceivedInvoices(
                 Convert(response.Cabecera),

@@ -57,8 +57,7 @@
     <Compile Include="Communication\SoapHttpClient.cs" />
     <Compile Include="Communication\SoapMessage.cs" />
     <Compile Include="Converters\DtoToModelConverter.cs" />
-    <Compile Include="Dto\Responses\AnulacionLRFacturasEmitidasResponse.cs" />
-    <Compile Include="Dto\Requests\RebateInvoiceRequest.cs" />
+    <Compile Include="Dto\Requests\RemoveIssuedInvoiceRequest.cs" />
     <Compile Include="Dto\XSD\SuministroInformacion\BienDeInversionType.cs" />
     <Compile Include="Dto\XSD\SuministroInformacion\CabeceraConsultaSii.cs" />
     <Compile Include="Dto\XSD\SuministroInformacion\CabeceraConsultaSiiCliente.cs" />
@@ -254,14 +253,14 @@
     <Compile Include="Dto\XSD\RespuestaSuministro\RespuestaLRAgenciasViajesType.cs" />
     <Compile Include="Dto\XSD\RespuestaSuministro\RespuestaLRBajaAgenciasViajesType.cs" />
     <Compile Include="Dto\XSD\RespuestaSuministro\RespuestaLRBajaBienesInversionType.cs" />
-    <Compile Include="Dto\XSD\RespuestaSuministro\RespuestaLRBajaFEmitidasType.cs" />
+    <Compile Include="Dto\Responses\RemoveIssuedInvoicesResponse.cs" />
     <Compile Include="Dto\XSD\RespuestaSuministro\RespuestaLRBajaFRecibidasPagosType.cs" />
     <Compile Include="Dto\XSD\RespuestaSuministro\RespuestaLRBajaFRecibidasType.cs" />
     <Compile Include="Dto\XSD\RespuestaSuministro\RespuestaLRBajaIMetalicoType.cs" />
     <Compile Include="Dto\XSD\RespuestaSuministro\RespuestaLRBajaOComunitariasType.cs" />
     <Compile Include="Dto\XSD\RespuestaSuministro\RespuestaLRBajaOperacionesSegurosType.cs" />
     <Compile Include="Dto\XSD\RespuestaSuministro\RespuestaLRBienesInversionType.cs" />
-    <Compile Include="Dto\Responses\SubmitInvoicesResponse.cs" />
+    <Compile Include="Dto\Responses\SubmitIssuedInvoicesResponse.cs" />
     <Compile Include="Dto\XSD\RespuestaSuministro\RespuestaLRFRecibidasType.cs" />
     <Compile Include="Dto\XSD\RespuestaSuministro\RespuestaLRIMetalicoType.cs" />
     <Compile Include="Dto\XSD\RespuestaSuministro\RespuestaLROComunitariasType.cs" />

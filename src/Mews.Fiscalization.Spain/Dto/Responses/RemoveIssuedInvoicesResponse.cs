@@ -4,11 +4,11 @@ using Mews.Fiscalization.Spain.Dto.XSD.RespuestaSuministro;
 namespace Mews.Fiscalization.Spain.Dto.Responses
 {
     [System.SerializableAttribute]
-    [XmlRoot(ElementName = "RespuestaLRFacturasEmitidas", Namespace = "https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/ssii/fact/ws/RespuestaSuministro.xsd")]
+    [XmlRoot(ElementName = "RespuestaLRBajaFacturasEmitidas", Namespace = "https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/ssii/fact/ws/RespuestaSuministro.xsd")]
     [XmlType(Namespace="https://www2.agenciatributaria.gob.es/static_files/common/internet/dep/aplicaciones/es/aeat/ssii/fact/ws/RespuestaSuministro.xsd")]
-    public class SubmitInvoicesResponse : RespuestaComunAltaType
+    public class RemoveIssuedInvoicesResponse : RespuestaComunBajaType
     {
         [XmlElement("RespuestaLinea", Order=0)]
-        public RespuestaExpedidaType[] RespuestaLinea { get; set; }
+        public RespuestaExpedidaBajaType[] RespuestaLinea { get; set; }
     }
 }

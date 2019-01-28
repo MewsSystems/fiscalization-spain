@@ -35,11 +35,21 @@ namespace Mews.Fiscalization.Spain
 
         private SoapClient SoapClient { get; }
 
-        public async Task<ReceivedInvoices> SendRevenueAsync(InvoicesToRegister model)
+        public async Task<ReceivedInvoices> SubmitInvoiceAsync(InvoicesToSubmit model)
         {
             var request = new ModelToDtoConverter().Convert(model);
-            var response = await SoapClient.SendAsync<SubmitIssuedInvoicesRequest, SubmitInvoicesResponse>(request).ConfigureAwait(continueOnCapturedContext: false);
+            var response = await SoapClient.SendAsync<SubmitIssuedInvoicesRequest, SubmitIssuedInvoicesResponse>(request).ConfigureAwait(continueOnCapturedContext: false);
             return new DtoToModelConverter().Convert(response);
+        }
+
+        /// <summary>
+        /// This doesn't work - don't make it public.
+        /// </summary>
+        private async Task<RemoveIssuedInvoicesResponse> RemoveInvoiceAsync(InvoicesToDelete model)
+        {
+            var request = new ModelToDtoConverter().Convert(model);
+            var response = await SoapClient.SendAsync<RemoveIssuedInvoiceRequest, RemoveIssuedInvoicesResponse>(request).ConfigureAwait(continueOnCapturedContext: false);
+            return response;
         }
     }
 }

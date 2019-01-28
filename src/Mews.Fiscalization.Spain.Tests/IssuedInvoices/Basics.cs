@@ -13,40 +13,62 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
     public class Basics
     {
         [Fact]
-        public async Task SendRevenueSimple()
+        public async Task DeleteInvoice()
         {
             var certificate = GeneratorCertificate();
             var client = new Client(certificate, Environment.Test, TimeSpan.FromSeconds(30));
 
-            var model = GetSampleInvoiceData();
-            var response = await client.SendRevenueAsync(model);
+            var model = GetInvoicesToRemove(firstInvoiceNumber: 09, invoiceCount: 1);
+            var response = await client.RemoveInvoiceAsync(model);
+            Assert.NotNull(response);
+        }
+
+        [Fact]
+        public async Task PostInvoice()
+        {
+            var certificate = GeneratorCertificate();
+            var client = new Client(certificate, Environment.Test, TimeSpan.FromSeconds(30));
+
+            var model = GetInvoicesToSubmit(firstInvoiceNumber: 09, invoiceCount: 1);
+            var response = await client.SubmitInvoiceAsync(model);
             Console.WriteLine(response.Result.ToString());
             Assert.Equal(RegisterResult.Correct, response.Result);
         }
 
-        private InvoicesToRegister GetSampleInvoiceData()
+        private InvoicesToDelete GetInvoicesToRemove(int firstInvoiceNumber, int invoiceCount)
         {
             var issuingCompany = Credentials.GeneratorCompany;
             var payingCompany = Credentials.MicrosoftCompany;
-            var firstInvoiceNumber = 41;
+            var invoices = Enumerable.Range(firstInvoiceNumber, invoiceCount).Select(i =>
+                GetInvoice(i, issuingCompany, payingCompany)
+            );
 
-            return new InvoicesToRegister(
-                new Header(issuingCompany, CommunicationType.Registration),
-                new[]
-                {
-                    //GetInvoice(firstInvoiceNumber++, issuingCompany, payingCompany),
-                    //GetInvoice(firstInvoiceNumber++, issuingCompany, payingCompany),
-                    GetInvoice(firstInvoiceNumber++, issuingCompany, payingCompany)
-                }
+            return new InvoicesToDelete(
+                header: new Header(issuingCompany, CommunicationType.Registration),
+                invoices: invoices.ToArray()
             );
         }
 
-        private Invoice GetInvoice(int invoiceNumber, LocalCompany issuingCompany, LocalCompany payingCompany)
+        private InvoicesToSubmit GetInvoicesToSubmit(int firstInvoiceNumber, int invoiceCount)
+        {
+            var issuingCompany = Credentials.GeneratorCompany;
+            var payingCompany = Credentials.MicrosoftCompany;
+            var invoices = Enumerable.Range(firstInvoiceNumber, invoiceCount).Select(i =>
+                GetInvoice(i, issuingCompany, payingCompany)
+            );
+
+            return new InvoicesToSubmit(
+                header: new Header(issuingCompany, CommunicationType.Registration),
+                addedInvoices: invoices.ToArray()
+            );
+        }
+
+        private AddedInvoice GetInvoice(int invoiceNumber, LocalCompany issuingCompany, LocalCompany payingCompany)
         {
             var breakdowns = GetBreakdowns();
             var totalValue = Math.Round(breakdowns.Sum(b => b.TaxAmount.Value + b.TaxBaseAmount.Value), 2);
 
-            return new Invoice(
+            return new AddedInvoice(
                 new TaxPeriod(new Year(2017), Month.December),
                 new InvoiceId(issuingCompany.TaxPayerNumber, new LimitedString1to60(invoiceNumber.ToString("D2")), new DateTime(2017, 5, 10)),
                 InvoiceType.SimplifiedInvoice,
@@ -65,10 +87,10 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
         {
             return new[]
             {
-                GetBreakdown(21m, 22.07M),
-                GetBreakdown(21m, 32.07M),
-                GetBreakdown(21m, 42.07M),
-                GetBreakdown(21m, 52.07M)
+                GetBreakdown(21m, -22.07M),
+                GetBreakdown(21m, -32.07M),
+                GetBreakdown(21m, -42.07M),
+                GetBreakdown(21m, -52.07M)
             };
         }
 
