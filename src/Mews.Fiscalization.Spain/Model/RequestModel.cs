@@ -234,6 +234,19 @@ namespace Mews.Fiscalization.Spain.Model
             Country = country.ToOption();
             IdentificatorType = identificatiorType;
             Id = id ?? throw new ArgumentNullException(nameof(id));
+
+            if (Country.IsEmpty)
+            {
+                try
+                {
+                    var countryCode = Id.Value.Substring(0, 2);
+                    new Country(countryCode);
+                }
+                catch (Exception)
+                {
+                    throw new ArgumentException($"{nameof(country)} has to be specified if {nameof(id)} doesn't start with country code.");
+                }
+            }
         }
 
         public LimitedString120 Name { get; }
