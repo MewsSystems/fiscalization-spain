@@ -49,8 +49,8 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
             var certificate = GeneratorCertificate();
             var client = new Client(certificate, Environment.Test, TimeSpan.FromSeconds(30));
 
-            var model = GetInvoicesToSubmit(firstInvoiceNumber: 09, invoiceCount: 1);
-            var response = await client.SubmitInvoiceAsync(model);
+            var model = GetInvoicesToSubmit(firstInvoiceNumber: 666, invoiceCount: 1);
+            var response = await client.SubmitInvoiceAsync(model).ConfigureAwait(continueOnCapturedContext: false);
             Console.WriteLine(response.Result.ToString());
             Assert.Equal(RegisterResult.Correct, response.Result);
         }
@@ -97,19 +97,35 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
                 new LimitedString500("This is a test invoice."),
                 new BreakdownItem(new InvoiceItem(
                     withTax: new WithTaxItem(TransactionType.NotExempt, breakdowns),
-                    taxFree: new TaxFreeItem[] {}
+                    taxFree: GetTaxFreeItems()
                 )),
                 new CounterPartyCompany(payingCompany)
             );
+        }
+
+        private TaxFreeItem[] GetTaxFreeItems()
+        {
+            return new TaxFreeItem[]
+            {
+                new TaxFreeItem(new Amount(20m), CauseOfExemption.OtherGrounds),
+                new TaxFreeItem(new Amount(20m), CauseOfExemption.OtherGrounds),
+                new TaxFreeItem(new Amount(20m), CauseOfExemption.OtherGrounds),
+                new TaxFreeItem(new Amount(20m), CauseOfExemption.OtherGrounds),
+                new TaxFreeItem(new Amount(20m), CauseOfExemption.OtherGrounds),
+                new TaxFreeItem(new Amount(20m), CauseOfExemption.OtherGrounds),
+                new TaxFreeItem(new Amount(20m), CauseOfExemption.OtherGrounds)
+            };
         }
 
         private VATBreakdown[] GetBreakdowns()
         {
             return new[]
             {
-                GetBreakdown(21m, -22.07M),
-                GetBreakdown(21m, -32.07M),
                 GetBreakdown(21m, -42.07M),
+                GetBreakdown(21m, -52.07M),
+                GetBreakdown(21m, -52.07M),
+                GetBreakdown(21m, -52.07M),
+                GetBreakdown(21m, -52.07M),
                 GetBreakdown(21m, -52.07M)
             };
         }

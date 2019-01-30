@@ -80,7 +80,7 @@ namespace Mews.Fiscalization.Spain.Model
         {
             if (counterParty == null && type != InvoiceType.SimplifiedInvoice)
             {
-                throw new ArgumentNullException($"{nameof(counterParty)} has to be specified if 'SimplifiedInvoice' is not used.");
+                throw new Exception($"{nameof(counterParty)} has to be specified if 'SimplifiedInvoice' is not used.");
             }
 
             Type = type;
@@ -129,14 +129,14 @@ namespace Mews.Fiscalization.Spain.Model
     {
         public InvoiceItem(TaxFreeItem[] taxFree = null, WithTaxItem withTax = null)
         {
-            TaxFree = taxFree.ToNonEmptyOption();
-
-            if (TaxFree.IsEmpty && withTax == null)
-            {
-                throw new ArgumentException("Item cannot be empty");
-            }
-
             WithTax = withTax.ToOption();
+            TaxFree = taxFree.ToNonEmptyOption();
+            TaxFree.Where(i => i.Length > 7).Match(_ => throw new Exception("There can only be up to 7 tax exempt items on one invoice."));
+
+            if (TaxFree.IsEmpty && WithTax == null)
+            {
+                throw new Exception("Invoice cannot be empty.");
+            }
         }
 
         public IOption<TaxFreeItem[]> TaxFree { get; }
@@ -162,7 +162,7 @@ namespace Mews.Fiscalization.Spain.Model
         public WithTaxItem(TransactionType transactionType, VATBreakdown[] vatBreakdowns)
         {
             TransactionType = transactionType;
-            VatBreakdowns = vatBreakdowns ?? throw new ArgumentNullException(nameof(vatBreakdowns));
+            VatBreakdowns = vatBreakdowns.ToNonEmptyOption().Where(b => b.Length < 7).GetOrNull() ?? throw new Exception("The amount of tax items must be between 1 and 6.");
         }
 
         public TransactionType TransactionType { get; }
