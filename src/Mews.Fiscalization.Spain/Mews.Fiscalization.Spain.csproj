@@ -55,6 +55,7 @@
     <Compile Include="Client.cs" />
     <Compile Include="Communication\SoapMessage.cs" />
     <Compile Include="Converters\DtoToModelConverter.cs" />
+    <Compile Include="Converters\NumberExtensions.cs" />
     <Compile Include="Dto\Requests\RemoveIssuedInvoiceRequest.cs" />
     <Compile Include="Dto\XSD\SuministroInformacion\BienDeInversionType.cs" />
     <Compile Include="Dto\XSD\SuministroInformacion\CabeceraConsultaSii.cs" />

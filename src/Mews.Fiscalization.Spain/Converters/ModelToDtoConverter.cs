@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 using System.Linq;
 using FuncSharp;
 using Mews.Fiscalization.Spain.Dto.Requests;
@@ -313,12 +312,12 @@ namespace Mews.Fiscalization.Spain.Converters
 
         private string Convert(Amount totalAmount)
         {
-            return totalAmount.Value.ToString(CultureInfo.InvariantCulture);
+            return totalAmount.Value.Serialize();
         }
 
         private string Convert(Percentage percentage)
         {
-            return percentage.Value.ToString(CultureInfo.InvariantCulture);
+            return percentage.Value.Serialize();
         }
 
         private string Convert(DateTime date)
