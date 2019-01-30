@@ -75,6 +75,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Configuration\Credentials.cs" />
+    <Compile Include="IssuedInvoices\NumberExtensionsTests.cs" />
     <Compile Include="IssuedInvoices\Basics.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
