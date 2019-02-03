@@ -191,16 +191,16 @@ namespace Mews.Fiscalization.Spain.Converters
                 Ejercicio = Convert(taxPeriod.Year),
                 Periodo = taxPeriod.Month.Match(
                     Month.January, _ => TimePeriodType.January,
-                    Month.February, _ => TimePeriodType.January,
-                    Month.March, _ => TimePeriodType.January,
-                    Month.April, _ => TimePeriodType.January,
-                    Month.May, _ => TimePeriodType.January,
-                    Month.June, _ => TimePeriodType.January,
-                    Month.July, _ => TimePeriodType.January,
-                    Month.August, _ => TimePeriodType.January,
-                    Month.September, _ => TimePeriodType.January,
-                    Month.October, _ => TimePeriodType.January,
-                    Month.November, _ => TimePeriodType.January,
+                    Month.February, _ => TimePeriodType.February,
+                    Month.March, _ => TimePeriodType.March,
+                    Month.April, _ => TimePeriodType.April,
+                    Month.May, _ => TimePeriodType.May,
+                    Month.June, _ => TimePeriodType.June,
+                    Month.July, _ => TimePeriodType.July,
+                    Month.August, _ => TimePeriodType.August,
+                    Month.September, _ => TimePeriodType.September,
+                    Month.October, _ => TimePeriodType.October,
+                    Month.November, _ => TimePeriodType.November,
                     Month.December, _ => TimePeriodType.December
                 )
             };
