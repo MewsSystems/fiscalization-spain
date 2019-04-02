@@ -32,5 +32,5 @@ The time to implement this was kindly provided by [Mews Systems](http://mewssyst
 # Donate
 There is no need to donate the project, but thanks for considering it! Instead, if you like the project, star it here on GitHub :-)! Thanks!
 
-If you still insist on donating, we accept gummy bears at Mews Systems IP Pavlova 5, Vinohrady 
+If you still insist on donating, we accept gummy bears at Mews Systems, IP Pavlova 5, Vinohrady 
 120 00 Prague. This project was, of course, powered by a huge pile of gummy bears ;-)
