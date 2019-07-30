@@ -1,5 +1,7 @@
+[![Build Status](https://mews.visualstudio.com/Mews/_apis/build/status/MewsSystems.fiscalization-spain?branchName=master)](https://mews.visualstudio.com/Mews/_build/latest?definitionId=4&branchName=master)
+
 # SII
-EET stands for Suministro Inmediato de Información del IVA, which translates to Immediate Supply of Information on VAT.
+SII stands for Suministro Inmediato de Información del IVA, which translates to Immediate Supply of Information on VAT.
 It's an online API provided by Spanish authorities in a form of a SOAP Web Service.
 
 ## Key features
