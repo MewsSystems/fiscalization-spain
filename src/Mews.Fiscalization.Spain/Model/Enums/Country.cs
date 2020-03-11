@@ -255,7 +255,7 @@ namespace Mews.Fiscalization.Spain.Model
 
         public Country(string alpha2code)
         {
-            if (!AvailableCodes.Contains(alpha2code))
+            if (!IsValid(alpha2code))
             {
                 throw new System.ArgumentException("Country code is not valid ISO 3166-1 alpha-2 code.", nameof(alpha2code));
             }
@@ -264,5 +264,10 @@ namespace Mews.Fiscalization.Spain.Model
         }
 
         public string Alpha2Code { get; }
+
+        public static bool IsValid(string alpha2Code)
+        {
+            return AvailableCodes.Contains(alpha2Code);
+        }
     }
 }

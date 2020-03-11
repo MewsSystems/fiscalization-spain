@@ -224,6 +224,16 @@ namespace Mews.Fiscalization.Spain.Model
                 throw new ArgumentNullException(nameof(foreignCompany));
             }
         }
+
+        public static bool IsValid(LocalCompany companyTitle)
+        {
+            return companyTitle != null;
+        }
+
+        public static bool IsValid(ForeignCompany foreignCompany)
+        {
+            return foreignCompany != null;
+        }
     }
 
     public class ForeignCompany
@@ -256,6 +266,16 @@ namespace Mews.Fiscalization.Spain.Model
         public ResidenceCountryIdentificatorType IdentificatorType { get; }
 
         public LimitedString20 Id { get; }
+
+        public static bool IsValid(LimitedString20 id, LimitedString120 name, Country country = null)
+        {
+            if (country == null)
+            {
+                var countryCode = id.Value.Substring(0, 2);
+                return Model.Country.IsValid(countryCode);
+            }
+            return id != null && name != null;
+        }
     }
 
     public class InvoiceId
@@ -298,6 +318,11 @@ namespace Mews.Fiscalization.Spain.Model
         public LocalCompany Company { get; }
 
         public CommunicationType CommunicationType { get; }
+
+        public static bool IsValid(LocalCompany company)
+        {
+            return company != null;
+        }
     }
 
     public class LocalCompany
@@ -315,15 +340,16 @@ namespace Mews.Fiscalization.Spain.Model
 
     public class TaxPayerNumber
     {
+        private static readonly string Pattern = @"(([a-z|A-Z]{1}\d{7}[a-z|A-Z]{1})|(\d{8}[a-z|A-Z]{1})|([a-z|A-Z]{1}\d{8}))";
+
         public TaxPayerNumber(string number)
         {
             if (number == null)
             {
                 throw new ArgumentNullException(nameof(number));
             }
-            var pattern = @"(([a-z|A-Z]{1}\d{7}[a-z|A-Z]{1})|(\d{8}[a-z|A-Z]{1})|([a-z|A-Z]{1}\d{8}))";
-            var isValid = Regex.IsMatch(number, pattern) && number.Length == 9;
-            if (!isValid)
+
+            if (!IsValid(number))
             {
                 throw new ArgumentException($"{nameof(number)} is not valid tax payer number.");
             }
@@ -332,5 +358,10 @@ namespace Mews.Fiscalization.Spain.Model
         }
 
         public string Number { get; }
+
+        public static bool IsValid(string number)
+        {
+            return number != null && Regex.IsMatch(number, Pattern) && number.Length == 9;
+        }
     }
 }
