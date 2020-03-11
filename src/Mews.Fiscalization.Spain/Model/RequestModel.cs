@@ -300,11 +300,6 @@ namespace Mews.Fiscalization.Spain.Model
         public LocalCompany Company { get; }
 
         public CommunicationType CommunicationType { get; }
-
-        public static bool IsValid(LocalCompany company)
-        {
-            return company != null;
-        }
     }
 
     public class LocalCompany
