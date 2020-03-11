@@ -253,6 +253,11 @@ namespace Mews.Fiscalization.Spain.Model
         {
             if (country == null)
             {
+                if (id.Value.Length < 2)
+                {
+                    return false;
+                }
+
                 var countryCode = id.Value.Substring(0, 2);
                 return Model.Country.IsValid(countryCode);
             }
