@@ -224,16 +224,6 @@ namespace Mews.Fiscalization.Spain.Model
                 throw new ArgumentNullException(nameof(foreignCompany));
             }
         }
-
-        public static bool IsValid(LocalCompany companyTitle)
-        {
-            return companyTitle != null;
-        }
-
-        public static bool IsValid(ForeignCompany foreignCompany)
-        {
-            return foreignCompany != null;
-        }
     }
 
     public class ForeignCompany
@@ -266,16 +256,6 @@ namespace Mews.Fiscalization.Spain.Model
         public ResidenceCountryIdentificatorType IdentificatorType { get; }
 
         public LimitedString20 Id { get; }
-
-        public static bool IsValid(LimitedString20 id, LimitedString120 name, Country country = null)
-        {
-            if (country == null)
-            {
-                var countryCode = id.Value.Substring(0, 2);
-                return Model.Country.IsValid(countryCode);
-            }
-            return id != null && name != null;
-        }
     }
 
     public class InvoiceId
