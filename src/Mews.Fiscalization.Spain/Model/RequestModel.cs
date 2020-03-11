@@ -235,17 +235,9 @@ namespace Mews.Fiscalization.Spain.Model
             IdentificatorType = identificatiorType;
             Id = id ?? throw new ArgumentNullException(nameof(id));
 
-            if (Country.IsEmpty)
+            if (!IsValid(id, name, country))
             {
-                try
-                {
-                    var countryCode = Id.Value.Substring(0, 2);
-                    new Country(countryCode);
-                }
-                catch (Exception)
-                {
-                    throw new ArgumentException($"{nameof(country)} has to be specified if {nameof(id)} doesn't start with country code.");
-                }
+                throw new ArgumentException($"{nameof(country)} has to be specified if {nameof(id)} doesn't start with country code.");
             }
         }
 
@@ -256,6 +248,16 @@ namespace Mews.Fiscalization.Spain.Model
         public ResidenceCountryIdentificatorType IdentificatorType { get; }
 
         public LimitedString20 Id { get; }
+
+        public static bool IsValid(LimitedString20 id, LimitedString120 name, Country country = null)
+        {
+            if (country == null)
+            {
+                var countryCode = id.Value.Substring(0, 2);
+                return Model.Country.IsValid(countryCode);
+            }
+            return id != null && name != null;
+        }
     }
 
     public class InvoiceId
