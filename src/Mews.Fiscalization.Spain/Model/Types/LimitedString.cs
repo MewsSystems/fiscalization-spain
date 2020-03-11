@@ -20,5 +20,10 @@ namespace Mews.Fiscalization.Spain.Model
         }
 
         public string Value { get; }
+
+        protected static bool IsValid(string value, int minLength, int maxLength)
+        {
+            return value != null && value.Length <= maxLength && value.Length >= minLength;
+        }
     }
 }
