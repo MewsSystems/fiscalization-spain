@@ -8,9 +8,9 @@
     <Description>A package for issued invoices for spanish fiscalization. (Sii)</Description>
     <PackageProjectUrl></PackageProjectUrl>
     <RepositoryUrl>https://github.com/MewsSystems/fiscalization-spain</RepositoryUrl>
-    <Version>0.9.10-alpha</Version>
     <TargetFramework>net471</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageVersion>0.9.11-alpha</PackageVersion>
   </PropertyGroup>
 
   <ItemGroup>
