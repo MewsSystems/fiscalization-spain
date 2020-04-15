@@ -228,7 +228,7 @@ namespace Mews.Fiscalization.Spain.Model
 
     public class ForeignCompany
     {
-        public ForeignCompany(LimitedString120 name, ResidenceCountryIdentificatorType identificatiorType, LimitedString20 id, Country country = null)
+        public ForeignCompany(LimitedString120 name, ResidenceCountryIdentificatorType identificatiorType, LimitedString1to20 id, Country country = null)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
             Country = country.ToOption();
@@ -247,9 +247,9 @@ namespace Mews.Fiscalization.Spain.Model
 
         public ResidenceCountryIdentificatorType IdentificatorType { get; }
 
-        public LimitedString20 Id { get; }
+        public LimitedString1to20 Id { get; }
 
-        public static bool IsValid(LimitedString20 id, LimitedString120 name, Country country = null)
+        public static bool IsValid(LimitedString1to20 id, LimitedString120 name, Country country = null)
         {
             if (country == null)
             {

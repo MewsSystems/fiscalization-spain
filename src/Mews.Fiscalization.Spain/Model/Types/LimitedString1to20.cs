@@ -1,8 +1,8 @@
 ﻿namespace Mews.Fiscalization.Spain.Model
 {
-    public class LimitedString20 : LimitedString
+    public class LimitedString1to20 : LimitedString
     {
-        public LimitedString20(string value)
+        public LimitedString1to20(string value)
             : base(value, 1, 20)
         {
         }
