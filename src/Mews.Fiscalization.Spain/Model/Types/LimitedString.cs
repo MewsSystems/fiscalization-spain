@@ -22,12 +22,7 @@ namespace Mews.Fiscalization.Spain.Model
 
         public string Value { get; }
 
-        protected static bool IsValid(string value, int minLength, int maxLength)
-        {
-            return value != null && value.Length <= maxLength && value.Length >= minLength;
-        }
-
-        protected static bool ContainsInvalidCharacters(string value)
+        public static bool ContainsInvalidCharacters(string value)
         {
             try
             {
@@ -38,6 +33,11 @@ namespace Mews.Fiscalization.Spain.Model
             {
                 return false;
             }
+        }
+
+        protected static bool IsValid(string value, int minLength, int maxLength)
+        {
+            return value != null && value.Length <= maxLength && value.Length >= minLength;
         }
     }
 }
