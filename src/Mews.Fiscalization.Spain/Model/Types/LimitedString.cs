@@ -22,7 +22,7 @@ namespace Mews.Fiscalization.Spain.Model
 
         public string Value { get; }
 
-        public static bool IsValid(string value)
+        public static bool ConsistsOfValidCharacters(string value)
         {
             try
             {
