@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Xml;
 
 namespace Mews.Fiscalization.Spain.Model
 {
@@ -24,6 +25,19 @@ namespace Mews.Fiscalization.Spain.Model
         protected static bool IsValid(string value, int minLength, int maxLength)
         {
             return value != null && value.Length <= maxLength && value.Length >= minLength;
+        }
+
+        protected static bool ContainsInvalidCharacters(string value)
+        {
+            try
+            {
+                XmlConvert.VerifyXmlChars(value);
+                return true;
+            }
+            catch (XmlException)
+            {
+                return false;
+            }
         }
     }
 }

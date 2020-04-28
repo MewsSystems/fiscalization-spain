@@ -14,17 +14,9 @@ namespace Mews.Fiscalization.Spain.Model
             return IsValid(value, minLength: 1, maxLength: 20);
         }
 
-        public static bool ContainsInvalidCharacters(string value)
+        public static new bool ContainsInvalidCharacters(string value)
         {
-            try
-            {
-                XmlConvert.VerifyXmlChars(value);
-                return true;
-            }
-            catch (XmlException)
-            {
-                return false;
-            }
+            return LimitedString.ContainsInvalidCharacters(value);
         }
     }
 }
