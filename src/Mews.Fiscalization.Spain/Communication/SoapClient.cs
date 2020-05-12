@@ -13,7 +13,7 @@ namespace Mews.Fiscalization.Spain.Communication
         internal SoapClient(Uri endpointUri, X509Certificate certificate, TimeSpan httpTimeout)
         {
             EndpointUri = endpointUri;
-            var requestHandler = new WebRequestHandler();
+            var requestHandler = new HttpClientHandler();
             requestHandler.ClientCertificates.Add(certificate);
             HttpClient = new HttpClient(requestHandler) { Timeout = httpTimeout };
         }

@@ -1,24 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net471</TargetFramework>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
     </PropertyGroup>
 
     <ItemGroup>
-        <Reference Include="System.Net.Http" />
-        <Reference Include="System.Net.Http.WebRequest" />
-        <Reference Include="System.Security" />
-        <Reference Include="System.ServiceModel" />
-    </ItemGroup>
-
-    <ItemGroup>
         <PackageReference Include="FuncSharp" Version="1.5.2" />
-        <PackageReference Include="xunit.assert" Version="2.1.0" />
-        <PackageReference Include="xunit.core" Version="2.1.0" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <Folder Include="Properties" />
+        <PackageReference Include="xunit.assert" Version="2.4.1" />
+        <PackageReference Include="xunit.core" Version="2.4.1" />
     </ItemGroup>
 
     <ItemGroup>

@@ -2,7 +2,7 @@
 
 namespace Mews.Fiscalization.Spain.Converters
 {
-    internal static class NumberExtensions
+    public static class NumberExtensions
     {
         internal static string Serialize(this decimal value)
         {
