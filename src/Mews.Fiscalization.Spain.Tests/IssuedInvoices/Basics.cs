@@ -138,9 +138,7 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
 
         private X509Certificate GeneratorCertificate()
         {
-            var certificate = new X509Certificate();
-            certificate.Import(rawData: Convert.FromBase64String(CertificateData), password: CertificatePassword, keyStorageFlags: X509KeyStorageFlags.UserKeySet);
-            return certificate;
+            return new X509Certificate(rawData: Convert.FromBase64String(CertificateData), password: CertificatePassword);
         }
     }
 }
