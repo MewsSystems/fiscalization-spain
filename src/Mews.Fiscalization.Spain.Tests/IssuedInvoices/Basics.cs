@@ -16,6 +16,7 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
         public static readonly string CertificatePassword = System.Environment.GetEnvironmentVariable("certificate_password") ?? "INSERT_CERTIFICATE_PASSWORD";
 
         [Test]
+        [Ignore("Will be enabled later.")]
         public async Task CheckNif()
         {
             var certificate = GeneratorCertificate();
@@ -34,6 +35,7 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
         }
 
         [Test]
+        [Ignore("Will be enabled later.")]
         public async Task PostInvoice()
         {
             var certificate = GeneratorCertificate();
