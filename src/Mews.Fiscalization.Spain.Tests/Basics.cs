@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
-using System.Text;
 using System.Threading.Tasks;
 using FuncSharp;
 using Mews.Fiscalization.Spain.Model;
 using Mews.Fiscalization.Spain.Nif;
 using NUnit.Framework;
 
-namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
+namespace Mews.Fiscalization.Spain.Tests
 {
     public class Basics
     {
