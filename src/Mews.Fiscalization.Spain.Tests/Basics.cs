@@ -17,7 +17,8 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
             password: System.Environment.GetEnvironmentVariable("certificate_password") ?? "INSERT_CERTIFICATE_PASSWORD",
             keyStorageFlags: X509KeyStorageFlags.DefaultKeySet
         );
-        public static readonly Client Client = CreateClient(Certificate);
+        public static readonly Client Client = new Client(Certificate, Environment.Test, httpTimeout: TimeSpan.FromSeconds(30));
+
         public static readonly LocalCompany IssuingCompany = new LocalCompany(
             new LimitedString120(System.Environment.GetEnvironmentVariable("issuer_name") ?? "INSERT_ISSUER_NAME"),
             new TaxPayerNumber(System.Environment.GetEnvironmentVariable("issuer_tax_number") ?? "INSERT_ISSUER_TAX_NUMBER")
@@ -130,13 +131,6 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
         private VATBreakdown GetBreakdown(decimal vat, decimal baseValue)
         {
             return new VATBreakdown(new Percentage(vat), new Amount(baseValue), new Amount(Math.Round(baseValue * vat / 100, 2)));
-        }
-
-        private static Client CreateClient(X509Certificate2 certificate)
-        {
-            var client = new Client(certificate, Environment.Test, httpTimeout: TimeSpan.FromSeconds(30));
-            client.HttpRequestFinished += (sender, args) => Console.WriteLine($"Received response: {System.Environment.NewLine}{args.Response}");
-            return client;
         }
     }
 }
