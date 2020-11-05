@@ -25,8 +25,8 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
             {
                 new NifInfoEntry(Credentials.TestCompany1.TaxPayerNumber.Number, Credentials.TestCompany1.Name.Value),
                 new NifInfoEntry(Credentials.TestCompany2.TaxPayerNumber.Number, Credentials.TestCompany2.Name.Value),
-                new NifInfoEntry("99999999R", "Test name1"),
-                new NifInfoEntry("12999999R", "Test name2")
+                new NifInfoEntry("99999999R", "Juan Espanol Espanol"),
+                new NifInfoEntry("12999999R", "Test name")
             };
             
             var response = await validator.CheckNif(new Request(entries));
