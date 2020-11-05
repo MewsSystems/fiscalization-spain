@@ -4,14 +4,17 @@ namespace Mews.Fiscalization.Spain.Tests.Configuration
 {
     public static class Credentials
     {
-        public static LocalCompany GeneratorCompany => new LocalCompany(
-            new LimitedString120("GENERATOR BCN 1, S.L."),
-            new TaxPayerNumber("B65374811")
+        public static readonly string IssuerTaxNumber = System.Environment.GetEnvironmentVariable("issuer_tax_number") ?? "INSERT_ISSUER_TAX_NUMBER";
+        public static readonly string ReceiverTaxNumber = System.Environment.GetEnvironmentVariable("receiver_tax_number") ?? "INSERT_RECEIVER_TAX_NUMBER";
+
+        public static LocalCompany TestCompany1 => new LocalCompany(
+            new LimitedString120("Test company 1"),
+            new TaxPayerNumber(IssuerTaxNumber)
         );
 
-        public static LocalCompany MicrosoftCompany => new LocalCompany(
-            new LimitedString120("Microsoft test company"),
-            new TaxPayerNumber("A08433179")
+        public static LocalCompany TestCompany2 => new LocalCompany(
+            new LimitedString120("Test company 2"),
+            new TaxPayerNumber(ReceiverTaxNumber)
         );
     }
 }

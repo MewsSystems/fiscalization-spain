@@ -1,20 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
-using System.Text;
 using System.Threading.Tasks;
 using Mews.Fiscalization.Spain.Model;
 using Mews.Fiscalization.Spain.Nif;
 using Mews.Fiscalization.Spain.Tests.Configuration;
-using Xunit;
+using NUnit.Framework;
 
 namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
 {
     public class Basics
     {
-        [Fact]
+        public static readonly string CertificateData = System.Environment.GetEnvironmentVariable("certificate_data") ?? "INSERT_CERTIFICATE_DATA";
+        public static readonly string CertificatePassword = System.Environment.GetEnvironmentVariable("certificate_password") ?? "INSERT_CERTIFICATE_PASSWORD";
+
+        [Test]
         public async Task CheckNif()
         {
             var certificate = GeneratorCertificate();
@@ -22,17 +23,29 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
 
             var entries = new List<NifInfoEntry>
             {
-                new NifInfoEntry(Credentials.GeneratorCompany.TaxPayerNumber.Number, Credentials.GeneratorCompany.Name.Value),
-                new NifInfoEntry(Credentials.MicrosoftCompany.TaxPayerNumber.Number, Credentials.MicrosoftCompany.Name.Value),
-                new NifInfoEntry("99999999R", "ESPAÑOL ESPAÑOL JUAN"),
-                new NifInfoEntry("12999999R", "Smrdis")
+                new NifInfoEntry(Credentials.TestCompany1.TaxPayerNumber.Number, Credentials.TestCompany1.Name.Value),
+                new NifInfoEntry(Credentials.TestCompany2.TaxPayerNumber.Number, Credentials.TestCompany2.Name.Value),
+                new NifInfoEntry("99999999R", "Test name1"),
+                new NifInfoEntry("12999999R", "Test name2")
             };
             
             var response = await validator.CheckNif(new Request(entries));
             Assert.NotNull(response);
         }
 
-        //[Fact]
+        [Test]
+        public async Task PostInvoice()
+        {
+            var certificate = GeneratorCertificate();
+            var client = new Client(certificate, Environment.Test, TimeSpan.FromSeconds(30));
+
+            var model = GetInvoicesToSubmit(firstInvoiceNumber: 666, invoiceCount: 1);
+            var response = await client.SubmitInvoiceAsync(model).ConfigureAwait(continueOnCapturedContext: false);
+            Console.WriteLine(response.Result.ToString());
+            Assert.AreEqual(RegisterResult.Correct, response.Result);
+        }
+
+        //[Test]
         //public async Task DeleteInvoice()
         //{
         //    var certificate = GeneratorCertificate();
@@ -43,36 +56,24 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
         //    Assert.NotNull(response);
         //}
 
-        [Fact]
-        public async Task PostInvoice()
-        {
-            var certificate = GeneratorCertificate();
-            var client = new Client(certificate, Environment.Test, TimeSpan.FromSeconds(30));
-
-            var model = GetInvoicesToSubmit(firstInvoiceNumber: 666, invoiceCount: 1);
-            var response = await client.SubmitInvoiceAsync(model).ConfigureAwait(continueOnCapturedContext: false);
-            Console.WriteLine(response.Result.ToString());
-            Assert.Equal(RegisterResult.Correct, response.Result);
-        }
-
-        private InvoicesToDelete GetInvoicesToRemove(int firstInvoiceNumber, int invoiceCount)
-        {
-            var issuingCompany = Credentials.GeneratorCompany;
-            var payingCompany = Credentials.MicrosoftCompany;
-            var invoices = Enumerable.Range(firstInvoiceNumber, invoiceCount).Select(i =>
-                GetInvoice(i, issuingCompany, payingCompany)
-            );
-
-            return new InvoicesToDelete(
-                header: new Header(issuingCompany, CommunicationType.Registration),
-                invoices: invoices.ToArray()
-            );
-        }
+        //private InvoicesToDelete GetInvoicesToRemove(int firstInvoiceNumber, int invoiceCount)
+        //{
+        //    var issuingCompany = Credentials.TestCompany1;
+        //    var payingCompany = Credentials.TestCompany2;
+        //    var invoices = Enumerable.Range(firstInvoiceNumber, invoiceCount).Select(i =>
+        //        GetInvoice(i, issuingCompany, payingCompany)
+        //    );
+        //
+        //    return new InvoicesToDelete(
+        //        header: new Header(issuingCompany, CommunicationType.Registration),
+        //        invoices: invoices.ToArray()
+        //    );
+        //}
 
         private InvoicesToSubmit GetInvoicesToSubmit(int firstInvoiceNumber, int invoiceCount)
         {
-            var issuingCompany = Credentials.GeneratorCompany;
-            var payingCompany = Credentials.MicrosoftCompany;
+            var issuingCompany = Credentials.TestCompany1;
+            var payingCompany = Credentials.TestCompany2;
             var invoices = Enumerable.Range(firstInvoiceNumber, invoiceCount).Select(i =>
                 GetInvoice(i, issuingCompany, payingCompany)
             );
@@ -137,10 +138,7 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
 
         private X509Certificate GeneratorCertificate()
         {
-            string password = File.ReadAllText("C:\\Users\\PavelKalandra\\Documents\\SII\\GenBCN1 2017.iso", Encoding.UTF8);
-            X509Certificate cert = new X509Certificate();
-            cert.Import("C:\\Users\\PavelKalandra\\Documents\\SII\\GenBCN1 2017.pfx", password, X509KeyStorageFlags.UserKeySet);
-            return cert;
+            return new X509Certificate(rawData: Convert.FromBase64String(CertificateData), password: CertificatePassword);
         }
     }
 }
