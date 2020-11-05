@@ -30,7 +30,7 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
             };
             
             var response = await validator.CheckNif(new Request(entries));
-            Assert.NotNull(response);
+            Assert.IsNotNull(response);
         }
 
         [Test]
