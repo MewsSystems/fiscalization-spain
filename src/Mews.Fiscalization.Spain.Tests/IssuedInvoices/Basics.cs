@@ -136,9 +136,9 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
             return new VATBreakdown(new Percentage(vat), new Amount(baseValue), new Amount(Math.Round(baseValue * vat / 100, 2)));
         }
 
-        private X509Certificate GeneratorCertificate()
+        private X509Certificate2 GeneratorCertificate()
         {
-            return new X509Certificate(rawData: Convert.FromBase64String(CertificateData), password: CertificatePassword);
+            return new X509Certificate2(rawData: Convert.FromBase64String(CertificateData), password: CertificatePassword, keyStorageFlags: X509KeyStorageFlags.DefaultKeySet);
         }
     }
 }
