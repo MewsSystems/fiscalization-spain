@@ -8,12 +8,16 @@ using Mews.Fiscalization.Spain.Model;
 using Mews.Fiscalization.Spain.Nif;
 using NUnit.Framework;
 
-namespace Mews.Fiscalization.Spain.Tests
+namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
 {
     public class Basics
     {
-        public static readonly string CertificateData = System.Environment.GetEnvironmentVariable("certificate_data") ?? "INSERT_CERTIFICATE_DATA";
-        public static readonly string CertificatePassword = System.Environment.GetEnvironmentVariable("certificate_password") ?? "INSERT_CERTIFICATE_PASSWORD";
+        public static readonly X509Certificate2 Certificate = new X509Certificate2(
+            rawData: Convert.FromBase64String(System.Environment.GetEnvironmentVariable("certificate_data") ?? "INSERT_CERTIFICATE_DATA"),
+            password: System.Environment.GetEnvironmentVariable("certificate_password") ?? "INSERT_CERTIFICATE_PASSWORD",
+            keyStorageFlags: X509KeyStorageFlags.DefaultKeySet
+        );
+        public static readonly Client Client = CreateClient(Certificate);
         public static readonly LocalCompany IssuingCompany = new LocalCompany(
             new LimitedString120(System.Environment.GetEnvironmentVariable("issuer_name") ?? "INSERT_ISSUER_NAME"),
             new TaxPayerNumber(System.Environment.GetEnvironmentVariable("issuer_tax_number") ?? "INSERT_ISSUER_TAX_NUMBER")
@@ -48,9 +52,7 @@ namespace Mews.Fiscalization.Spain.Tests
         [Test]
         public async Task PostInvoice()
         {
-            var certificate = GeneratorCertificate();
-            var client = new Client(certificate, Environment.Test, TimeSpan.FromSeconds(30));
-            await SuccessfullyPostInvoice(client);
+            await SuccessfullyPostInvoice(Client);
         }
 
         /// <summary>
@@ -59,15 +61,13 @@ namespace Mews.Fiscalization.Spain.Tests
         // [Fact]
         // public async Task DeleteInvoice()
         // {
-        //     var certificate = GeneratorCertificate();
-        //     var client = new Client(certificate, Environment.Test, TimeSpan.FromSeconds(30));
-        //     var sentInvoice = await SuccessfullyPostInvoice(client);
+        //     var sentInvoice = await SuccessfullyPostInvoice(Client);
         //
         //     var model = new InvoicesToDelete(
         //         header: new Header(IssuingCompany, CommunicationType.Registration),
         //         invoices: new [] { sentInvoice }
         //     );
-        //     var response = await client.RemoveInvoiceAsync(model);
+        //     var response = await Client.RemoveInvoiceAsync(model);
         //     Assert.NotNull(response);
         // }
 
@@ -90,8 +90,7 @@ namespace Mews.Fiscalization.Spain.Tests
 
         private async Task AssertNifLookup(List<NifInfoEntry> entries, NifSearchResult expectedResult)
         {
-            var certificate = GeneratorCertificate();
-            var validator = new NifValidator(certificate, httpTimeout: TimeSpan.FromSeconds(30));
+            var validator = new NifValidator(Certificate, httpTimeout: TimeSpan.FromSeconds(30));
 
             var response = await validator.CheckNif(new Request(entries));
             Assert.AreEqual(response.Results.Count(), entries.Count);
@@ -133,9 +132,11 @@ namespace Mews.Fiscalization.Spain.Tests
             return new VATBreakdown(new Percentage(vat), new Amount(baseValue), new Amount(Math.Round(baseValue * vat / 100, 2)));
         }
 
-        private static X509Certificate2 GeneratorCertificate()
+        private static Client CreateClient(X509Certificate2 certificate)
         {
-            return new X509Certificate2(rawData: Convert.FromBase64String(CertificateData), password: CertificatePassword, keyStorageFlags: X509KeyStorageFlags.DefaultKeySet);
+            var client = new Client(certificate, Environment.Test, httpTimeout: TimeSpan.FromSeconds(30));
+            client.HttpRequestFinished += (sender, args) => Console.WriteLine($"Received response: {System.Environment.NewLine}{args.Response}");
+            return client;
         }
     }
 }
