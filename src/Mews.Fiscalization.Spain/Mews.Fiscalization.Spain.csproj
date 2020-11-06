@@ -7,12 +7,11 @@
     <PackageTags>sii fiscalization spain</PackageTags>
     <Copyright>Copyright 2020</Copyright>
     <Description>A package for issued invoices for spanish fiscalization. (Sii)</Description>
-    <PackageProjectUrl></PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/MewsSystems/fiscalization-spain</PackageProjectUrl>
     <RepositoryUrl>https://github.com/MewsSystems/fiscalization-spain</RepositoryUrl>
     <License>https://github.com/MewsSystems/fiscalization-spain/blob/master/LICENSE</License>
     <Icon>https://raw.githubusercontent.com/msigut/eet/master/receipt.png</Icon>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
