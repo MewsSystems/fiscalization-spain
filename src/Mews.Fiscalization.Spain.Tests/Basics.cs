@@ -20,12 +20,12 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
         );
         public static readonly Client Client = new Client(Certificate, Environment.Test, httpTimeout: TimeSpan.FromSeconds(30));
 
-        public static readonly LocalCompany IssuingCompany = new LocalCompany(
+        public static readonly LocalCompanyRequest IssuingCompany = new LocalCompanyRequest(
             new LimitedString120(System.Environment.GetEnvironmentVariable("issuer_name") ?? "INSERT_ISSUER_NAME"),
             new TaxpayerIdentificationNumber(new Country("ES"), System.Environment.GetEnvironmentVariable("issuer_tax_number") ?? "INSERT_ISSUER_TAX_NUMBER")
         );
 
-        public static readonly LocalCompany ReceivingCompany = new LocalCompany(
+        public static readonly LocalCompanyRequest ReceivingCompany = new LocalCompanyRequest(
             new LimitedString120(System.Environment.GetEnvironmentVariable("receiver_name") ?? "INSERT_RECEIVER_NAME"),
             new TaxpayerIdentificationNumber(new Country("ES"), System.Environment.GetEnvironmentVariable("receiver_tax_number") ?? "INSERT_RECEIVER_TAX_NUMBER")
         );
@@ -77,7 +77,7 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
         {
             var invoice = GetInvoice(IssuingCompany, ReceivingCompany);
             var model = new InvoicesToSubmit(
-                header: new Header(IssuingCompany, CommunicationType.Registration),
+                header: new HeaderRequest(IssuingCompany, CommunicationType.Registration),
                 addedInvoices:  new [] { invoice }
             );
 
@@ -102,7 +102,7 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
             }
         }
 
-        private AddedInvoice GetInvoice(LocalCompany issuingCompany, LocalCompany payingCompany, int invoiceIndex = 1)
+        private AddedInvoice GetInvoice(LocalCompanyRequest issuingCompany, LocalCompanyRequest payingCompany, int invoiceIndex = 1)
         {
             var taxBreakdowns = new[] { GetBreakdown(21m, 42.07M) };
             var taxFreeItems = new[] { new TaxFreeItem(new Amount(20m), CauseOfExemption.OtherGrounds) };

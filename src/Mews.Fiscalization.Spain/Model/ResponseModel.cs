@@ -5,7 +5,7 @@ namespace Mews.Fiscalization.Spain.Model
 {
     public class ReceivedInvoices
     {
-        public ReceivedInvoices(Header header, RegisterResult result, InvoiceResult[] invoices, string secureVerificationCode = null)
+        public ReceivedInvoices(HeaderResponse header, RegisterResult result, InvoiceResult[] invoices, string secureVerificationCode = null)
         {
             Header = header;
             Result = result;
@@ -13,13 +13,39 @@ namespace Mews.Fiscalization.Spain.Model
             SuccessfulRequestId = secureVerificationCode.ToOption();
         }
 
-        public Header Header { get; }
+        public HeaderResponse Header { get; }
 
         public RegisterResult Result { get; }
 
         public InvoiceResult[] Invoices { get; }
 
         public IOption<string> SuccessfulRequestId { get; }
+    }
+
+    public class HeaderResponse
+    {
+        public HeaderResponse(LocalCompanyResponse company, CommunicationType communicationType)
+        {
+            Company = company;
+            CommunicationType = communicationType;
+        }
+
+        public LocalCompanyResponse Company { get; }
+
+        public CommunicationType CommunicationType { get; }
+    }
+
+    public class LocalCompanyResponse
+    {
+        public LocalCompanyResponse(string name, string taxpayerNumber)
+        {
+            Name = name;
+            TaxpayerNumber = taxpayerNumber;
+        }
+
+        public string Name { get; }
+
+        public string TaxpayerNumber { get; }
     }
 
     public class InvoiceIdResponse

@@ -7,7 +7,7 @@ namespace Mews.Fiscalization.Spain.Model
 {
     public class InvoicesToSubmit
     {
-        public InvoicesToSubmit(Header header, AddedInvoice[] addedInvoices)
+        public InvoicesToSubmit(HeaderRequest header, AddedInvoice[] addedInvoices)
         {
             Header = header ?? throw new ArgumentNullException(nameof(header));
             AddedInvoices = addedInvoices ?? throw new ArgumentNullException(nameof(addedInvoices));
@@ -23,14 +23,14 @@ namespace Mews.Fiscalization.Spain.Model
             }
         }
 
-        public Header Header { get; }
+        public HeaderRequest Header { get; }
 
         public AddedInvoice[] AddedInvoices { get; }
     }
 
     public class InvoicesToDelete
     {
-        public InvoicesToDelete(Header header, Invoice[] invoices)
+        public InvoicesToDelete(HeaderRequest header, Invoice[] invoices)
         {
             Header = header ?? throw new ArgumentNullException(nameof(header));
             Invoices = invoices ?? throw new ArgumentNullException(nameof(invoices));
@@ -46,7 +46,7 @@ namespace Mews.Fiscalization.Spain.Model
             }
         }
 
-        public Header Header { get; }
+        public HeaderRequest Header { get; }
 
         public Invoice[] Invoices { get; }
     }
@@ -206,9 +206,9 @@ namespace Mews.Fiscalization.Spain.Model
         public InvoiceItem Delivery { get; }
     }
 
-    public class CounterPartyCompany : Coproduct2<LocalCompany, ForeignCompany>
+    public class CounterPartyCompany : Coproduct2<LocalCompanyRequest, ForeignCompany>
     {
-        public CounterPartyCompany(LocalCompany companyTitle)
+        public CounterPartyCompany(LocalCompanyRequest companyTitle)
             : base(companyTitle)
         {
             if (companyTitle == null)
@@ -295,22 +295,22 @@ namespace Mews.Fiscalization.Spain.Model
         public Month Month { get; }
     }
 
-    public class Header
+    public class HeaderRequest
     {
-        public Header(LocalCompany company, CommunicationType communicationType)
+        public HeaderRequest(LocalCompanyRequest company, CommunicationType communicationType)
         {
             Company = company ?? throw new ArgumentNullException(nameof(company));
             CommunicationType = communicationType;
         }
 
-        public LocalCompany Company { get; }
+        public LocalCompanyRequest Company { get; }
 
         public CommunicationType CommunicationType { get; }
     }
 
-    public class LocalCompany
+    public class LocalCompanyRequest
     {
-        public LocalCompany(LimitedString120 name, TaxpayerIdentificationNumber taxpayerNumber)
+        public LocalCompanyRequest(LimitedString120 name, TaxpayerIdentificationNumber taxpayerNumber)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
             TaxpayerNumber = taxpayerNumber ?? throw new ArgumentNullException(nameof(taxpayerNumber));

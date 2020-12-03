@@ -233,7 +233,7 @@ namespace Mews.Fiscalization.Spain.Converters
             };
         }
 
-        private CabeceraSii Convert(Header header)
+        private CabeceraSii Convert(HeaderRequest header)
         {
             return new CabeceraSii
             {
@@ -242,7 +242,7 @@ namespace Mews.Fiscalization.Spain.Converters
             };
         }
 
-        private CabeceraSiiBaja Convert2(Header header)
+        private CabeceraSiiBaja Convert2(HeaderRequest header)
         {
             return new CabeceraSiiBaja
             {
@@ -251,7 +251,7 @@ namespace Mews.Fiscalization.Spain.Converters
             };
         }
 
-        private PersonaFisicaJuridicaESType Convert(LocalCompany companyTitle)
+        private PersonaFisicaJuridicaESType Convert(LocalCompanyRequest companyTitle)
         {
             return new PersonaFisicaJuridicaESType
             {

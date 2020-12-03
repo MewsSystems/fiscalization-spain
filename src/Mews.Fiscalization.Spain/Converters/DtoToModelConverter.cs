@@ -42,11 +42,11 @@ namespace Mews.Fiscalization.Spain.Converters
             );
         }
 
-        private Header Convert(CabeceraSii cabecera)
+        private HeaderResponse Convert(CabeceraSii cabecera)
         {
-            return new Header(
-                new LocalCompany(new LimitedString120(cabecera.Titular.NombreRazon), new TaxpayerIdentificationNumber(new Country("ES"), cabecera.Titular.NIF)),
-                cabecera.TipoComunicacion.Match(
+            return new HeaderResponse(
+                company: new LocalCompanyResponse(name: cabecera.Titular.NombreRazon, taxpayerNumber: cabecera.Titular.NIF),
+                communicationType: cabecera.TipoComunicacion.Match(
                     ClaveTipoComunicacionType.A0, _ => CommunicationType.Registration,
                     ClaveTipoComunicacionType.A1, _ => CommunicationType.Amendment,
                     ClaveTipoComunicacionType.A4, _ => CommunicationType.AmendmentForTravellers
