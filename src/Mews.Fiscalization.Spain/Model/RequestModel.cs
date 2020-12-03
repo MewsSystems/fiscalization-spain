@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text.RegularExpressions;
 using FuncSharp;
 using Mews.Fiscalization.Core.Model;
 
