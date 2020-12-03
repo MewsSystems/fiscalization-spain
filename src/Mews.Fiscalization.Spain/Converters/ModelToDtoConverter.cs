@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using FuncSharp;
+using Mews.Fiscalization.Core.Model;
 using Mews.Fiscalization.Spain.Dto.Requests;
 using Mews.Fiscalization.Spain.Dto.XSD.SuministroInformacion;
 using Mews.Fiscalization.Spain.Dto.XSD.SuministroLR;
@@ -156,7 +157,7 @@ namespace Mews.Fiscalization.Spain.Converters
                 t => new PersonaFisicaJuridicaType
                 {
                     NombreRazon = t.Name.Value,
-                    Item = t.TaxPayerNumber.Number
+                    Item = t.TaxPayerNumber.Value
                 },
                 c => new PersonaFisicaJuridicaType
                 {
@@ -213,7 +214,7 @@ namespace Mews.Fiscalization.Spain.Converters
                 FechaExpedicionFacturaEmisor = Convert(id.Date),
                 IDEmisorFactura = new IDFacturaExpedidaTypeIDEmisorFactura
                 {
-                    NIF = id.Issuer.Number
+                    NIF = id.Issuer.Value
                 },
                 NumSerieFacturaEmisor = id.Number.Value
             };
@@ -226,7 +227,7 @@ namespace Mews.Fiscalization.Spain.Converters
                 FechaExpedicionFacturaEmisor = Convert(id.Date),
                 IDEmisorFactura = new IDFacturaExpedidaBCTypeIDEmisorFactura
                 {
-                    NIF = id.Issuer.Number
+                    NIF = id.Issuer.Value
                 },
                 NumSerieFacturaEmisor = id.Number.Value
             };
@@ -255,7 +256,7 @@ namespace Mews.Fiscalization.Spain.Converters
             return new PersonaFisicaJuridicaESType
             {
                 NombreRazon = companyTitle.Name.Value,
-                NIF = companyTitle.TaxPayerNumber.Number
+                NIF = companyTitle.TaxPayerNumber.Value
             };
         }
 
@@ -306,7 +307,7 @@ namespace Mews.Fiscalization.Spain.Converters
 
         private CountryType2 Convert(Country country)
         {
-            var result = country.Alpha2Code.ToEnum<CountryType2>();
+            var result = country.Value.ToEnum<CountryType2>();
             return result.Get();
         }
 

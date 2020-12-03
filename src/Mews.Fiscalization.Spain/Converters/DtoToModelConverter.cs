@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Linq;
 using FuncSharp;
+using Mews.Fiscalization.Core.Model;
 using Mews.Fiscalization.Spain.Dto.Responses;
 using Mews.Fiscalization.Spain.Dto.XSD.RespuestaSuministro;
 using Mews.Fiscalization.Spain.Dto.XSD.SuministroInformacion;
@@ -35,7 +36,7 @@ namespace Mews.Fiscalization.Spain.Converters
         private InvoiceId Convert(IDFacturaExpedidaType iDFactura)
         {
             return new InvoiceId(
-                new TaxPayerNumber(iDFactura.IDEmisorFactura.NIF),
+                new TaxpayerIdentificationNumber(new Country("ES"), iDFactura.IDEmisorFactura.NIF),
                 new LimitedString1to60(iDFactura.NumSerieFacturaEmisor), ConvertDate(iDFactura.FechaExpedicionFacturaEmisor)
             );
         }
@@ -43,7 +44,7 @@ namespace Mews.Fiscalization.Spain.Converters
         private Header Convert(CabeceraSii cabecera)
         {
             return new Header(
-                new LocalCompany(new LimitedString120(cabecera.Titular.NombreRazon), new TaxPayerNumber(cabecera.Titular.NIF)),
+                new LocalCompany(new LimitedString120(cabecera.Titular.NombreRazon), new TaxpayerIdentificationNumber(new Country("ES"), cabecera.Titular.NIF)),
                 cabecera.TipoComunicacion.Match(
                     ClaveTipoComunicacionType.A0, _ => CommunicationType.Registration,
                     ClaveTipoComunicacionType.A1, _ => CommunicationType.Amendment,

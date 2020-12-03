@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using FuncSharp;
+using Mews.Fiscalization.Core.Model;
 using Mews.Fiscalization.Spain.Model;
 using Mews.Fiscalization.Spain.Nif;
 using NUnit.Framework;
@@ -21,12 +22,12 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
 
         public static readonly LocalCompany IssuingCompany = new LocalCompany(
             new LimitedString120(System.Environment.GetEnvironmentVariable("issuer_name") ?? "INSERT_ISSUER_NAME"),
-            new TaxPayerNumber(System.Environment.GetEnvironmentVariable("issuer_tax_number") ?? "INSERT_ISSUER_TAX_NUMBER")
+            new TaxpayerIdentificationNumber(new Country("ES"), System.Environment.GetEnvironmentVariable("issuer_tax_number") ?? "INSERT_ISSUER_TAX_NUMBER")
         );
 
         public static readonly LocalCompany ReceivingCompany = new LocalCompany(
             new LimitedString120(System.Environment.GetEnvironmentVariable("receiver_name") ?? "INSERT_RECEIVER_NAME"),
-            new TaxPayerNumber(System.Environment.GetEnvironmentVariable("receiver_tax_number") ?? "INSERT_RECEIVER_TAX_NUMBER")
+            new TaxpayerIdentificationNumber(new Country("ES"), System.Environment.GetEnvironmentVariable("receiver_tax_number") ?? "INSERT_RECEIVER_TAX_NUMBER")
         );
 
         [Test]
@@ -34,10 +35,10 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
         {
             var goodEntries = new List<NifInfoEntry>
             {
-                new NifInfoEntry(IssuingCompany.TaxPayerNumber.Number, IssuingCompany.Name.Value),
-                new NifInfoEntry(ReceivingCompany.TaxPayerNumber.Number, ReceivingCompany.Name.Value),
+                new NifInfoEntry(IssuingCompany.TaxPayerNumber.Value, IssuingCompany.Name.Value),
+                new NifInfoEntry(ReceivingCompany.TaxPayerNumber.Value, ReceivingCompany.Name.Value),
                 new NifInfoEntry("99999999R", "ESPAÑOL ESPAÑOL JUAN"),
-                new NifInfoEntry(IssuingCompany.TaxPayerNumber.Number, "Wrong company name"), // surprisingly, good company ID with bad company name is found
+                new NifInfoEntry(IssuingCompany.TaxPayerNumber.Value, "Wrong company name"), // surprisingly, good company ID with bad company name is found
             };
             var badEntries = new List<NifInfoEntry>
             {

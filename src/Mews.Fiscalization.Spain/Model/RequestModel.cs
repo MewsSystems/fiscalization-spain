@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 using FuncSharp;
+using Mews.Fiscalization.Core.Model;
 
 namespace Mews.Fiscalization.Spain.Model
 {
@@ -259,7 +260,7 @@ namespace Mews.Fiscalization.Spain.Model
                 }
 
                 var countryCode = id.Value.Substring(0, 2);
-                return Model.Country.IsValid(countryCode);
+                return Core.Model.Country.IsValid(countryCode);
             }
             return id != null && name != null;
         }
@@ -267,14 +268,14 @@ namespace Mews.Fiscalization.Spain.Model
 
     public class InvoiceId
     {
-        public InvoiceId(TaxPayerNumber issuer, LimitedString1to60 number, DateTime date)
+        public InvoiceId(TaxpayerIdentificationNumber issuer, LimitedString1to60 number, DateTime date)
         {
             Issuer = issuer ?? throw new ArgumentNullException(nameof(issuer));
             Number = number ?? throw new ArgumentNullException(nameof(number));
             Date = date;
         }
 
-        public TaxPayerNumber Issuer { get; }
+        public TaxpayerIdentificationNumber Issuer { get; }
 
         public LimitedString1to60 Number { get; }
 
@@ -309,7 +310,7 @@ namespace Mews.Fiscalization.Spain.Model
 
     public class LocalCompany
     {
-        public LocalCompany(LimitedString120 name, TaxPayerNumber taxPayerNumber)
+        public LocalCompany(LimitedString120 name, TaxpayerIdentificationNumber taxPayerNumber)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
             TaxPayerNumber = taxPayerNumber ?? throw new ArgumentNullException(nameof(taxPayerNumber));
@@ -317,33 +318,6 @@ namespace Mews.Fiscalization.Spain.Model
 
         public LimitedString120 Name { get; }
 
-        public TaxPayerNumber TaxPayerNumber { get; }
-    }
-
-    public class TaxPayerNumber
-    {
-        private static readonly string Pattern = @"(([a-z|A-Z]{1}\d{7}[a-z|A-Z]{1})|(\d{8}[a-z|A-Z]{1})|([a-z|A-Z]{1}\d{8}))";
-
-        public TaxPayerNumber(string number)
-        {
-            if (number == null)
-            {
-                throw new ArgumentNullException(nameof(number));
-            }
-
-            if (!IsValid(number))
-            {
-                throw new ArgumentException($"{nameof(number)} is not valid tax payer number.");
-            }
-
-            Number = number;
-        }
-
-        public string Number { get; }
-
-        public static bool IsValid(string number)
-        {
-            return number != null && Regex.IsMatch(number, Pattern) && number.Length == 9;
-        }
+        public TaxpayerIdentificationNumber TaxPayerNumber { get; }
     }
 }
