@@ -116,7 +116,7 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
 
             return new AddedInvoice(
                 new TaxPeriod(new Year(issueDateUtc.Year), (Month)(issueDateUtc.Month - 1)),
-                new InvoiceId(issuingCompany.TaxpayerNumber, new LimitedString1to60(invoiceNumber), issueDateUtc),
+                new InvoiceIdRequest(issuingCompany.TaxpayerNumber, new LimitedString1to60(invoiceNumber), issueDateUtc),
                 InvoiceType.Invoice,
                 SchemeOrEffect.GeneralTaxRegimeActivity,
                 totalAmount,

@@ -25,19 +25,20 @@ namespace Mews.Fiscalization.Spain.Converters
         {
             var result = Convert(invoice.EstadoRegistro);
             return new InvoiceResult(
-                Convert(invoice.IDFactura),
-                result,
-                invoice.CodigoErrorRegistro.ToInt().Match(c => (int?)c, _ => null),
-                invoice.DescripcionErrorRegistro.ToNonEmptyOption().GetOrNull(),
-                invoice.CSV.ToNonEmptyOption().GetOrNull()
+                id: Convert(invoice.IDFactura),
+                result: result,
+                errorCode: invoice.CodigoErrorRegistro.ToInt().Match(c => (int?)c, _ => null),
+                errorMessage: invoice.DescripcionErrorRegistro.ToNonEmptyOption().GetOrNull(),
+                secureVerificationCodeForOriginalInvoice: invoice.CSV.ToNonEmptyOption().GetOrNull()
             );
         }
 
-        private InvoiceId Convert(IDFacturaExpedidaType iDFactura)
+        private InvoiceIdResponse Convert(IDFacturaExpedidaType iDFactura)
         {
-            return new InvoiceId(
-                new TaxpayerIdentificationNumber(new Country("ES"), iDFactura.IDEmisorFactura.NIF),
-                new LimitedString1to60(iDFactura.NumSerieFacturaEmisor), ConvertDate(iDFactura.FechaExpedicionFacturaEmisor)
+            return new InvoiceIdResponse(
+                issuer: iDFactura.IDEmisorFactura.NIF,
+                number: iDFactura.NumSerieFacturaEmisor,
+                date: ConvertDate(iDFactura.FechaExpedicionFacturaEmisor)
             );
         }
 

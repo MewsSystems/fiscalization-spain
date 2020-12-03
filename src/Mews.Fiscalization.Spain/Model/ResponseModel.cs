@@ -1,4 +1,5 @@
 ﻿using FuncSharp;
+using System;
 
 namespace Mews.Fiscalization.Spain.Model
 {
@@ -21,10 +22,26 @@ namespace Mews.Fiscalization.Spain.Model
         public IOption<string> SuccessfulRequestId { get; }
     }
 
+    public class InvoiceIdResponse
+    {
+        public InvoiceIdResponse(string issuer, string number, DateTime date)
+        {
+            Issuer = issuer;
+            Number = number;
+            Date = date;
+        }
+
+        public string Issuer { get; }
+
+        public string Number { get; }
+
+        public DateTime Date { get; }
+    }
+
     public class InvoiceResult
     {
         public InvoiceResult(
-            InvoiceId id,
+            InvoiceIdResponse id,
             InvoiceRegisterResult result,
             int? errorCode = null,
             string errorMessage = null,
@@ -37,7 +54,7 @@ namespace Mews.Fiscalization.Spain.Model
             OriginalInvoiceRequestId = secureVerificationCodeForOriginalInvoice.ToOption();
         }
 
-        public InvoiceId Id { get; }
+        public InvoiceIdResponse Id { get; }
 
         public InvoiceRegisterResult Result { get; }
 

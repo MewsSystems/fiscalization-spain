@@ -207,7 +207,7 @@ namespace Mews.Fiscalization.Spain.Converters
             };
         }
 
-        private IDFacturaExpedidaType Convert(InvoiceId id)
+        private IDFacturaExpedidaType Convert(InvoiceIdRequest id)
         {
             return new IDFacturaExpedidaType
             {
@@ -220,7 +220,7 @@ namespace Mews.Fiscalization.Spain.Converters
             };
         }
 
-        private IDFacturaExpedidaBCType Convert2(InvoiceId id)
+        private IDFacturaExpedidaBCType Convert2(InvoiceIdRequest id)
         {
             return new IDFacturaExpedidaBCType
             {

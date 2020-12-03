@@ -55,7 +55,7 @@ namespace Mews.Fiscalization.Spain.Model
     {
         public Invoice(
             TaxPeriod taxPeriod,
-            InvoiceId id)
+            InvoiceIdRequest id)
         {
             TaxPeriod = taxPeriod ?? throw new ArgumentNullException(nameof(taxPeriod));
             Id = id ?? throw new ArgumentNullException(nameof(id));
@@ -63,14 +63,14 @@ namespace Mews.Fiscalization.Spain.Model
 
         public TaxPeriod TaxPeriod { get; }
 
-        public InvoiceId Id { get; }
+        public InvoiceIdRequest Id { get; }
     }
 
     public class AddedInvoice : Invoice
     {
         public AddedInvoice(
             TaxPeriod taxPeriod,
-            InvoiceId id,
+            InvoiceIdRequest id,
             InvoiceType type,
             SchemeOrEffect schemeOrEffect,
             Amount totalAmount,
@@ -266,9 +266,9 @@ namespace Mews.Fiscalization.Spain.Model
         }
     }
 
-    public class InvoiceId
+    public class InvoiceIdRequest
     {
-        public InvoiceId(TaxpayerIdentificationNumber issuer, LimitedString1to60 number, DateTime date)
+        public InvoiceIdRequest(TaxpayerIdentificationNumber issuer, LimitedString1to60 number, DateTime date)
         {
             Issuer = issuer ?? throw new ArgumentNullException(nameof(issuer));
             Number = number ?? throw new ArgumentNullException(nameof(number));
