@@ -2,11 +2,11 @@
 using FuncSharp;
 using Mews.Fiscalization.Core.Model;
 
-namespace Mews.Fiscalization.Spain.Model
+namespace Mews.Fiscalization.Spain.Model.Request
 {
     public class InvoicesToSubmit
     {
-        public InvoicesToSubmit(HeaderRequest header, AddedInvoice[] addedInvoices)
+        public InvoicesToSubmit(Header header, AddedInvoice[] addedInvoices)
         {
             Header = header ?? throw new ArgumentNullException(nameof(header));
             AddedInvoices = addedInvoices ?? throw new ArgumentNullException(nameof(addedInvoices));
@@ -22,14 +22,14 @@ namespace Mews.Fiscalization.Spain.Model
             }
         }
 
-        public HeaderRequest Header { get; }
+        public Header Header { get; }
 
         public AddedInvoice[] AddedInvoices { get; }
     }
 
     public class InvoicesToDelete
     {
-        public InvoicesToDelete(HeaderRequest header, Invoice[] invoices)
+        public InvoicesToDelete(Header header, Invoice[] invoices)
         {
             Header = header ?? throw new ArgumentNullException(nameof(header));
             Invoices = invoices ?? throw new ArgumentNullException(nameof(invoices));
@@ -45,7 +45,7 @@ namespace Mews.Fiscalization.Spain.Model
             }
         }
 
-        public HeaderRequest Header { get; }
+        public Header Header { get; }
 
         public Invoice[] Invoices { get; }
     }
@@ -54,7 +54,7 @@ namespace Mews.Fiscalization.Spain.Model
     {
         public Invoice(
             TaxPeriod taxPeriod,
-            InvoiceIdRequest id)
+            InvoiceId id)
         {
             TaxPeriod = taxPeriod ?? throw new ArgumentNullException(nameof(taxPeriod));
             Id = id ?? throw new ArgumentNullException(nameof(id));
@@ -62,14 +62,14 @@ namespace Mews.Fiscalization.Spain.Model
 
         public TaxPeriod TaxPeriod { get; }
 
-        public InvoiceIdRequest Id { get; }
+        public InvoiceId Id { get; }
     }
 
     public class AddedInvoice : Invoice
     {
         public AddedInvoice(
             TaxPeriod taxPeriod,
-            InvoiceIdRequest id,
+            InvoiceId id,
             InvoiceType type,
             SchemeOrEffect schemeOrEffect,
             Amount totalAmount,
@@ -205,9 +205,9 @@ namespace Mews.Fiscalization.Spain.Model
         public InvoiceItem Delivery { get; }
     }
 
-    public class CounterPartyCompany : Coproduct2<LocalCompanyRequest, ForeignCompany>
+    public class CounterPartyCompany : Coproduct2<LocalCompany, ForeignCompany>
     {
-        public CounterPartyCompany(LocalCompanyRequest companyTitle)
+        public CounterPartyCompany(LocalCompany companyTitle)
             : base(companyTitle)
         {
             if (companyTitle == null)
@@ -265,9 +265,9 @@ namespace Mews.Fiscalization.Spain.Model
         }
     }
 
-    public class InvoiceIdRequest
+    public class InvoiceId
     {
-        public InvoiceIdRequest(TaxpayerIdentificationNumber issuer, LimitedString1to60 number, DateTime date)
+        public InvoiceId(TaxpayerIdentificationNumber issuer, LimitedString1to60 number, DateTime date)
         {
             Issuer = issuer ?? throw new ArgumentNullException(nameof(issuer));
             Number = number ?? throw new ArgumentNullException(nameof(number));
@@ -294,22 +294,22 @@ namespace Mews.Fiscalization.Spain.Model
         public Month Month { get; }
     }
 
-    public class HeaderRequest
+    public class Header
     {
-        public HeaderRequest(LocalCompanyRequest company, CommunicationType communicationType)
+        public Header(LocalCompany company, CommunicationType communicationType)
         {
             Company = company ?? throw new ArgumentNullException(nameof(company));
             CommunicationType = communicationType;
         }
 
-        public LocalCompanyRequest Company { get; }
+        public LocalCompany Company { get; }
 
         public CommunicationType CommunicationType { get; }
     }
 
-    public class LocalCompanyRequest
+    public class LocalCompany
     {
-        public LocalCompanyRequest(LimitedString120 name, TaxpayerIdentificationNumber taxpayerNumber)
+        public LocalCompany(LimitedString120 name, TaxpayerIdentificationNumber taxpayerNumber)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
             TaxpayerNumber = taxpayerNumber ?? throw new ArgumentNullException(nameof(taxpayerNumber));

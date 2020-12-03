@@ -6,6 +6,7 @@ using Mews.Fiscalization.Spain.Dto.Requests;
 using Mews.Fiscalization.Spain.Dto.XSD.SuministroInformacion;
 using Mews.Fiscalization.Spain.Dto.XSD.SuministroLR;
 using Mews.Fiscalization.Spain.Model;
+using Mews.Fiscalization.Spain.Model.Request;
 
 namespace Mews.Fiscalization.Spain.Converters
 {
@@ -207,7 +208,7 @@ namespace Mews.Fiscalization.Spain.Converters
             };
         }
 
-        private IDFacturaExpedidaType Convert(InvoiceIdRequest id)
+        private IDFacturaExpedidaType Convert(InvoiceId id)
         {
             return new IDFacturaExpedidaType
             {
@@ -220,7 +221,7 @@ namespace Mews.Fiscalization.Spain.Converters
             };
         }
 
-        private IDFacturaExpedidaBCType Convert2(InvoiceIdRequest id)
+        private IDFacturaExpedidaBCType Convert2(InvoiceId id)
         {
             return new IDFacturaExpedidaBCType
             {
@@ -233,7 +234,7 @@ namespace Mews.Fiscalization.Spain.Converters
             };
         }
 
-        private CabeceraSii Convert(HeaderRequest header)
+        private CabeceraSii Convert(Header header)
         {
             return new CabeceraSii
             {
@@ -242,7 +243,7 @@ namespace Mews.Fiscalization.Spain.Converters
             };
         }
 
-        private CabeceraSiiBaja Convert2(HeaderRequest header)
+        private CabeceraSiiBaja Convert2(Header header)
         {
             return new CabeceraSiiBaja
             {
@@ -251,7 +252,7 @@ namespace Mews.Fiscalization.Spain.Converters
             };
         }
 
-        private PersonaFisicaJuridicaESType Convert(LocalCompanyRequest companyTitle)
+        private PersonaFisicaJuridicaESType Convert(LocalCompany companyTitle)
         {
             return new PersonaFisicaJuridicaESType
             {

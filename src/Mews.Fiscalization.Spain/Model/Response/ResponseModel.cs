@@ -1,11 +1,11 @@
 ﻿using FuncSharp;
 using System;
 
-namespace Mews.Fiscalization.Spain.Model
+namespace Mews.Fiscalization.Spain.Model.Response
 {
     public class ReceivedInvoices
     {
-        public ReceivedInvoices(HeaderResponse header, RegisterResult result, InvoiceResult[] invoices, string secureVerificationCode = null)
+        public ReceivedInvoices(Header header, RegisterResult result, InvoiceResult[] invoices, string secureVerificationCode = null)
         {
             Header = header;
             Result = result;
@@ -13,7 +13,7 @@ namespace Mews.Fiscalization.Spain.Model
             SuccessfulRequestId = secureVerificationCode.ToOption();
         }
 
-        public HeaderResponse Header { get; }
+        public Header Header { get; }
 
         public RegisterResult Result { get; }
 
@@ -22,22 +22,22 @@ namespace Mews.Fiscalization.Spain.Model
         public IOption<string> SuccessfulRequestId { get; }
     }
 
-    public class HeaderResponse
+    public class Header
     {
-        public HeaderResponse(LocalCompanyResponse company, CommunicationType communicationType)
+        public Header(LocalCompany company, CommunicationType communicationType)
         {
             Company = company;
             CommunicationType = communicationType;
         }
 
-        public LocalCompanyResponse Company { get; }
+        public LocalCompany Company { get; }
 
         public CommunicationType CommunicationType { get; }
     }
 
-    public class LocalCompanyResponse
+    public class LocalCompany
     {
-        public LocalCompanyResponse(string name, string taxpayerNumber)
+        public LocalCompany(string name, string taxpayerNumber)
         {
             Name = name;
             TaxpayerNumber = taxpayerNumber;
@@ -48,9 +48,9 @@ namespace Mews.Fiscalization.Spain.Model
         public string TaxpayerNumber { get; }
     }
 
-    public class InvoiceIdResponse
+    public class InvoiceId
     {
-        public InvoiceIdResponse(string issuer, string number, DateTime date)
+        public InvoiceId(string issuer, string number, DateTime date)
         {
             Issuer = issuer;
             Number = number;
@@ -67,7 +67,7 @@ namespace Mews.Fiscalization.Spain.Model
     public class InvoiceResult
     {
         public InvoiceResult(
-            InvoiceIdResponse id,
+            InvoiceId id,
             InvoiceRegisterResult result,
             int? errorCode = null,
             string errorMessage = null,
@@ -80,7 +80,7 @@ namespace Mews.Fiscalization.Spain.Model
             OriginalInvoiceRequestId = secureVerificationCodeForOriginalInvoice.ToOption();
         }
 
-        public InvoiceIdResponse Id { get; }
+        public InvoiceId Id { get; }
 
         public InvoiceRegisterResult Result { get; }
 

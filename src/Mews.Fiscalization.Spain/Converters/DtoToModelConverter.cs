@@ -6,6 +6,7 @@ using Mews.Fiscalization.Spain.Dto.Responses;
 using Mews.Fiscalization.Spain.Dto.XSD.RespuestaSuministro;
 using Mews.Fiscalization.Spain.Dto.XSD.SuministroInformacion;
 using Mews.Fiscalization.Spain.Model;
+using Mews.Fiscalization.Spain.Model.Response;
 
 namespace Mews.Fiscalization.Spain.Converters
 {
@@ -32,19 +33,19 @@ namespace Mews.Fiscalization.Spain.Converters
             );
         }
 
-        private InvoiceIdResponse Convert(IDFacturaExpedidaType iDFactura)
+        private InvoiceId Convert(IDFacturaExpedidaType iDFactura)
         {
-            return new InvoiceIdResponse(
+            return new InvoiceId(
                 issuer: iDFactura.IDEmisorFactura.NIF,
                 number: iDFactura.NumSerieFacturaEmisor,
                 date: ConvertDate(iDFactura.FechaExpedicionFacturaEmisor)
             );
         }
 
-        private HeaderResponse Convert(CabeceraSii cabecera)
+        private Header Convert(CabeceraSii cabecera)
         {
-            return new HeaderResponse(
-                company: new LocalCompanyResponse(name: cabecera.Titular.NombreRazon, taxpayerNumber: cabecera.Titular.NIF),
+            return new Header(
+                company: new LocalCompany(name: cabecera.Titular.NombreRazon, taxpayerNumber: cabecera.Titular.NIF),
                 communicationType: cabecera.TipoComunicacion.Match(
                     ClaveTipoComunicacionType.A0, _ => CommunicationType.Registration,
                     ClaveTipoComunicacionType.A1, _ => CommunicationType.Amendment,
