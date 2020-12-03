@@ -310,14 +310,14 @@ namespace Mews.Fiscalization.Spain.Model
 
     public class LocalCompany
     {
-        public LocalCompany(LimitedString120 name, TaxpayerIdentificationNumber taxPayerNumber)
+        public LocalCompany(LimitedString120 name, TaxpayerIdentificationNumber taxpayerNumber)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
-            TaxPayerNumber = taxPayerNumber ?? throw new ArgumentNullException(nameof(taxPayerNumber));
+            TaxpayerNumber = taxpayerNumber ?? throw new ArgumentNullException(nameof(taxpayerNumber));
         }
 
         public LimitedString120 Name { get; }
 
-        public TaxpayerIdentificationNumber TaxPayerNumber { get; }
+        public TaxpayerIdentificationNumber TaxpayerNumber { get; }
     }
 }

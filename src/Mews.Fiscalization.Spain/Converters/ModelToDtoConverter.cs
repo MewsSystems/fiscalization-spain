@@ -157,7 +157,7 @@ namespace Mews.Fiscalization.Spain.Converters
                 t => new PersonaFisicaJuridicaType
                 {
                     NombreRazon = t.Name.Value,
-                    Item = t.TaxPayerNumber.Value
+                    Item = t.TaxpayerNumber.Value
                 },
                 c => new PersonaFisicaJuridicaType
                 {
@@ -256,7 +256,7 @@ namespace Mews.Fiscalization.Spain.Converters
             return new PersonaFisicaJuridicaESType
             {
                 NombreRazon = companyTitle.Name.Value,
-                NIF = companyTitle.TaxPayerNumber.Value
+                NIF = companyTitle.TaxpayerNumber.Value
             };
         }
 

@@ -35,10 +35,10 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
         {
             var goodEntries = new List<NifInfoEntry>
             {
-                new NifInfoEntry(IssuingCompany.TaxPayerNumber.Value, IssuingCompany.Name.Value),
-                new NifInfoEntry(ReceivingCompany.TaxPayerNumber.Value, ReceivingCompany.Name.Value),
+                new NifInfoEntry(IssuingCompany.TaxpayerNumber.Value, IssuingCompany.Name.Value),
+                new NifInfoEntry(ReceivingCompany.TaxpayerNumber.Value, ReceivingCompany.Name.Value),
                 new NifInfoEntry("99999999R", "ESPAÑOL ESPAÑOL JUAN"),
-                new NifInfoEntry(IssuingCompany.TaxPayerNumber.Value, "Wrong company name"), // surprisingly, good company ID with bad company name is found
+                new NifInfoEntry(IssuingCompany.TaxpayerNumber.Value, "Wrong company name"), // surprisingly, good company ID with bad company name is found
             };
             var badEntries = new List<NifInfoEntry>
             {
@@ -116,7 +116,7 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
 
             return new AddedInvoice(
                 new TaxPeriod(new Year(issueDateUtc.Year), (Month)(issueDateUtc.Month - 1)),
-                new InvoiceId(issuingCompany.TaxPayerNumber, new LimitedString1to60(invoiceNumber), issueDateUtc),
+                new InvoiceId(issuingCompany.TaxpayerNumber, new LimitedString1to60(invoiceNumber), issueDateUtc),
                 InvoiceType.Invoice,
                 SchemeOrEffect.GeneralTaxRegimeActivity,
                 totalAmount,
