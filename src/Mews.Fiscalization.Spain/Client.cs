@@ -6,7 +6,8 @@ using Mews.Fiscalization.Spain.Communication;
 using Mews.Fiscalization.Spain.Converters;
 using Mews.Fiscalization.Spain.Dto.Requests;
 using Mews.Fiscalization.Spain.Dto.Responses;
-using Mews.Fiscalization.Spain.Model;
+using Mews.Fiscalization.Spain.Model.Request;
+using Mews.Fiscalization.Spain.Model.Response;
 
 namespace Mews.Fiscalization.Spain
 {

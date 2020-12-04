@@ -6,6 +6,7 @@ using Mews.Fiscalization.Spain.Dto.Responses;
 using Mews.Fiscalization.Spain.Dto.XSD.RespuestaSuministro;
 using Mews.Fiscalization.Spain.Dto.XSD.SuministroInformacion;
 using Mews.Fiscalization.Spain.Model;
+using Mews.Fiscalization.Spain.Model.Response;
 
 namespace Mews.Fiscalization.Spain.Converters
 {
@@ -24,27 +25,28 @@ namespace Mews.Fiscalization.Spain.Converters
         {
             var result = Convert(invoice.EstadoRegistro);
             return new InvoiceResult(
-                Convert(invoice.IDFactura),
-                result,
-                invoice.CodigoErrorRegistro.ToInt().Match(c => (int?)c, _ => null),
-                invoice.DescripcionErrorRegistro.ToNonEmptyOption().GetOrNull(),
-                invoice.CSV.ToNonEmptyOption().GetOrNull()
+                id: Convert(invoice.IDFactura),
+                result: result,
+                errorCode: invoice.CodigoErrorRegistro.ToInt().Match(c => (int?)c, _ => null),
+                errorMessage: invoice.DescripcionErrorRegistro.ToNonEmptyOption().GetOrNull(),
+                secureVerificationCodeForOriginalInvoice: invoice.CSV.ToNonEmptyOption().GetOrNull()
             );
         }
 
         private InvoiceId Convert(IDFacturaExpedidaType iDFactura)
         {
             return new InvoiceId(
-                new TaxPayerNumber(iDFactura.IDEmisorFactura.NIF),
-                new LimitedString1to60(iDFactura.NumSerieFacturaEmisor), ConvertDate(iDFactura.FechaExpedicionFacturaEmisor)
+                issuer: iDFactura.IDEmisorFactura.NIF,
+                number: iDFactura.NumSerieFacturaEmisor,
+                date: ConvertDate(iDFactura.FechaExpedicionFacturaEmisor)
             );
         }
 
         private Header Convert(CabeceraSii cabecera)
         {
             return new Header(
-                new LocalCompany(new LimitedString120(cabecera.Titular.NombreRazon), new TaxPayerNumber(cabecera.Titular.NIF)),
-                cabecera.TipoComunicacion.Match(
+                company: new LocalCompany(name: cabecera.Titular.NombreRazon, taxpayerNumber: cabecera.Titular.NIF),
+                communicationType: cabecera.TipoComunicacion.Match(
                     ClaveTipoComunicacionType.A0, _ => CommunicationType.Registration,
                     ClaveTipoComunicacionType.A1, _ => CommunicationType.Amendment,
                     ClaveTipoComunicacionType.A4, _ => CommunicationType.AmendmentForTravellers
