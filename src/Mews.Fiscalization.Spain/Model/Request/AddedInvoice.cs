@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FuncSharp;
+using System;
+using System.Linq;
 
 namespace Mews.Fiscalization.Spain.Model.Request
 {
@@ -9,7 +11,6 @@ namespace Mews.Fiscalization.Spain.Model.Request
             InvoiceId id,
             InvoiceType type,
             SchemeOrEffect schemeOrEffect,
-            Amount totalAmount,
             LimitedString500 description,
             BreakdownItem breakdown,
             CounterPartyCompany counterParty = null)
@@ -22,17 +23,48 @@ namespace Mews.Fiscalization.Spain.Model.Request
 
             Type = type;
             SchemeOrEffect = schemeOrEffect;
-            TotalAmount = totalAmount ?? throw new ArgumentNullException(nameof(totalAmount));
             Description = description ?? throw new ArgumentNullException(nameof(description));
             CounterParty = counterParty;
             Breakdown = breakdown ?? throw new ArgumentNullException(nameof(breakdown));
         }
 
+
+        public decimal Total
+        {
+            get
+            {
+                return Breakdown.Match(
+                    invoiceItem => CalculateTotalWithTax(invoiceItem.WithTax) + CalculateTotalTaxFree(invoiceItem.TaxFree),
+                    breakdown =>
+                    {
+                        var deliveryItem = breakdown.Delivery;
+                        var serviceProvisionItem = breakdown.ServiceProvision;
+                        var totalDeliveryItems = CalculateTotalWithTax(deliveryItem.WithTax) + CalculateTotalTaxFree(deliveryItem.TaxFree);
+                        var totalServiceProvisionItems = CalculateTotalWithTax(serviceProvisionItem.WithTax) + CalculateTotalTaxFree(serviceProvisionItem.TaxFree);
+                        return totalDeliveryItems + totalServiceProvisionItems;
+                    }
+                );
+            }
+        }
+
+        public decimal CalculateTotalWithTax(IOption<WithTaxItem> withTaxItem)
+        {
+            return withTaxItem.Match(
+                t => t.VatBreakdowns.Sum(d =>
+                    d.TaxBaseAmount.Value + d.TaxAmount.Value + (d.EquivalenceSurchargeTaxAmount.Map(a => a.Value).GetOrZero() * d.EquivalenceSurchargePercentage.Map(p => p.Value).GetOrZero())
+                ),
+                _ => 0
+            );
+        }
+
+        public decimal CalculateTotalTaxFree(IOption<TaxFreeItem[]> withTaxItem)
+        {
+            return withTaxItem.Map(i => i.Sum(item => item.Amount.Value)).GetOrZero();
+        }
+
         public InvoiceType Type { get; }
 
         public SchemeOrEffect SchemeOrEffect { get; }
-
-        public Amount TotalAmount { get; }
 
         public LimitedString500 Description { get; }
 

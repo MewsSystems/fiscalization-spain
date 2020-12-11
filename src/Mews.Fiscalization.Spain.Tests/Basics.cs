@@ -120,7 +120,6 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
                 new InvoiceId(issuingCompany.TaxpayerNumber, new LimitedString1to60(invoiceNumber), issueDateUtc),
                 InvoiceType.Invoice,
                 SchemeOrEffect.GeneralTaxRegimeActivity,
-                totalAmount,
                 new LimitedString500("This is a test invoice."),
                 new BreakdownItem(new InvoiceItem(
                     withTax: new WithTaxItem(TransactionType.NotExempt, taxBreakdowns),
