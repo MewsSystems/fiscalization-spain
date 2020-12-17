@@ -12,7 +12,7 @@ namespace Mews.Fiscalization.Spain.Model.Request
             Amount totalAmount,
             LimitedString500 description,
             BreakdownItem breakdown,
-            IssuerType issuerType,
+            bool issuedByThirdParty,
             CounterPartyCompany counterParty = null)
             : base(taxPeriod, id)
         {
@@ -27,7 +27,7 @@ namespace Mews.Fiscalization.Spain.Model.Request
             Description = description ?? throw new ArgumentNullException(nameof(description));
             CounterParty = counterParty;
             Breakdown = breakdown ?? throw new ArgumentNullException(nameof(breakdown));
-            IssuerType = issuerType;
+            IssuedByThirdParty = issuedByThirdParty;
         }
 
         public InvoiceType Type { get; }
@@ -42,6 +42,6 @@ namespace Mews.Fiscalization.Spain.Model.Request
 
         public BreakdownItem Breakdown { get; }
 
-        public IssuerType IssuerType { get; }
+        public bool IssuedByThirdParty { get; }
     }
 }

@@ -127,7 +127,7 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
                     taxFree: taxFreeItems
                 )),
                 counterParty: new CounterPartyCompany(payingCompany),
-                issuerType: IssuerType.ThirdParty
+                issuedByThirdParty: true
             );
         }
 

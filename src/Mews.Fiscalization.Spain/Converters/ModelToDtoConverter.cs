@@ -45,7 +45,7 @@ namespace Mews.Fiscalization.Spain.Converters
                     Contraparte = Convert(addedInvoice.CounterParty),
                     TipoDesglose = Convert(addedInvoice.Breakdown),
                     EmitidaPorTercerosODestinatarioSpecified = true,
-                    EmitidaPorTercerosODestinatario = Convert(addedInvoice.IssuerType)
+                    EmitidaPorTercerosODestinatario = Convert(addedInvoice.IssuedByThirdParty)
                 }
             };
         }
@@ -299,11 +299,11 @@ namespace Mews.Fiscalization.Spain.Converters
             );
         }
 
-        private EmitidaPorTercerosType Convert(IssuerType type)
+        private EmitidaPorTercerosType Convert(bool issuedByThirdParty)
         {
-            return type.Match(
-                IssuerType.ThirdParty, _ => EmitidaPorTercerosType.S,
-                IssuerType.Other, _ => EmitidaPorTercerosType.N
+            return issuedByThirdParty.Match(
+                t => EmitidaPorTercerosType.S,
+                f => EmitidaPorTercerosType.N
             );
         }
 
