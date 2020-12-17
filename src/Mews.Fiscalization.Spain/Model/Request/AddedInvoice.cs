@@ -29,7 +29,7 @@ namespace Mews.Fiscalization.Spain.Model.Request
         }
 
 
-        public decimal Total
+        public decimal TotalAmount
         {
             get
             {
@@ -50,16 +50,16 @@ namespace Mews.Fiscalization.Spain.Model.Request
         public decimal CalculateTotalWithTax(IOption<WithTaxItem> withTaxItem)
         {
             return withTaxItem.Match(
-                t => t.VatBreakdowns.Sum(d =>
+                item => item.VatBreakdowns.Sum(d =>
                     d.TaxBaseAmount.Value + d.TaxAmount.Value + (d.EquivalenceSurchargeTaxAmount.Map(a => a.Value).GetOrZero() * d.EquivalenceSurchargePercentage.Map(p => p.Value).GetOrZero())
                 ),
                 _ => 0
             );
         }
 
-        public decimal CalculateTotalTaxFree(IOption<TaxFreeItem[]> withTaxItem)
+        public decimal CalculateTotalTaxFree(IOption<TaxFreeItem[]> taxFreeItem)
         {
-            return withTaxItem.Map(i => i.Sum(item => item.Amount.Value)).GetOrZero();
+            return taxFreeItem.Map(i => i.Sum(item => item.Amount.Value)).GetOrZero();
         }
 
         public InvoiceType Type { get; }
