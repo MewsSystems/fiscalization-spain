@@ -116,17 +116,18 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
             var invoiceNumber = $"Bill-{nowUtc:yyyy-MM-dd-HH-mm-ss}-{invoiceIndex}";
 
             return new AddedInvoice(
-                new TaxPeriod(new Year(issueDateUtc.Year), (Month)(issueDateUtc.Month - 1)),
-                new InvoiceId(issuingCompany.TaxpayerNumber, new LimitedString1to60(invoiceNumber), issueDateUtc),
-                InvoiceType.Invoice,
-                SchemeOrEffect.GeneralTaxRegimeActivity,
-                totalAmount,
-                new LimitedString500("This is a test invoice."),
-                new BreakdownItem(new InvoiceItem(
+                taxPeriod: new TaxPeriod(new Year(issueDateUtc.Year), (Month)(issueDateUtc.Month - 1)),
+                id: new InvoiceId(issuingCompany.TaxpayerNumber, new LimitedString1to60(invoiceNumber), issueDateUtc),
+                type: InvoiceType.Invoice,
+                schemeOrEffect: SchemeOrEffect.GeneralTaxRegimeActivity,
+                totalAmount: totalAmount,
+                description: new LimitedString500("This is a test invoice."),
+                breakdown: new BreakdownItem(new InvoiceItem(
                     withTax: new WithTaxItem(TransactionType.NotExempt, taxBreakdowns),
                     taxFree: taxFreeItems
                 )),
-                new CounterPartyCompany(payingCompany)
+                counterParty: new CounterPartyCompany(payingCompany),
+                issuedByThirdParty: true
             );
         }
 

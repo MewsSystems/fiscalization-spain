@@ -43,7 +43,9 @@ namespace Mews.Fiscalization.Spain.Converters
                     ImporteTotal = Convert(addedInvoice.TotalAmount),
                     DescripcionOperacion = addedInvoice.Description.Value,
                     Contraparte = Convert(addedInvoice.CounterParty),
-                    TipoDesglose = Convert(addedInvoice.Breakdown)
+                    TipoDesglose = Convert(addedInvoice.Breakdown),
+                    EmitidaPorTercerosODestinatarioSpecified = true,
+                    EmitidaPorTercerosODestinatario = Convert(addedInvoice.IssuedByThirdParty)
                 }
             };
         }
@@ -294,6 +296,14 @@ namespace Mews.Fiscalization.Spain.Converters
                 SchemeOrEffect.BusinessPremisesLeaseActivities3, _ => IdOperacionesTrascendenciaTributariaType.Item13,
                 SchemeOrEffect.InvoiceWithVATPendingAccrual1, _ => IdOperacionesTrascendenciaTributariaType.Item14,
                 SchemeOrEffect.InvoiceWithVATPendingAccrual2, _ => IdOperacionesTrascendenciaTributariaType.Item15
+            );
+        }
+
+        private EmitidaPorTercerosType Convert(bool issuedByThirdParty)
+        {
+            return issuedByThirdParty.Match(
+                t => EmitidaPorTercerosType.S,
+                f => EmitidaPorTercerosType.N
             );
         }
 
