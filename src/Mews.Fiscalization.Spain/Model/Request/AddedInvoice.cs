@@ -34,17 +34,15 @@ namespace Mews.Fiscalization.Spain.Model.Request
             get
             {
                 return Breakdown.Match(
-                    invoiceItem => CalculateTotalWithTax(invoiceItem.WithTax) + CalculateTotalTaxFree(invoiceItem.TaxFree),
-                    breakdown =>
-                    {
-                        var deliveryItem = breakdown.Delivery;
-                        var serviceProvisionItem = breakdown.ServiceProvision;
-                        var totalDeliveryItems = CalculateTotalWithTax(deliveryItem.WithTax) + CalculateTotalTaxFree(deliveryItem.TaxFree);
-                        var totalServiceProvisionItems = CalculateTotalWithTax(serviceProvisionItem.WithTax) + CalculateTotalTaxFree(serviceProvisionItem.TaxFree);
-                        return totalDeliveryItems + totalServiceProvisionItems;
-                    }
+                    invoiceItem => CalculateInvoiceItemAmount(invoiceItem),
+                    breakdown => CalculateInvoiceItemAmount(breakdown.Delivery) + CalculateInvoiceItemAmount(breakdown.ServiceProvision)
                 );
             }
+        }
+
+        private decimal CalculateInvoiceItemAmount(InvoiceItem item)
+        {
+            return CalculateTotalWithTax(item.WithTax) + CalculateTotalTaxFree(item.TaxFree);
         }
 
         private decimal CalculateTotalWithTax(IOption<WithTaxItem> withTaxItem)
