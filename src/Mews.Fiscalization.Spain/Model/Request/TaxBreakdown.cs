@@ -1,4 +1,5 @@
 ﻿using FuncSharp;
+using Mews.Fiscalization.Core.Model;
 using System;
 using System.Linq;
 
@@ -12,19 +13,13 @@ namespace Mews.Fiscalization.Spain.Model.Request
         public TaxBreakdown(TaxSummary firstValue)
             : base(firstValue)
         {
-            if (firstValue == null)
-            {
-                throw new ArgumentNullException(nameof(firstValue));
-            }
+            Check.IsNotNull(firstValue, nameof(firstValue));
         }
 
         public TaxBreakdown(OperationTypeTaxBreakdown secondValue)
             : base(secondValue)
         {
-            if (secondValue == null)
-            {
-                throw new ArgumentNullException(nameof(secondValue));
-            }
+            Check.IsNotNull(secondValue, nameof(secondValue));
         }
 
         public decimal TotalAmount
