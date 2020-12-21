@@ -2,7 +2,7 @@
   <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>net472;netcoreapp3.1</TargetFrameworks>
     <Authors>Mews Systems</Authors>
     <Company>Mews Systems</Company>
     <PackageTags>sii fiscalization spain</PackageTags>
@@ -16,8 +16,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FuncSharp" Version="1.5.2" />
-    <PackageReference Include="Mews.Fiscalization.Core" Version="2.0.4" />
+    <PackageReference Include="FuncSharp" Version="1.7.1" />
+    <PackageReference Include="Mews.Fiscalization.Core" Version="2.0.5" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
     <PackageReference Include="System.ServiceModel.Primitives" Version="4.7.0" />
   </ItemGroup>

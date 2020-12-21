@@ -160,7 +160,7 @@ namespace Mews.Fiscalization.Spain.Converters
                 t => new PersonaFisicaJuridicaType
                 {
                     NombreRazon = t.Name.Value,
-                    Item = t.TaxpayerNumber.Value
+                    Item = t.TaxpayerIdentificationNumber.TaxpayerNumber
                 },
                 c => new PersonaFisicaJuridicaType
                 {
@@ -217,7 +217,7 @@ namespace Mews.Fiscalization.Spain.Converters
                 FechaExpedicionFacturaEmisor = Convert(id.Date),
                 IDEmisorFactura = new IDFacturaExpedidaTypeIDEmisorFactura
                 {
-                    NIF = id.Issuer.Value
+                    NIF = id.Issuer.TaxpayerNumber
                 },
                 NumSerieFacturaEmisor = id.Number.Value
             };
@@ -230,7 +230,7 @@ namespace Mews.Fiscalization.Spain.Converters
                 FechaExpedicionFacturaEmisor = Convert(id.Date),
                 IDEmisorFactura = new IDFacturaExpedidaBCTypeIDEmisorFactura
                 {
-                    NIF = id.Issuer.Value
+                    NIF = id.Issuer.TaxpayerNumber
                 },
                 NumSerieFacturaEmisor = id.Number.Value
             };
@@ -259,7 +259,7 @@ namespace Mews.Fiscalization.Spain.Converters
             return new PersonaFisicaJuridicaESType
             {
                 NombreRazon = companyTitle.Name.Value,
-                NIF = companyTitle.TaxpayerNumber.Value
+                NIF = companyTitle.TaxpayerIdentificationNumber.TaxpayerNumber
             };
         }
 
@@ -318,7 +318,7 @@ namespace Mews.Fiscalization.Spain.Converters
 
         private CountryType2 Convert(Country country)
         {
-            var result = country.Value.ToEnum<CountryType2>();
+            var result = country.Alpha2Code.ToEnum<CountryType2>();
             return result.Get();
         }
 

@@ -37,7 +37,7 @@ namespace Mews.Fiscalization.Spain.Model.Request
                 }
 
                 var countryCode = id.Value.Substring(0, 2);
-                return Core.Model.Country.IsValid(countryCode);
+                return Core.Model.Country.GetByCode(countryCode).NonEmpty;
             }
             return id != null && name != null;
         }
