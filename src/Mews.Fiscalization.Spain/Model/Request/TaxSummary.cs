@@ -1,6 +1,5 @@
 ﻿using FuncSharp;
 using System;
-using Mews.Fiscalization.Core.Model;
 
 namespace Mews.Fiscalization.Spain.Model.Request
 {
@@ -14,7 +13,7 @@ namespace Mews.Fiscalization.Spain.Model.Request
             TaxFree = taxFree.ToNonEmptyOption();
             TaxFree.Where(i => i.Length > 7).Match(_ => throw new Exception("There can only be up to 7 tax exempt items on one invoice."));
 
-            if (TaxFree.IsEmpty && Taxed == null)
+            if (TaxFree.IsEmpty && Taxed.IsEmpty)
             {
                 throw new Exception("Invoice cannot be empty.");
             }
