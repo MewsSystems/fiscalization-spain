@@ -40,7 +40,7 @@ namespace Mews.Fiscalization.Spain.Converters
                 {
                     TipoFactura = Convert(addedInvoice.Type),
                     ClaveRegimenEspecialOTrascendencia = Convert(addedInvoice.SchemeOrEffect),
-                    ImporteTotal = Convert(addedInvoice.TotalAmount),
+                    ImporteTotal = addedInvoice.TotalAmount.Serialize(),
                     DescripcionOperacion = addedInvoice.Description.Value,
                     Contraparte = Convert(addedInvoice.CounterParty),
                     TipoDesglose = Convert(addedInvoice.Breakdown),
