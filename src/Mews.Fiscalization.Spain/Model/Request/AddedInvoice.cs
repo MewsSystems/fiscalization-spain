@@ -28,18 +28,10 @@ namespace Mews.Fiscalization.Spain.Model.Request
             CounterParty = counterParty;
             Breakdown = breakdown ?? throw new ArgumentNullException(nameof(breakdown));
             IssuedByThirdParty = issuedByThirdParty;
-        }
-
-
-        public decimal TotalAmount
-        {
-            get
-            {
-                return Breakdown.Match(
-                    invoiceItem => CalculateInvoiceItemTotalAmount(invoiceItem),
-                    breakdown => CalculateInvoiceItemTotalAmount(breakdown.Delivery) + CalculateInvoiceItemTotalAmount(breakdown.ServiceProvision)
-                );
-            }
+            TotalAmount = Breakdown.Match(
+                i => CalculateInvoiceItemTotalAmount(i),
+                d => CalculateInvoiceItemTotalAmount(d.Delivery) + CalculateInvoiceItemTotalAmount(d.ServiceProvision)
+            );
         }
 
         private decimal CalculateInvoiceItemTotalAmount(InvoiceItem item)
@@ -67,6 +59,8 @@ namespace Mews.Fiscalization.Spain.Model.Request
         public SchemeOrEffect SchemeOrEffect { get; }
 
         public LimitedString500 Description { get; }
+
+        public decimal TotalAmount { get; }
 
         public CounterPartyCompany CounterParty { get; }
 
