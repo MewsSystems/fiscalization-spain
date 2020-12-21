@@ -29,37 +29,37 @@ namespace Mews.Fiscalization.Spain.Model.Request
         }
 
 
-        public Amount TotalAmount
+        public decimal TotalAmount
         {
             get
             {
-                return new Amount(Breakdown.Match(
-                    invoiceItem => CalculateTotalWithTax(invoiceItem.WithTax).Value + CalculateTotalTaxFree(invoiceItem.TaxFree).Value,
+                return Breakdown.Match(
+                    invoiceItem => CalculateTotalWithTax(invoiceItem.WithTax) + CalculateTotalTaxFree(invoiceItem.TaxFree),
                     breakdown =>
                     {
                         var deliveryItem = breakdown.Delivery;
                         var serviceProvisionItem = breakdown.ServiceProvision;
-                        var totalDeliveryItems = CalculateTotalWithTax(deliveryItem.WithTax).Value + CalculateTotalTaxFree(deliveryItem.TaxFree).Value;
-                        var totalServiceProvisionItems = CalculateTotalWithTax(serviceProvisionItem.WithTax).Value + CalculateTotalTaxFree(serviceProvisionItem.TaxFree).Value;
+                        var totalDeliveryItems = CalculateTotalWithTax(deliveryItem.WithTax) + CalculateTotalTaxFree(deliveryItem.TaxFree);
+                        var totalServiceProvisionItems = CalculateTotalWithTax(serviceProvisionItem.WithTax) + CalculateTotalTaxFree(serviceProvisionItem.TaxFree);
                         return totalDeliveryItems + totalServiceProvisionItems;
                     }
-                ));
+                );
             }
         }
 
-        public Amount CalculateTotalWithTax(IOption<WithTaxItem> withTaxItem)
+        private decimal CalculateTotalWithTax(IOption<WithTaxItem> withTaxItem)
         {
-            return new Amount(withTaxItem.Match(
+            return withTaxItem.Match(
                 item => item.VatBreakdowns.Sum(d =>
                     d.TaxBaseAmount.Value + d.TaxAmount.Value + (d.EquivalenceSurchargeTaxAmount.Map(a => a.Value).GetOrZero() * d.EquivalenceSurchargePercentage.Map(p => p.Value).GetOrZero())
                 ),
                 _ => 0
-            ));
+            );
         }
 
-        public Amount CalculateTotalTaxFree(IOption<TaxFreeItem[]> taxFreeItem)
+        private decimal CalculateTotalTaxFree(IOption<TaxFreeItem[]> taxFreeItem)
         {
-            return new Amount(taxFreeItem.Map(i => i.Sum(item => item.Amount.Value)).GetOrZero());
+            return taxFreeItem.Map(i => i.Sum(item => item.Amount.Value)).GetOrZero();
         }
 
         public InvoiceType Type { get; }
