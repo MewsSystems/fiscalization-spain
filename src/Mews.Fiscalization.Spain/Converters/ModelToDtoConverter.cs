@@ -100,12 +100,12 @@ namespace Mews.Fiscalization.Spain.Converters
             };
         }
 
-        private SujetaPrestacionType ConvertProvision(TaxSummary item)
+        private SujetaPrestacionType ConvertProvision(TaxSummary summary)
         {
             return new SujetaPrestacionType
             {
-                Exenta = item.TaxFree.Map(f => f.Select(i => Convert(i)).ToArray()).GetOrNull(),
-                NoExenta = item.Taxed.Map(taxRateSummaries => new SujetaPrestacionTypeNoExenta
+                Exenta = summary.TaxFree.Map(items => items.Select(i => Convert(i)).ToArray()).GetOrNull(),
+                NoExenta = summary.Taxed.Map(taxRateSummaries => new SujetaPrestacionTypeNoExenta
                 {
                     TipoNoExenta = TipoOperacionSujetaNoExentaType.S1,
                     DesgloseIVA = taxRateSummaries.Select(s => ConvertProvision(s)).ToArray()
