@@ -13,6 +13,7 @@ namespace Mews.Fiscalization.Spain.Model.Request
             SchemeOrEffect schemeOrEffect,
             LimitedString500 description,
             BreakdownItem breakdown,
+            bool issuedByThirdParty,
             CounterPartyCompany counterParty = null)
             : base(taxPeriod, id)
         {
@@ -26,6 +27,7 @@ namespace Mews.Fiscalization.Spain.Model.Request
             Description = description ?? throw new ArgumentNullException(nameof(description));
             CounterParty = counterParty;
             Breakdown = breakdown ?? throw new ArgumentNullException(nameof(breakdown));
+            IssuedByThirdParty = issuedByThirdParty;
         }
 
 
@@ -69,5 +71,7 @@ namespace Mews.Fiscalization.Spain.Model.Request
         public CounterPartyCompany CounterParty { get; }
 
         public BreakdownItem Breakdown { get; }
+
+        public bool IssuedByThirdParty { get; }
     }
 }
