@@ -34,13 +34,13 @@ namespace Mews.Fiscalization.Spain.Model.Request
             get
             {
                 return Breakdown.Match(
-                    invoiceItem => CalculateInvoiceItemAmount(invoiceItem),
-                    breakdown => CalculateInvoiceItemAmount(breakdown.Delivery) + CalculateInvoiceItemAmount(breakdown.ServiceProvision)
+                    invoiceItem => CalculateInvoiceItemTotalAmount(invoiceItem),
+                    breakdown => CalculateInvoiceItemTotalAmount(breakdown.Delivery) + CalculateInvoiceItemTotalAmount(breakdown.ServiceProvision)
                 );
             }
         }
 
-        private decimal CalculateInvoiceItemAmount(InvoiceItem item)
+        private decimal CalculateInvoiceItemTotalAmount(InvoiceItem item)
         {
             return CalculateTotalWithTax(item.WithTax) + CalculateTotalTaxFree(item.TaxFree);
         }
