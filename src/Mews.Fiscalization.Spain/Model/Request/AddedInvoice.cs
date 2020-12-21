@@ -12,7 +12,7 @@ namespace Mews.Fiscalization.Spain.Model.Request
             InvoiceType type,
             SchemeOrEffect schemeOrEffect,
             LimitedString500 description,
-            BreakdownItem breakdown,
+            TaxBreakdown taxBreakdown,
             bool issuedByThirdParty,
             CounterPartyCompany counterParty = null)
             : base(taxPeriod, id)
@@ -26,32 +26,9 @@ namespace Mews.Fiscalization.Spain.Model.Request
             SchemeOrEffect = schemeOrEffect;
             Description = description ?? throw new ArgumentNullException(nameof(description));
             CounterParty = counterParty;
-            Breakdown = breakdown ?? throw new ArgumentNullException(nameof(breakdown));
+            TaxBreakdown = taxBreakdown ?? throw new ArgumentNullException(nameof(taxBreakdown));
             IssuedByThirdParty = issuedByThirdParty;
-            TotalAmount = Breakdown.Match(
-                i => CalculateInvoiceItemTotalAmount(i),
-                d => CalculateInvoiceItemTotalAmount(d.Delivery) + CalculateInvoiceItemTotalAmount(d.ServiceProvision)
-            );
-        }
-
-        private decimal CalculateInvoiceItemTotalAmount(InvoiceItem item)
-        {
-            return CalculateTotalWithTax(item.WithTax) + CalculateTotalTaxFree(item.TaxFree);
-        }
-
-        private decimal CalculateTotalWithTax(IOption<WithTaxItem> withTaxItem)
-        {
-            return withTaxItem.Match(
-                item => item.VatBreakdowns.Sum(d =>
-                    d.TaxBaseAmount.Value + d.TaxAmount.Value + (d.EquivalenceSurchargeTaxAmount.Map(a => a.Value).GetOrZero() * d.EquivalenceSurchargePercentage.Map(p => p.Value).GetOrZero())
-                ),
-                _ => 0
-            );
-        }
-
-        private decimal CalculateTotalTaxFree(IOption<TaxFreeItem[]> taxFreeItem)
-        {
-            return taxFreeItem.Map(i => i.Sum(item => item.Amount.Value)).GetOrZero();
+            TotalAmount = TaxBreakdown.TotalAmount;
         }
 
         public InvoiceType Type { get; }
@@ -64,7 +41,7 @@ namespace Mews.Fiscalization.Spain.Model.Request
 
         public CounterPartyCompany CounterParty { get; }
 
-        public BreakdownItem Breakdown { get; }
+        public TaxBreakdown TaxBreakdown { get; }
 
         public bool IssuedByThirdParty { get; }
     }

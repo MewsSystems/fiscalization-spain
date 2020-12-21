@@ -107,9 +107,6 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
         {
             var taxBreakdowns = new[] { GetBreakdown(21m, 42.07M) };
             var taxFreeItems = new[] { new TaxFreeItem(new Amount(20m), CauseOfExemption.OtherGrounds) };
-            var totalTaxedValue = taxBreakdowns.Sum(b => b.TaxAmount.Value + b.TaxBaseAmount.Value);
-            var totalUntaxedValue = taxFreeItems.Sum(i => i.Amount.Value);
-            var totalAmount = new Amount(Math.Round(totalTaxedValue + totalUntaxedValue, 2));
 
             var nowUtc = DateTime.UtcNow;
             var issueDateUtc = nowUtc.Date;
@@ -121,18 +118,18 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
                 type: InvoiceType.Invoice,
                 schemeOrEffect: SchemeOrEffect.GeneralTaxRegimeActivity,
                 description: new LimitedString500("This is a test invoice."),
-                breakdown: new BreakdownItem(new InvoiceItem(
-                    withTax: new WithTaxItem(TransactionType.NotExempt, taxBreakdowns),
-                    taxFree: taxFreeItems
+                taxBreakdown: new TaxBreakdown(new TaxSummary(
+                    taxFree: taxFreeItems,
+                    taxed: taxBreakdowns
                 )),
                 counterParty: new CounterPartyCompany(payingCompany),
                 issuedByThirdParty: true
             );
         }
 
-        private VATBreakdown GetBreakdown(decimal vat, decimal baseValue)
+        private TaxRateSummary GetBreakdown(decimal vat, decimal baseValue)
         {
-            return new VATBreakdown(new Percentage(vat), new Amount(baseValue), new Amount(Math.Round(baseValue * vat / 100, 2)));
+            return new TaxRateSummary(new Percentage(vat), new Amount(baseValue), new Amount(Math.Round(baseValue * vat / 100, 2)));
         }
     }
 }
