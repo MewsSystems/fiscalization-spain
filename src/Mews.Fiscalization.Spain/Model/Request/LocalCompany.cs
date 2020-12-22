@@ -1,18 +1,17 @@
 ﻿using Mews.Fiscalization.Core.Model;
-using System;
 
 namespace Mews.Fiscalization.Spain.Model.Request
 {
     public sealed class LocalCompany
     {
-        public LocalCompany(LimitedString120 name, TaxpayerIdentificationNumber taxpayerNumber)
+        public LocalCompany(LimitedString120 name, TaxpayerIdentificationNumber taxpayerIdentificationNumber)
         {
-            Name = name ?? throw new ArgumentNullException(nameof(name));
-            TaxpayerNumber = taxpayerNumber ?? throw new ArgumentNullException(nameof(taxpayerNumber));
+            Name = Check.IsNotNull(name, nameof(name));
+            TaxpayerIdentificationNumber = Check.IsNotNull(taxpayerIdentificationNumber, nameof(taxpayerIdentificationNumber));
         }
 
         public LimitedString120 Name { get; }
 
-        public TaxpayerIdentificationNumber TaxpayerNumber { get; }
+        public TaxpayerIdentificationNumber TaxpayerIdentificationNumber { get; }
     }
 }
