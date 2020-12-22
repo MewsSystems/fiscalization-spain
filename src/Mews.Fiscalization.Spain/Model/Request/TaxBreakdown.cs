@@ -10,16 +10,16 @@ namespace Mews.Fiscalization.Spain.Model.Request
     /// </summary>
     public sealed class TaxBreakdown : Coproduct2<TaxSummary, OperationTypeTaxBreakdown>
     {
-        public TaxBreakdown(TaxSummary firstValue)
-            : base(firstValue)
+        public TaxBreakdown(TaxSummary summary)
+            : base(summary)
         {
-            Check.IsNotNull(firstValue, nameof(firstValue));
+            Check.IsNotNull(summary, nameof(summary));
         }
 
-        public TaxBreakdown(OperationTypeTaxBreakdown secondValue)
-            : base(secondValue)
+        public TaxBreakdown(OperationTypeTaxBreakdown breakdown)
+            : base(breakdown)
         {
-            Check.IsNotNull(secondValue, nameof(secondValue));
+            Check.IsNotNull(breakdown, nameof(breakdown));
         }
 
         public decimal TotalAmount
@@ -27,13 +27,13 @@ namespace Mews.Fiscalization.Spain.Model.Request
             get
             {
                 return Match(
-                    taxSummary => CalculateInvoiceItemTotalAmount(taxSummary),
-                    operationTypeTaxBreakdown => CalculateInvoiceItemTotalAmount(operationTypeTaxBreakdown.Delivery) + CalculateInvoiceItemTotalAmount(operationTypeTaxBreakdown.ServiceProvision)
+                    taxSummary => CalculateTaxSummary(taxSummary),
+                    operationTypeTaxBreakdown => CalculateTaxSummary(operationTypeTaxBreakdown.Delivery) + CalculateTaxSummary(operationTypeTaxBreakdown.ServiceProvision)
                 );
             }
         }
 
-        private decimal CalculateInvoiceItemTotalAmount(TaxSummary summary)
+        private decimal CalculateTaxSummary(TaxSummary summary)
         {
             var taxFreeTotal = summary.TaxFree.Map(i => i.Sum(item => item.Amount.Value)).GetOrZero();
             var taxRateTotals = summary.Taxed.Flatten().Sum(s => s.TaxBaseAmount.Value + s.TaxAmount.Value);
