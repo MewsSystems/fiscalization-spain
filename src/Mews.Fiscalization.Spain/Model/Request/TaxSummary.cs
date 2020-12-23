@@ -3,15 +3,17 @@ using System;
 
 namespace Mews.Fiscalization.Spain.Model.Request
 {
-    public sealed class InvoiceItem
+    public sealed class TaxSummary
     {
-        public InvoiceItem(TaxFreeItem[] taxFree = null, WithTaxItem withTax = null)
+        public TaxSummary(TaxFreeItem[] taxFree = null, TaxRateSummary[] taxed = null)
         {
-            WithTax = withTax.ToOption();
+            Taxed = taxed.ToNonEmptyOption();
+            Taxed.Where(i => i.Length > 6).Match(_ => throw new Exception("There can only be up to 6 distinct tax rates on one invoice."));
+
             TaxFree = taxFree.ToNonEmptyOption();
             TaxFree.Where(i => i.Length > 7).Match(_ => throw new Exception("There can only be up to 7 tax exempt items on one invoice."));
 
-            if (TaxFree.IsEmpty && WithTax == null)
+            if (TaxFree.IsEmpty && Taxed.IsEmpty)
             {
                 throw new Exception("Invoice cannot be empty.");
             }
@@ -19,6 +21,6 @@ namespace Mews.Fiscalization.Spain.Model.Request
 
         public IOption<TaxFreeItem[]> TaxFree { get; }
 
-        public IOption<WithTaxItem> WithTax { get; }
+        public IOption<TaxRateSummary[]> Taxed { get; }
     }
 }

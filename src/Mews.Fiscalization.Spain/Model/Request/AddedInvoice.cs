@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FuncSharp;
+using System;
+using System.Linq;
 
 namespace Mews.Fiscalization.Spain.Model.Request
 {
@@ -9,9 +11,8 @@ namespace Mews.Fiscalization.Spain.Model.Request
             InvoiceId id,
             InvoiceType type,
             SchemeOrEffect schemeOrEffect,
-            Amount totalAmount,
             LimitedString500 description,
-            BreakdownItem breakdown,
+            TaxBreakdown taxBreakdown,
             bool issuedByThirdParty,
             CounterPartyCompany counterParty = null)
             : base(taxPeriod, id)
@@ -23,24 +24,24 @@ namespace Mews.Fiscalization.Spain.Model.Request
 
             Type = type;
             SchemeOrEffect = schemeOrEffect;
-            TotalAmount = totalAmount ?? throw new ArgumentNullException(nameof(totalAmount));
             Description = description ?? throw new ArgumentNullException(nameof(description));
             CounterParty = counterParty;
-            Breakdown = breakdown ?? throw new ArgumentNullException(nameof(breakdown));
+            TaxBreakdown = taxBreakdown ?? throw new ArgumentNullException(nameof(taxBreakdown));
             IssuedByThirdParty = issuedByThirdParty;
+            TotalAmount = TaxBreakdown.TotalAmount;
         }
 
         public InvoiceType Type { get; }
 
         public SchemeOrEffect SchemeOrEffect { get; }
 
-        public Amount TotalAmount { get; }
-
         public LimitedString500 Description { get; }
+
+        public decimal TotalAmount { get; }
 
         public CounterPartyCompany CounterParty { get; }
 
-        public BreakdownItem Breakdown { get; }
+        public TaxBreakdown TaxBreakdown { get; }
 
         public bool IssuedByThirdParty { get; }
     }

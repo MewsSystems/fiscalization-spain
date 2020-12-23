@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using FuncSharp;
 using Mews.Fiscalization.Core.Model;
@@ -40,10 +41,10 @@ namespace Mews.Fiscalization.Spain.Converters
                 {
                     TipoFactura = Convert(addedInvoice.Type),
                     ClaveRegimenEspecialOTrascendencia = Convert(addedInvoice.SchemeOrEffect),
-                    ImporteTotal = Convert(addedInvoice.TotalAmount),
+                    ImporteTotal = addedInvoice.TotalAmount.Serialize(),
                     DescripcionOperacion = addedInvoice.Description.Value,
                     Contraparte = Convert(addedInvoice.CounterParty),
-                    TipoDesglose = Convert(addedInvoice.Breakdown),
+                    TipoDesglose = Convert(addedInvoice.TaxBreakdown),
                     EmitidaPorTercerosODestinatarioSpecified = true,
                     EmitidaPorTercerosODestinatario = Convert(addedInvoice.IssuedByThirdParty)
                 }
@@ -59,9 +60,9 @@ namespace Mews.Fiscalization.Spain.Converters
             };
         }
 
-        private FacturaExpedidaTypeTipoDesglose Convert(BreakdownItem breakdown)
+        private FacturaExpedidaTypeTipoDesglose Convert(TaxBreakdown taxBreakdown)
         {
-            return breakdown.Match(
+            return taxBreakdown.Match(
                 i => new FacturaExpedidaTypeTipoDesglose
                 {
                     Item = new TipoSinDesgloseType
@@ -86,28 +87,28 @@ namespace Mews.Fiscalization.Spain.Converters
             );
         }
 
-        private SujetaType Convert(InvoiceItem item)
+        private SujetaType Convert(TaxSummary summary)
         {
             return new SujetaType
             {
-                Exenta = item.TaxFree.Map(f => f.Select(i => Convert(i)).ToArray()).GetOrNull(),
-                NoExenta = item.WithTax.Map(t => new SujetaTypeNoExenta
+                Exenta = summary.TaxFree.Map(items => items.Select(i => Convert(i)).ToArray()).GetOrNull(),
+                NoExenta = summary.Taxed.Map(taxRateSummaries => new SujetaTypeNoExenta
                 {
-                    TipoNoExenta = Convert(t.TransactionType),
-                    DesgloseIVA = t.VatBreakdowns.Select(b => Convert(b)).ToArray()
+                    TipoNoExenta = TipoOperacionSujetaNoExentaType.S1,
+                    DesgloseIVA = taxRateSummaries.Select(s => Convert(s)).ToArray()
                 }).GetOrNull()
             };
         }
 
-        private SujetaPrestacionType ConvertProvision(InvoiceItem item)
+        private SujetaPrestacionType ConvertProvision(TaxSummary summary)
         {
             return new SujetaPrestacionType
             {
-                Exenta = item.TaxFree.Map(f => f.Select(i => Convert(i)).ToArray()).GetOrNull(),
-                NoExenta = item.WithTax.Map(t => new SujetaPrestacionTypeNoExenta
+                Exenta = summary.TaxFree.Map(items => items.Select(i => Convert(i)).ToArray()).GetOrNull(),
+                NoExenta = summary.Taxed.Map(taxRateSummaries => new SujetaPrestacionTypeNoExenta
                 {
-                    TipoNoExenta = Convert(t.TransactionType),
-                    DesgloseIVA = t.VatBreakdowns.Select(b => ConvertProvision(b)).ToArray()
+                    TipoNoExenta = TipoOperacionSujetaNoExentaType.S1,
+                    DesgloseIVA = taxRateSummaries.Select(s => ConvertProvision(s)).ToArray()
                 }).GetOrNull()
             };
         }
@@ -132,25 +133,23 @@ namespace Mews.Fiscalization.Spain.Converters
             };
         }
 
-        private DetalleIVAEmitidaType Convert(VATBreakdown breakdown)
+        private DetalleIVAEmitidaType Convert(TaxRateSummary summary)
         {
             return new DetalleIVAEmitidaType
             {
-                TipoImpositivo = Convert(breakdown.TaxRate),
-                BaseImponible = Convert(breakdown.TaxBaseAmount),
-                CuotaRepercutida = Convert(breakdown.TaxAmount),
-                TipoRecargoEquivalencia = breakdown.EquivalenceSurchargePercentage.Map(p => Convert(p)).GetOrNull(),
-                CuotaRecargoEquivalencia = breakdown.EquivalenceSurchargeTaxAmount.Map(a => Convert(a)).GetOrNull()
+                TipoImpositivo = Convert(summary.TaxRate),
+                BaseImponible = Convert(summary.TaxBaseAmount),
+                CuotaRepercutida = Convert(summary.TaxAmount)
             };
         }
 
-        private DetalleIVAEmitidaPrestacionType ConvertProvision(VATBreakdown breakdown)
+        private DetalleIVAEmitidaPrestacionType ConvertProvision(TaxRateSummary summary)
         {
             return new DetalleIVAEmitidaPrestacionType
             {
-                TipoImpositivo = Convert(breakdown.TaxRate),
-                BaseImponible = Convert(breakdown.TaxBaseAmount),
-                CuotaRepercutida = Convert(breakdown.TaxAmount)
+                TipoImpositivo = Convert(summary.TaxRate),
+                BaseImponible = Convert(summary.TaxBaseAmount),
+                CuotaRepercutida = Convert(summary.TaxAmount)
             };
         }
 
@@ -304,15 +303,6 @@ namespace Mews.Fiscalization.Spain.Converters
             return issuedByThirdParty.Match(
                 t => EmitidaPorTercerosType.S,
                 f => EmitidaPorTercerosType.N
-            );
-        }
-
-        private TipoOperacionSujetaNoExentaType Convert(TransactionType transactionType)
-        {
-            return transactionType.Match(
-                TransactionType.NotExempt, _ => TipoOperacionSujetaNoExentaType.S1,
-                TransactionType.InvTaxablePerson, _ => TipoOperacionSujetaNoExentaType.S2,
-                TransactionType.NotExemptWithPassiveSubject, _ => TipoOperacionSujetaNoExentaType.S3
             );
         }
 
