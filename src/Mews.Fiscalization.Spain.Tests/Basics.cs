@@ -23,12 +23,12 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
 
         public static readonly LocalCompany IssuingCompany = new LocalCompany(
             name: new LimitedString120(System.Environment.GetEnvironmentVariable("issuer_name") ?? "INSERT_ISSUER_NAME"),
-            taxpayerIdentificationNumber: TaxpayerIdentificationNumber.Create(Country.GetByCode("ES").Get(), System.Environment.GetEnvironmentVariable("issuer_tax_number") ?? "INSERT_ISSUER_TAX_NUMBER").Success.Get()
+            taxpayerIdentificationNumber: TaxpayerIdentificationNumber.Create(Countries.Spain, System.Environment.GetEnvironmentVariable("issuer_tax_number") ?? "INSERT_ISSUER_TAX_NUMBER").Success.Get()
         );
 
         public static readonly LocalCompany ReceivingCompany = new LocalCompany(
             name: new LimitedString120(System.Environment.GetEnvironmentVariable("receiver_name") ?? "INSERT_RECEIVER_NAME"),
-            taxpayerIdentificationNumber: TaxpayerIdentificationNumber.Create(Country.GetByCode("ES").Get(), System.Environment.GetEnvironmentVariable("receiver_tax_number") ?? "INSERT_RECEIVER_TAX_NUMBER").Success.Get()
+            taxpayerIdentificationNumber: TaxpayerIdentificationNumber.Create(Countries.Spain, System.Environment.GetEnvironmentVariable("receiver_tax_number") ?? "INSERT_RECEIVER_TAX_NUMBER").Success.Get()
         );
 
         [Test]
