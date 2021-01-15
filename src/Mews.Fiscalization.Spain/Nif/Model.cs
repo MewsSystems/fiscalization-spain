@@ -19,7 +19,7 @@ namespace Mews.Fiscalization.Spain.Nif
         {
             Check.IsNotNull(taxpayerNumber, nameof(taxpayerNumber));
             Check.IsNotNull(name, nameof(name));
-            Check.Condition(taxpayerNumber.Country == Countries.Spain, "Country must be Spain.");
+            Check.Condition(taxpayerNumber.Country.Alpha2Code == Countries.Spain.Alpha2Code, "Country must be Spain.");
 
             TaxpayerNumber = taxpayerNumber;
             Name = name;
