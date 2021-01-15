@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using FuncSharp;
+using Mews.Fiscalization.Core.Model;
 
 namespace Mews.Fiscalization.Spain.Nif
 {
@@ -14,13 +15,13 @@ namespace Mews.Fiscalization.Spain.Nif
 
     public class NifInfoEntry
     {
-        public NifInfoEntry(string taxId, string name)
+        public NifInfoEntry(TaxpayerIdentificationNumber taxpayerNumber, string name)
         {
-            TaxId = taxId;
+            TaxpayerNumber = taxpayerNumber;
             Name = name;
         }
 
-        public string TaxId { get; }
+        public TaxpayerIdentificationNumber TaxpayerNumber { get; }
 
         public string Name { get; }
     }
