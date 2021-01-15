@@ -17,6 +17,10 @@ namespace Mews.Fiscalization.Spain.Nif
     {
         public NifInfoEntry(TaxpayerIdentificationNumber taxpayerNumber, string name)
         {
+            Check.IsNotNull(taxpayerNumber, nameof(taxpayerNumber));
+            Check.IsNotNull(name, nameof(name));
+            Check.Condition(taxpayerNumber.Country == Countries.Spain, "Country must be Spain.");
+
             TaxpayerNumber = taxpayerNumber;
             Name = name;
         }
