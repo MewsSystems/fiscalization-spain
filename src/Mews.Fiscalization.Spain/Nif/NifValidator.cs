@@ -39,7 +39,7 @@ namespace Mews.Fiscalization.Spain.Nif
                 Contribuyente = value.Entries.Select(e => new VNifV2EntContribuyente
                 {
                     Nombre = e.Name,
-                    Nif = e.TaxId
+                    Nif = e.TaxpayerNumber.TaxpayerNumber
                 }).ToArray()
             };
         }

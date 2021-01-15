@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using FuncSharp;
+using Mews.Fiscalization.Core.Model;
 
 namespace Mews.Fiscalization.Spain.Nif
 {
@@ -14,13 +15,17 @@ namespace Mews.Fiscalization.Spain.Nif
 
     public class NifInfoEntry
     {
-        public NifInfoEntry(string taxId, string name)
+        public NifInfoEntry(TaxpayerIdentificationNumber taxpayerNumber, string name)
         {
-            TaxId = taxId;
+            Check.IsNotNull(taxpayerNumber, nameof(taxpayerNumber));
+            Check.IsNotNull(name, nameof(name));
+            Check.Condition(taxpayerNumber.Country.Alpha2Code == Countries.Spain.Alpha2Code, "Country must be Spain.");
+
+            TaxpayerNumber = taxpayerNumber;
             Name = name;
         }
 
-        public string TaxId { get; }
+        public TaxpayerIdentificationNumber TaxpayerNumber { get; }
 
         public string Name { get; }
     }

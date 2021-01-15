@@ -23,12 +23,12 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
 
         public static readonly LocalCompany IssuingCompany = new LocalCompany(
             name: new LimitedString120(System.Environment.GetEnvironmentVariable("issuer_name") ?? "INSERT_ISSUER_NAME"),
-            taxpayerIdentificationNumber: TaxpayerIdentificationNumber.Create(Country.GetByCode("ES").Get(), System.Environment.GetEnvironmentVariable("issuer_tax_number") ?? "INSERT_ISSUER_TAX_NUMBER").Success.Get()
+            taxpayerIdentificationNumber: TaxpayerIdentificationNumber.Create(Countries.Spain, System.Environment.GetEnvironmentVariable("issuer_tax_number") ?? "INSERT_ISSUER_TAX_NUMBER").Success.Get()
         );
 
         public static readonly LocalCompany ReceivingCompany = new LocalCompany(
             name: new LimitedString120(System.Environment.GetEnvironmentVariable("receiver_name") ?? "INSERT_RECEIVER_NAME"),
-            taxpayerIdentificationNumber: TaxpayerIdentificationNumber.Create(Country.GetByCode("ES").Get(), System.Environment.GetEnvironmentVariable("receiver_tax_number") ?? "INSERT_RECEIVER_TAX_NUMBER").Success.Get()
+            taxpayerIdentificationNumber: TaxpayerIdentificationNumber.Create(Countries.Spain, System.Environment.GetEnvironmentVariable("receiver_tax_number") ?? "INSERT_RECEIVER_TAX_NUMBER").Success.Get()
         );
 
         [Test]
@@ -36,16 +36,16 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
         {
             var goodEntries = new List<NifInfoEntry>
             {
-                new NifInfoEntry(IssuingCompany.TaxpayerIdentificationNumber.TaxpayerNumber, IssuingCompany.Name.Value),
-                new NifInfoEntry(ReceivingCompany.TaxpayerIdentificationNumber.TaxpayerNumber, ReceivingCompany.Name.Value),
-                new NifInfoEntry("99999999R", "ESPAÑOL ESPAÑOL JUAN"),
-                new NifInfoEntry(IssuingCompany.TaxpayerIdentificationNumber.TaxpayerNumber, "Wrong company name"), // surprisingly, good company ID with bad company name is found
+                new NifInfoEntry(IssuingCompany.TaxpayerIdentificationNumber, IssuingCompany.Name.Value),
+                new NifInfoEntry(ReceivingCompany.TaxpayerIdentificationNumber, ReceivingCompany.Name.Value),
+                new NifInfoEntry(TaxpayerIdentificationNumber.Create(Countries.Spain, "99999999R").Success.Get(), "ESPAÑOL ESPAÑOL JUAN"),
+                new NifInfoEntry(IssuingCompany.TaxpayerIdentificationNumber, "Wrong company name"), // surprisingly, good company ID with bad company name is found
             };
             var badEntries = new List<NifInfoEntry>
             {
-                new NifInfoEntry("NotTheId", IssuingCompany.Name.Value),
-                new NifInfoEntry("99999999R", "Not Juan"),
-                new NifInfoEntry("12999999R", "Non existent name for non existent ID."),
+                new NifInfoEntry(TaxpayerIdentificationNumber.Create(Countries.Spain, "111111111").Success.Get(), IssuingCompany.Name.Value),
+                new NifInfoEntry(TaxpayerIdentificationNumber.Create(Countries.Spain, "99999999R").Success.Get(), "Not Juan"),
+                new NifInfoEntry(TaxpayerIdentificationNumber.Create(Countries.Spain, "12999999R").Success.Get(), "Non existent name for non existent ID."),
             };
 
             await AssertNifLookup(goodEntries, NifSearchResult.Found);
