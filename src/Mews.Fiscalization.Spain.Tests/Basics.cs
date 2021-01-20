@@ -47,14 +47,13 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
                 new NifInfoEntry(TaxpayerIdentificationNumber.Create(Countries.Spain, "99999999R").Success.Get(), "Not Juan"),
                 new NifInfoEntry(TaxpayerIdentificationNumber.Create(Countries.Spain, "12999999R").Success.Get(), "Non existent name for non existent ID."),
             };
-            var serverModifiedEntries = new List<NifInfoEntry>
-            {
-                // Surprisingly, good company name with bad company id is found
-                new NifInfoEntry(TaxpayerIdentificationNumber.Create(Countries.Spain, "A08433179").Success.Get(), "Microsoft test company")
-            };
+
+            // Surprisingly, good company name with bad company id is found
+            var serverModifiedEntry = new NifInfoEntry(TaxpayerIdentificationNumber.Create(Countries.Spain, "A08433179").Success.Get(), "Microsoft test company");
+
             await AssertNifLookup(goodEntries, NifSearchResult.Found);
             await AssertNifLookup(badEntries, NifSearchResult.NotFound);
-            await AssertNifLookup(serverModifiedEntries, NifSearchResult.FoundButNifModifiedByServer);
+            await AssertNifLookup(serverModifiedEntry, NifSearchResult.FoundButNifModifiedByServer, expectedName: "MICROSOFT, SL", expectedTaxId: "B08433179");
         }
 
         [Test]
@@ -96,11 +95,25 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
             return invoice;
         }
 
-        private async Task AssertNifLookup(List<NifInfoEntry> entries, NifSearchResult expectedResult)
+        private async Task<Response> NifLookup(IEnumerable<NifInfoEntry> entries)
         {
             var validator = new NifValidator(Certificate, httpTimeout: TimeSpan.FromSeconds(30));
+            return await validator.CheckNif(new Request(entries));
+        }
 
-            var response = await validator.CheckNif(new Request(entries));
+        private async Task AssertNifLookup(NifInfoEntry entry, NifSearchResult expectedResult, string expectedName, string expectedTaxId)
+        {
+            var response = await NifLookup(entry.ToEnumerable());
+            var result = response.Results.First();
+            Assert.AreEqual(response.Results.Count(), 1);
+            Assert.AreEqual(result.Result, expectedResult);
+            Assert.AreEqual(result.TaxId, expectedTaxId);
+            Assert.AreEqual(result.Name, expectedName);
+        }
+
+        private async Task AssertNifLookup(List<NifInfoEntry> entries, NifSearchResult expectedResult)
+        {
+            var response = await NifLookup(entries);
             Assert.AreEqual(response.Results.Count(), entries.Count);
             foreach (var result in response.Results)
             {
