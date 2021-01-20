@@ -8,6 +8,7 @@ namespace Mews.Fiscalization.Spain.Nif
     public enum NifSearchResult
     {
         Found,
+        FoundButNifModifiedByServer,
         NotFound,
         NotProcessed,
         Other
@@ -32,18 +33,12 @@ namespace Mews.Fiscalization.Spain.Nif
 
     public class NifInfoResults
     {
-        public NifInfoResults(string taxId, string name, string result)
+        public NifInfoResults(string taxId, string name, NifSearchResult resultType, string resultMessage = null)
         {
             TaxId = taxId;
             Name = name;
-            ResultMessage = result;
-            var lowerCaseResult = ResultMessage?.ToLowerInvariant();
-            Result = lowerCaseResult.Match(
-                "identificado", _ => NifSearchResult.Found,
-                "no identificado", _ => NifSearchResult.NotFound,
-                "no procesado", _ => NifSearchResult.NotProcessed,
-                _ => NifSearchResult.Other
-            );
+            Result = resultType;
+            ResultMessage = resultMessage.ToOption();
         }
 
         public string TaxId { get; }
@@ -52,7 +47,7 @@ namespace Mews.Fiscalization.Spain.Nif
 
         public NifSearchResult Result { get; }
 
-        public string ResultMessage { get; }
+        public IOption<string> ResultMessage { get; }
     }
 
     public class Request

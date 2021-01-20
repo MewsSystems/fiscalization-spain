@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
+using FuncSharp;
 using Mews.Fiscalization.Spain.Communication;
 
 namespace Mews.Fiscalization.Spain.Nif
@@ -19,17 +21,29 @@ namespace Mews.Fiscalization.Spain.Nif
         {
             var request = Convert(model);
             var response = await SoapClient.SendAsync<Entrada, Salida>(request).ConfigureAwait(continueOnCapturedContext: false);
-            return Convert(response);
+            return Convert(request, response);
         }
 
-        private Response Convert(Salida value)
+        private Response Convert(Entrada request, Salida response)
         {
-            return new Response(value.Contribuyente.Select(Convert));
-        }
-
-        private NifInfoResults Convert(VNifV2SalContribuyente value)
-        {
-            return new NifInfoResults(value.Nif, value.Nombre, value.Resultado);
+            return new Response(request.Contribuyente.Select(v =>
+            {
+                var nif = response.Contribuyente.FirstOption(i => i.Nif == v.Nif);
+                return nif.Match(
+                    n =>
+                    {
+                        var lowerCaseResult = n.Resultado?.ToLowerInvariant();
+                        var result = lowerCaseResult.Match(
+                            "identificado", _ => NifSearchResult.Found,
+                            "no identificado", _ => NifSearchResult.NotFound,
+                            "no procesado", _ => NifSearchResult.NotProcessed,
+                            _ => NifSearchResult.Other
+                        );
+                        return new NifInfoResults(n.Nif, n.Nombre, result, n.Resultado);
+                    },
+                    _ => new NifInfoResults(v.Nif, v.Nombre, NifSearchResult.FoundButNifModifiedByServer)
+                );
+            }));
         }
 
         private Entrada Convert(Request value)
