@@ -26,23 +26,24 @@ namespace Mews.Fiscalization.Spain.Nif
 
         private Response Convert(Entrada request, Salida response)
         {
-            return new Response(request.Contribuyente.Select(v =>
+            return new Response(response.Contribuyente.Select(r =>
             {
-                var nif = response.Contribuyente.FirstOption(i => i.Nif == v.Nif);
-                return nif.Match(
-                    n =>
+                var lowerCaseResult = r.Resultado?.ToLowerInvariant();
+                var result = lowerCaseResult.Match(
+                    "identificado", _ =>
                     {
-                        var lowerCaseResult = n.Resultado?.ToLowerInvariant();
-                        var result = lowerCaseResult.Match(
-                            "identificado", _ => NifSearchResult.Found,
-                            "no identificado", _ => NifSearchResult.NotFound,
-                            "no procesado", _ => NifSearchResult.NotProcessed,
-                            _ => NifSearchResult.Other
-                        );
-                        return new NifInfoResults(n.Nif, n.Nombre, result, n.Resultado);
+                        var nif = request.Contribuyente.FirstOption(i => i.Nif == r.Nif);
+                        if (nif.IsEmpty)
+                        {
+                            return NifSearchResult.FoundButNifModifiedByServer;
+                        }
+                        return NifSearchResult.Found;
                     },
-                    _ => new NifInfoResults(v.Nif, v.Nombre, NifSearchResult.FoundButNifModifiedByServer)
+                    "no identificado", _ => NifSearchResult.NotFound,
+                    "no procesado", _ => NifSearchResult.NotProcessed,
+                    _ => NifSearchResult.Other
                 );
+                return new NifInfoResults(r.Nif, r.Nombre, result, r.Resultado);
             }));
         }
 
