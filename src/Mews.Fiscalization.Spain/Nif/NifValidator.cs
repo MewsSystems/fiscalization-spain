@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
+using FuncSharp;
 using Mews.Fiscalization.Spain.Communication;
 
 namespace Mews.Fiscalization.Spain.Nif
@@ -19,17 +21,25 @@ namespace Mews.Fiscalization.Spain.Nif
         {
             var request = Convert(model);
             var response = await SoapClient.SendAsync<Entrada, Salida>(request).ConfigureAwait(continueOnCapturedContext: false);
-            return Convert(response);
+            return Convert(request, response);
         }
 
-        private Response Convert(Salida value)
+        private Response Convert(Entrada request, Salida response)
         {
-            return new Response(value.Contribuyente.Select(Convert));
-        }
-
-        private NifInfoResults Convert(VNifV2SalContribuyente value)
-        {
-            return new NifInfoResults(value.Nif, value.Nombre, value.Resultado);
+            return new Response(response.Contribuyente.Select(r =>
+            {
+                var lowerCaseResult = r.Resultado?.ToLowerInvariant();
+                var result = lowerCaseResult.Match(
+                    "identificado", _ => request.Contribuyente.Any(i => i.Nif == r.Nif).Match(
+                        t => NifSearchResult.Found,
+                        f => NifSearchResult.FoundButNifModifiedByServer
+                    ),
+                    "no identificado", _ => NifSearchResult.NotFound,
+                    "no procesado", _ => NifSearchResult.NotProcessed,
+                    _ => NifSearchResult.Other
+                );
+                return new NifInfoResults(r.Nif, r.Nombre, result, r.Resultado);
+            }));
         }
 
         private Entrada Convert(Request value)

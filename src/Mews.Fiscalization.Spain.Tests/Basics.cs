@@ -50,6 +50,10 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
 
             await AssertNifLookup(goodEntries, NifSearchResult.Found);
             await AssertNifLookup(badEntries, NifSearchResult.NotFound);
+
+            // Surprisingly, this works for some reason.
+            var serverModifiedEntry = new NifInfoEntry(TaxpayerIdentificationNumber.Create(Countries.Spain, "A08433179").Success.Get(), "Microsoft test company");
+            await AssertNifLookup(serverModifiedEntry, NifSearchResult.FoundButNifModifiedByServer, expectedName: "MICROSOFT, SL", expectedTaxId: "B08433179");
         }
 
         [Test]
@@ -91,11 +95,25 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
             return invoice;
         }
 
-        private async Task AssertNifLookup(List<NifInfoEntry> entries, NifSearchResult expectedResult)
+        private async Task<Response> NifLookup(IEnumerable<NifInfoEntry> entries)
         {
             var validator = new NifValidator(Certificate, httpTimeout: TimeSpan.FromSeconds(30));
+            return await validator.CheckNif(new Request(entries));
+        }
 
-            var response = await validator.CheckNif(new Request(entries));
+        private async Task AssertNifLookup(NifInfoEntry entry, NifSearchResult expectedResult, string expectedName, string expectedTaxId)
+        {
+            var response = await NifLookup(entry.ToEnumerable());
+            var result = response.Results.First();
+            Assert.AreEqual(response.Results.Count(), 1);
+            Assert.AreEqual(result.Result, expectedResult);
+            Assert.AreEqual(result.TaxId, expectedTaxId);
+            Assert.AreEqual(result.Name, expectedName);
+        }
+
+        private async Task AssertNifLookup(List<NifInfoEntry> entries, NifSearchResult expectedResult)
+        {
+            var response = await NifLookup(entries);
             Assert.AreEqual(response.Results.Count(), entries.Count);
             foreach (var result in response.Results)
             {
