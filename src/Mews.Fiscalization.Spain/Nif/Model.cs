@@ -33,11 +33,11 @@ namespace Mews.Fiscalization.Spain.Nif
 
     public class NifInfoResults
     {
-        public NifInfoResults(string taxId, string name, NifSearchResult resultType, string resultMessage = null)
+        public NifInfoResults(string taxId, string name, NifSearchResult result, string resultMessage = null)
         {
             TaxId = taxId;
             Name = name;
-            Result = resultType;
+            Result = result;
             ResultMessage = resultMessage.ToOption();
         }
 
