@@ -42,14 +42,13 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
             };
             var badEntries = new List<NifInfoEntry>
             {
-                new NifInfoEntry(TaxpayerIdentificationNumber.Create(Countries.Spain, "111111111").Success.Get(), IssuingCompany.Name.Value),
                 new NifInfoEntry(TaxpayerIdentificationNumber.Create(Countries.Spain, "99999999R").Success.Get(), "Not Juan"),
                 new NifInfoEntry(TaxpayerIdentificationNumber.Create(Countries.Spain, "12999999R").Success.Get(), "Non existent name for non existent ID."),
             };
             var serverModifiedEntries = new List<NifInfoEntry>
             {
                 // Surprisingly, good company name with bad company id is found
-                new NifInfoEntry(TaxpayerIdentificationNumber.Create(Countries.Spain, "12999999R").Success.Get(), IssuingCompany.Name.Value),
+                new NifInfoEntry(TaxpayerIdentificationNumber.Create(Countries.Spain, "111111111").Success.Get(), IssuingCompany.Name.Value),
                 new NifInfoEntry(ReceivingCompany.TaxpayerIdentificationNumber, ReceivingCompany.Name.Value)
             };
             await AssertNifLookup(goodEntries, NifSearchResult.Found);
