@@ -30,15 +30,10 @@ namespace Mews.Fiscalization.Spain.Nif
             {
                 var lowerCaseResult = r.Resultado?.ToLowerInvariant();
                 var result = lowerCaseResult.Match(
-                    "identificado", _ =>
-                    {
-                        var nif = request.Contribuyente.FirstOption(i => i.Nif == r.Nif);
-                        if (nif.IsEmpty)
-                        {
-                            return NifSearchResult.FoundButNifModifiedByServer;
-                        }
-                        return NifSearchResult.Found;
-                    },
+                    "identificado", _ => request.Contribuyente.Any(i => i.Nif == r.Nif).Match(
+                        t => NifSearchResult.Found,
+                        f => NifSearchResult.FoundButNifModifiedByServer
+                    ),
                     "no identificado", _ => NifSearchResult.NotFound,
                     "no procesado", _ => NifSearchResult.NotProcessed,
                     _ => NifSearchResult.Other

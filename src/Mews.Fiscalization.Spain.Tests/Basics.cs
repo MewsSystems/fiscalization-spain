@@ -48,7 +48,7 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
                 new NifInfoEntry(TaxpayerIdentificationNumber.Create(Countries.Spain, "12999999R").Success.Get(), "Non existent name for non existent ID."),
             };
 
-            // Surprisingly, good company name with bad company id is found
+            // Surprisingly, this works for some reason.
             var serverModifiedEntry = new NifInfoEntry(TaxpayerIdentificationNumber.Create(Countries.Spain, "A08433179").Success.Get(), "Microsoft test company");
 
             await AssertNifLookup(goodEntries, NifSearchResult.Found);
