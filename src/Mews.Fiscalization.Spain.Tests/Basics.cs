@@ -53,7 +53,7 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
 
             // Surprisingly, this works for some reason.
             var serverModifiedEntry = new NifInfoEntry(TaxpayerIdentificationNumber.Create(Countries.Spain, "A08433179").Success.Get(), "Microsoft test company");
-            await AssertNifLookup(serverModifiedEntry.ToEnumerable().AsList(), NifSearchResult.FoundButNifModifiedByServer);
+            await AssertNifLookup(serverModifiedEntry.ToEnumerable().AsList(), NifSearchResult.NotFoundBecauseNifModifiedByServer);
         }
 
         [Test]

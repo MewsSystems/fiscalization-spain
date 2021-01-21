@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using FuncSharp;
+using Mews.Fiscalization.Core.Model;
 using Mews.Fiscalization.Spain.Communication;
 
 namespace Mews.Fiscalization.Spain.Nif
@@ -26,6 +27,8 @@ namespace Mews.Fiscalization.Spain.Nif
 
         private Response Convert(Entrada request, Salida response)
         {
+            Check.Condition(request.Contribuyente.Count() == response.Contribuyente.Count(), "Invalid response. Request and response models count don't match.");
+
             return new Response(request.Contribuyente.Select(req =>
             {
                 var nifResponse = response.Contribuyente.FirstOption(res => res.Nif == req.Nif);
@@ -41,7 +44,7 @@ namespace Mews.Fiscalization.Spain.Nif
                         );
                         return new NifInfoResults(n.Nif, n.Nombre, result, n.Resultado);
                     },
-                    _ => new NifInfoResults(req.Nif, req.Nombre, NifSearchResult.FoundButNifModifiedByServer, nifResponse.Map(n => n.Resultado).GetOrNull())
+                    _ => new NifInfoResults(req.Nif, req.Nombre, NifSearchResult.NotFoundBecauseNifModifiedByServer, nifResponse.Map(n => n.Resultado).GetOrNull())
                 );
             }));
         }
