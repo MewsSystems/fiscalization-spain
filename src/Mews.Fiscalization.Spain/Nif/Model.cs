@@ -8,7 +8,7 @@ namespace Mews.Fiscalization.Spain.Nif
     public enum NifSearchResult
     {
         Found,
-        FoundButNifModifiedByServer,
+        NotFoundBecauseNifModifiedByServer,
         NotFound,
         NotProcessed,
         Other
