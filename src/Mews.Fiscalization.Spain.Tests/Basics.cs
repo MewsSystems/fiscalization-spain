@@ -53,7 +53,7 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
 
             // Surprisingly, this works for some reason.
             var serverModifiedEntry = new NifInfoEntry(TaxpayerIdentificationNumber.Create(Countries.Spain, "A08433179").Success.Get(), "Microsoft test company");
-            await AssertNifLookup(serverModifiedEntry, NifSearchResult.FoundButNifModifiedByServer, expectedName: "MICROSOFT, SL", expectedTaxId: "B08433179");
+            await AssertNifLookup(serverModifiedEntry.ToEnumerable().AsList(), NifSearchResult.FoundButNifModifiedByServer);
         }
 
         [Test]
@@ -95,29 +95,15 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
             return invoice;
         }
 
-        private async Task<Response> NifLookup(IEnumerable<NifInfoEntry> entries)
-        {
-            var validator = new NifValidator(Certificate, httpTimeout: TimeSpan.FromSeconds(30));
-            return await validator.CheckNif(new Request(entries));
-        }
-
-        private async Task AssertNifLookup(NifInfoEntry entry, NifSearchResult expectedResult, string expectedName, string expectedTaxId)
-        {
-            var response = await NifLookup(entry.ToEnumerable());
-            var result = response.Results.First();
-            Assert.AreEqual(response.Results.Count(), 1);
-            Assert.AreEqual(result.Result, expectedResult);
-            Assert.AreEqual(result.TaxId, expectedTaxId);
-            Assert.AreEqual(result.Name, expectedName);
-        }
-
         private async Task AssertNifLookup(List<NifInfoEntry> entries, NifSearchResult expectedResult)
         {
-            var response = await NifLookup(entries);
+            var validator = new NifValidator(Certificate, httpTimeout: TimeSpan.FromSeconds(30));
+            var response = await validator.CheckNif(new Request(entries));
+
             Assert.AreEqual(response.Results.Count(), entries.Count);
             foreach (var result in response.Results)
             {
-                Assert.AreEqual(result.Result, expectedResult);
+                Assert.AreEqual(expectedResult, result.Result);
             }
         }
 

@@ -26,9 +26,9 @@ namespace Mews.Fiscalization.Spain.Nif
 
         private Response Convert(Entrada request, Salida response)
         {
-            return new Response(request.Contribuyente.Select(r =>
+            return new Response(request.Contribuyente.Select(req =>
             {
-                var nifResponse = response.Contribuyente.FirstOption(i => i.Nif == r.Nif);
+                var nifResponse = response.Contribuyente.FirstOption(res => res.Nif == req.Nif);
                 return nifResponse.Match(
                     n =>
                     {
@@ -41,7 +41,7 @@ namespace Mews.Fiscalization.Spain.Nif
                         );
                         return new NifInfoResults(n.Nif, n.Nombre, result, n.Resultado);
                     },
-                    _ => new NifInfoResults(r.Nif, r.Nombre, NifSearchResult.FoundButNifModifiedByServer, nifResponse.Map(n => n.Resultado).GetOrNull())
+                    _ => new NifInfoResults(req.Nif, req.Nombre, NifSearchResult.FoundButNifModifiedByServer, nifResponse.Map(n => n.Resultado).GetOrNull())
                 );
             }));
         }
