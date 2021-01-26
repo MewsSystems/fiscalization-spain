@@ -52,12 +52,12 @@ namespace Mews.Fiscalization.Spain.Nif
 
     public class Request
     {
-        public Request(IEnumerable<NifInfoEntry> entries)
+        public Request(INonEmptyEnumerable<NifInfoEntry> entries)
         {
-            Entries = entries.ToList();
+            Entries = entries;
         }
 
-        public IEnumerable<NifInfoEntry> Entries { get; }
+        public INonEmptyEnumerable<NifInfoEntry> Entries { get; }
     }
 
     public class Response

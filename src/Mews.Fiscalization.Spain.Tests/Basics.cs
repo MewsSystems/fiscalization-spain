@@ -34,26 +34,24 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
         [Test]
         public async Task CheckNif()
         {
-            var goodEntries = new List<NifInfoEntry>
-            {
+            var goodEntries = NonEmptyEnumerable.Create(
                 new NifInfoEntry(IssuingCompany.TaxpayerIdentificationNumber, IssuingCompany.Name.Value),
                 new NifInfoEntry(ReceivingCompany.TaxpayerIdentificationNumber, ReceivingCompany.Name.Value),
                 new NifInfoEntry(TaxpayerIdentificationNumber.Create(Countries.Spain, "99999999R").Success.Get(), "ESPAÑOL ESPAÑOL JUAN"),
-                new NifInfoEntry(IssuingCompany.TaxpayerIdentificationNumber, "Wrong company name"), // surprisingly, good company ID with bad company name is found
-            };
-            var badEntries = new List<NifInfoEntry>
-            {
+                new NifInfoEntry(IssuingCompany.TaxpayerIdentificationNumber, "Wrong company name") // surprisingly, good company ID with bad company name is found
+            );
+            var badEntries = NonEmptyEnumerable.Create(
                 new NifInfoEntry(TaxpayerIdentificationNumber.Create(Countries.Spain, "111111111").Success.Get(), IssuingCompany.Name.Value),
                 new NifInfoEntry(TaxpayerIdentificationNumber.Create(Countries.Spain, "99999999R").Success.Get(), "Not Juan"),
-                new NifInfoEntry(TaxpayerIdentificationNumber.Create(Countries.Spain, "12999999R").Success.Get(), "Non existent name for non existent ID."),
-            };
+                new NifInfoEntry(TaxpayerIdentificationNumber.Create(Countries.Spain, "12999999R").Success.Get(), "Non existent name for non existent ID.")
+            );
 
             await AssertNifLookup(goodEntries, NifSearchResult.Found);
             await AssertNifLookup(badEntries, NifSearchResult.NotFound);
 
             // Surprisingly, this works for some reason.
             var serverModifiedEntry = new NifInfoEntry(TaxpayerIdentificationNumber.Create(Countries.Spain, "A08433179").Success.Get(), "Microsoft test company");
-            await AssertNifLookup(serverModifiedEntry.ToEnumerable().AsList(), NifSearchResult.NotFoundBecauseNifModifiedByServer);
+            await AssertNifLookup(serverModifiedEntry.ToEnumerable(), NifSearchResult.NotFoundBecauseNifModifiedByServer);
         }
 
         [Test]
@@ -95,12 +93,12 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
             return invoice;
         }
 
-        private async Task AssertNifLookup(List<NifInfoEntry> entries, NifSearchResult expectedResult)
+        private async Task AssertNifLookup(INonEmptyEnumerable<NifInfoEntry> entries, NifSearchResult expectedResult)
         {
             var validator = new NifValidator(Certificate, httpTimeout: TimeSpan.FromSeconds(30));
             var response = await validator.CheckNif(new Request(entries));
 
-            Assert.AreEqual(response.Results.Count(), entries.Count);
+            Assert.AreEqual(response.Results.Count(), entries.Count());
             foreach (var result in response.Results)
             {
                 Assert.AreEqual(expectedResult, result.Result);
