@@ -48,12 +48,12 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
                 new NifInfoEntry(TaxpayerIdentificationNumber.Create(Countries.Spain, "12999999R").Success.Get(), "Non existent name for non existent ID."),
             };
 
-            await AssertNifLookup(goodEntries, NifSearchResult.Found);
-            await AssertNifLookup(badEntries, NifSearchResult.NotFound);
+            await AssertNifLookup(goodEntries.AsNonEmpty().Get(), NifSearchResult.Found);
+            await AssertNifLookup(badEntries.AsNonEmpty().Get(), NifSearchResult.NotFound);
 
             // Surprisingly, this works for some reason.
             var serverModifiedEntry = new NifInfoEntry(TaxpayerIdentificationNumber.Create(Countries.Spain, "A08433179").Success.Get(), "Microsoft test company");
-            await AssertNifLookup(serverModifiedEntry.ToEnumerable().AsList(), NifSearchResult.NotFoundBecauseNifModifiedByServer);
+            await AssertNifLookup(serverModifiedEntry.ToEnumerable().AsNonEmpty().Get(), NifSearchResult.NotFoundBecauseNifModifiedByServer);
         }
 
         [Test]
@@ -95,12 +95,12 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
             return invoice;
         }
 
-        private async Task AssertNifLookup(List<NifInfoEntry> entries, NifSearchResult expectedResult)
+        private async Task AssertNifLookup(INonEmptyEnumerable<NifInfoEntry> entries, NifSearchResult expectedResult)
         {
             var validator = new NifValidator(Certificate, httpTimeout: TimeSpan.FromSeconds(30));
             var response = await validator.CheckNif(new Request(entries));
 
-            Assert.AreEqual(response.Results.Count(), entries.Count);
+            Assert.AreEqual(response.Results.Count(), entries.Count());
             foreach (var result in response.Results)
             {
                 Assert.AreEqual(expectedResult, result.Result);
