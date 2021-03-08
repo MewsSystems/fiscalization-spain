@@ -35,9 +35,15 @@ namespace Mews.Fiscalization.Spain.Model.Request
 
         private decimal CalculateTaxSummary(IOption<TaxSummary> taxSummary)
         {
-            var taxFreeTotal = taxSummary.FlatMap(summary => summary.TaxFree.Map(i => i.Sum(item => item.Amount.Value))).GetOrZero();
-            var taxRateTotals = taxSummary.Map(summary => summary.Taxed.Flatten().Sum(s => s.TaxBaseAmount.Value + s.TaxAmount.Value)).GetOrZero();
-            return taxFreeTotal + taxRateTotals;
+            return taxSummary.Match(
+                summary =>
+                {
+                    var taxFreeTotal = summary.TaxFree.Map(i => i.Sum(item => item.Amount.Value)).GetOrZero();
+                    var taxRateTotals = summary.Taxed.Flatten().Sum(s => s.TaxBaseAmount.Value + s.TaxAmount.Value);
+                    return taxFreeTotal + taxRateTotals;
+                },
+                _ => 0
+            );
         }
     }
 }
