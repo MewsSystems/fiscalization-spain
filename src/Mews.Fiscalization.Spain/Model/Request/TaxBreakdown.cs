@@ -27,17 +27,23 @@ namespace Mews.Fiscalization.Spain.Model.Request
             get
             {
                 return Match(
-                    taxSummary => CalculateTaxSummary(taxSummary),
+                    taxSummary => CalculateTaxSummary(taxSummary.ToOption()),
                     operationTypeTaxBreakdown => CalculateTaxSummary(operationTypeTaxBreakdown.Delivery) + CalculateTaxSummary(operationTypeTaxBreakdown.ServiceProvision)
                 );
             }
         }
 
-        private decimal CalculateTaxSummary(TaxSummary summary)
+        private decimal CalculateTaxSummary(IOption<TaxSummary> taxSummary)
         {
-            var taxFreeTotal = summary.TaxFree.Map(i => i.Sum(item => item.Amount.Value)).GetOrZero();
-            var taxRateTotals = summary.Taxed.Flatten().Sum(s => s.TaxBaseAmount.Value + s.TaxAmount.Value);
-            return taxFreeTotal + taxRateTotals;
+            return taxSummary.Match(
+                summary =>
+                {
+                    var taxFreeTotal = summary.TaxFree.Map(i => i.Sum(item => item.Amount.Value)).GetOrZero();
+                    var taxRateTotals = summary.Taxed.Flatten().Sum(s => s.TaxBaseAmount.Value + s.TaxAmount.Value);
+                    return taxFreeTotal + taxRateTotals;
+                },
+                _ => 0
+            );
         }
     }
 }

@@ -76,11 +76,11 @@ namespace Mews.Fiscalization.Spain.Converters
                     {
                         Entrega = new TipoSinDesgloseType
                         {
-                            Sujeta = Convert(o.Delivery)
+                            Sujeta = o.Delivery.Map(d => Convert(d)).GetOrNull()
                         },
                         PrestacionServicios = new TipoSinDesglosePrestacionType
                         {
-                            Sujeta = ConvertProvision(o.ServiceProvision)
+                            Sujeta = o.ServiceProvision.Map(p => ConvertProvision(p)).GetOrNull()
                         }
                     }
                 }
