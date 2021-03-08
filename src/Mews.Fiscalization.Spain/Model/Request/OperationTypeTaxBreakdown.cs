@@ -5,9 +5,8 @@ namespace Mews.Fiscalization.Spain.Model.Request
 {
     public sealed class OperationTypeTaxBreakdown
     {
-        public OperationTypeTaxBreakdown(TaxSummary serviceProvision = null, TaxSummary delivery = null)
+        private OperationTypeTaxBreakdown(TaxSummary serviceProvision = null, TaxSummary delivery = null)
         {
-            Check.Condition(serviceProvision.IsNotNull() || delivery.IsNotNull(), "At least 1 tax summary must be provided.");
             ServiceProvision = serviceProvision.ToOption();
             Delivery = delivery.ToOption();
         }
@@ -15,5 +14,13 @@ namespace Mews.Fiscalization.Spain.Model.Request
         public IOption<TaxSummary> ServiceProvision { get; }
 
         public IOption<TaxSummary> Delivery { get; }
+
+        public static ITry<OperationTypeTaxBreakdown, INonEmptyEnumerable<Error>> Create(TaxSummary serviceProvision = null, TaxSummary delivery = null)
+        {
+            return (serviceProvision.IsNotNull() || delivery.IsNotNull()).ToTry(
+                t => new OperationTypeTaxBreakdown(serviceProvision, delivery),
+                f => Error.Create("At least 1 tax summary must be provided.")
+            );
+        }
     }
 }
