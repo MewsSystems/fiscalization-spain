@@ -63,25 +63,25 @@ namespace Mews.Fiscalization.Spain.Converters
         private FacturaExpedidaTypeTipoDesglose Convert(TaxBreakdown taxBreakdown)
         {
             return taxBreakdown.Match(
-                i => new FacturaExpedidaTypeTipoDesglose
+                summary => new FacturaExpedidaTypeTipoDesglose
                 {
                     Item = new TipoSinDesgloseType
                     {
-                        Sujeta = Convert(i)
+                        Sujeta = Convert(summary)
                     }
                 },
-                o => new FacturaExpedidaTypeTipoDesglose
+                operationTaxSummary => new FacturaExpedidaTypeTipoDesglose
                 {
                     Item = new TipoConDesgloseType
                     {
-                        Entrega = new TipoSinDesgloseType
+                        Entrega = operationTaxSummary.Delivery.Map(s => new TipoSinDesgloseType
                         {
-                            Sujeta = o.Delivery.Map(d => Convert(d)).GetOrNull()
-                        },
-                        PrestacionServicios = new TipoSinDesglosePrestacionType
+                            Sujeta = Convert(s)
+                        }).GetOrNull(),
+                        PrestacionServicios = operationTaxSummary.ServiceProvision.Map(s => new TipoSinDesglosePrestacionType
                         {
-                            Sujeta = o.ServiceProvision.Map(p => ConvertProvision(p)).GetOrNull()
-                        }
+                            Sujeta = ConvertProvision(s)
+                        }).GetOrNull()
                     }
                 }
             );
