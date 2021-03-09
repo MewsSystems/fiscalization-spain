@@ -83,7 +83,7 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
 
                 var responseErrorMessages = response.Invoices.Select(i => i.ErrorMessage).Flatten();
                 var errorMessage = String.Join(System.Environment.NewLine, responseErrorMessages);
-                Assert.AreEqual(response.Result, RegisterResult.Correct, errorMessage);
+                Assert.AreEqual(RegisterResult.Correct, response.Result, errorMessage);
             }
         }
 
