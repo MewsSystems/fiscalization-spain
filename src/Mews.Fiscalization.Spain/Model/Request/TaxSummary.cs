@@ -1,26 +1,44 @@
 ﻿using FuncSharp;
+using Mews.Fiscalization.Core.Model;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Mews.Fiscalization.Spain.Model.Request
 {
     public sealed class TaxSummary
     {
-        public TaxSummary(TaxFreeItem[] taxFree = null, TaxRateSummary[] taxed = null)
+        private TaxSummary(INonEmptyEnumerable<TaxExemptItem> taxExempt = null, INonEmptyEnumerable<TaxRateSummary> taxed = null)
         {
-            Taxed = taxed.ToNonEmptyOption();
-            Taxed.Where(i => i.Length > 6).Match(_ => throw new Exception("There can only be up to 6 distinct tax rates on one invoice."));
-
-            TaxFree = taxFree.ToNonEmptyOption();
-            TaxFree.Where(i => i.Length > 7).Match(_ => throw new Exception("There can only be up to 7 tax exempt items on one invoice."));
-
-            if (TaxFree.IsEmpty && Taxed.IsEmpty)
-            {
-                throw new Exception("Invoice cannot be empty.");
-            }
+            TaxExempt = taxExempt.ToOption();
+            Taxed = taxed.ToOption();
         }
 
-        public IOption<TaxFreeItem[]> TaxFree { get; }
+        public IOption<INonEmptyEnumerable<TaxExemptItem>> TaxExempt { get; }
 
-        public IOption<TaxRateSummary[]> Taxed { get; }
+        public IOption<INonEmptyEnumerable<TaxRateSummary>> Taxed { get; }
+
+        public static ITry<TaxSummary, IEnumerable<Error>> Create(TaxExemptItem[] taxExempt = null, TaxRateSummary[] taxed = null)
+        {
+            if (taxExempt.IsEmpty() && taxed.IsEmpty())
+            {
+                return Try.Error<TaxSummary, IEnumerable<Error>>(Error.Create("Tax summary must contain at least one item."));
+            }
+
+            var validTaxExemptItems = taxExempt.AsNonEmpty().Match(
+                items => items.ToTry(i => i.Count() <= 7, _ => Error.Create("There can only be up to 7 tax exempt items on one invoice.")),
+                _ => Try.Success<INonEmptyEnumerable<TaxExemptItem>, INonEmptyEnumerable<Error>>(null)
+            );
+            var validTaxRateSummaries = taxed.AsNonEmpty().Match(
+                summaries => summaries.ToTry(s => s.Count() <= 6, _ => Error.Create("There can only be up to 6 distinct taxed items on one invoice.")),
+                _ => Try.Success<INonEmptyEnumerable<TaxRateSummary>, INonEmptyEnumerable<Error>>(null)
+            );
+
+            return Try.Aggregate(
+                validTaxExemptItems,
+                validTaxRateSummaries,
+                (i, s) => new TaxSummary(taxExempt: i, taxed: s)
+            );
+        }
     }
 }

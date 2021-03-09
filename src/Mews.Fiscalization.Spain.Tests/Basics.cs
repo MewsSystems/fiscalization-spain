@@ -108,7 +108,7 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
         private AddedInvoice GetInvoice(LocalCompany issuingCompany, LocalCompany payingCompany, int invoiceIndex = 1)
         {
             var taxRateSummaries = new[] { GetTaxRateSummary(21m, 42.07M) };
-            var taxFreeItems = new[] { new TaxFreeItem(new Amount(20m), CauseOfExemption.OtherGrounds) };
+            var taxExemptItems = new[] { new TaxExemptItem(new Amount(20m), CauseOfExemption.OtherGrounds) };
 
             var nowUtc = DateTime.UtcNow;
             var issueDateUtc = nowUtc.Date;
@@ -120,10 +120,7 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
                 type: InvoiceType.Invoice,
                 schemeOrEffect: SchemeOrEffect.GeneralTaxRegimeActivity,
                 description: new LimitedString500("This is a test invoice."),
-                taxBreakdown: new TaxBreakdown(new TaxSummary(
-                    taxFree: taxFreeItems,
-                    taxed: taxRateSummaries
-                )),
+                taxBreakdown: new TaxBreakdown(TaxSummary.Create(taxExempt: taxExemptItems, taxed: taxRateSummaries).Success.Get()),
                 counterParty: new CounterPartyCompany(payingCompany),
                 issuedByThirdParty: true
             );

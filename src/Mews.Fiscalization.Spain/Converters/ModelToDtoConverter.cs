@@ -91,7 +91,7 @@ namespace Mews.Fiscalization.Spain.Converters
         {
             return new SujetaType
             {
-                Exenta = summary.TaxFree.Map(items => items.Select(i => Convert(i)).ToArray()).GetOrNull(),
+                Exenta = summary.TaxExempt.Map(items => items.Select(i => Convert(i)).ToArray()).GetOrNull(),
                 NoExenta = summary.Taxed.Map(taxRateSummaries => new SujetaTypeNoExenta
                 {
                     TipoNoExenta = TipoOperacionSujetaNoExentaType.S1,
@@ -104,7 +104,7 @@ namespace Mews.Fiscalization.Spain.Converters
         {
             return new SujetaPrestacionType
             {
-                Exenta = summary.TaxFree.Map(items => items.Select(i => Convert(i)).ToArray()).GetOrNull(),
+                Exenta = summary.TaxExempt.Map(items => items.Select(i => Convert(i)).ToArray()).GetOrNull(),
                 NoExenta = summary.Taxed.Map(taxRateSummaries => new SujetaPrestacionTypeNoExenta
                 {
                     TipoNoExenta = TipoOperacionSujetaNoExentaType.S1,
@@ -113,7 +113,7 @@ namespace Mews.Fiscalization.Spain.Converters
             };
         }
 
-        private DetalleExentaType Convert(TaxFreeItem item)
+        private DetalleExentaType Convert(TaxExemptItem item)
         {
             return new DetalleExentaType
             {

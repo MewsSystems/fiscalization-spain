@@ -38,9 +38,9 @@ namespace Mews.Fiscalization.Spain.Model.Request
             return taxSummary.Match(
                 summary =>
                 {
-                    var taxFreeTotal = summary.TaxFree.Map(i => i.Sum(item => item.Amount.Value)).GetOrZero();
+                    var taxExemptTotal = summary.TaxExempt.Map(i => i.Sum(item => item.Amount.Value)).GetOrZero();
                     var taxRateTotals = summary.Taxed.Flatten().Sum(s => s.TaxBaseAmount.Value + s.TaxAmount.Value);
-                    return taxFreeTotal + taxRateTotals;
+                    return taxExemptTotal + taxRateTotals;
                 },
                 _ => 0
             );

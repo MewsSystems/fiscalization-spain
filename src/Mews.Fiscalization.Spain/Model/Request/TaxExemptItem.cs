@@ -3,9 +3,9 @@ using System;
 
 namespace Mews.Fiscalization.Spain.Model.Request
 {
-    public sealed class TaxFreeItem
+    public sealed class TaxExemptItem
     {
-        public TaxFreeItem(Amount amount, CauseOfExemption? cause = null)
+        public TaxExemptItem(Amount amount, CauseOfExemption? cause = null)
         {
             Amount = amount ?? throw new ArgumentNullException(nameof(amount));
             Cause = cause.ToOption();
