@@ -68,23 +68,40 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
         public async Task SendInvoics(int invoiceIndex, bool isOperationTypeTaxBreakdown, bool addTaxExemptItems, bool addTaxedItems, bool expectedSuccess = true)
         {
             var invoice = GetInvoice(IssuingCompany, ReceivingCompany, isOperationTypeTaxBreakdown, addTaxExemptItems, addTaxedItems, invoiceIndex);
-            if (!expectedSuccess)
-            {
-                Assert.IsTrue(invoice.IsError);
-            }
-            else
-            {
-                var model = new InvoicesToSubmit(
-                    header: new Header(IssuingCompany, CommunicationType.Registration),
-                    addedInvoices: new[] { invoice.Success.Get() }
-                );
+            await invoice.Match(
+                async i =>
+                {
+                    if (!expectedSuccess)
+                    {
+                        Assert.Fail("Expected to fail but was success.");
+                    }
+                    else
+                    {
+                        var model = new InvoicesToSubmit(
+                            header: new Header(IssuingCompany, CommunicationType.Registration),
+                            addedInvoices: new[] { i }
+                        );
 
-                var response = await Client.SubmitInvoiceAsync(model).ConfigureAwait(continueOnCapturedContext: false);
+                        var response = await Client.SubmitInvoiceAsync(model).ConfigureAwait(continueOnCapturedContext: false);
 
-                var responseErrorMessages = response.Invoices.Select(i => i.ErrorMessage).Flatten();
-                var errorMessage = String.Join(System.Environment.NewLine, responseErrorMessages);
-                Assert.AreEqual(RegisterResult.Correct, response.Result, errorMessage);
-            }
+                        var responseErrorMessages = response.Invoices.Select(result => result.ErrorMessage).Flatten();
+                        var errorMessage = String.Join(System.Environment.NewLine, responseErrorMessages);
+                        Assert.AreEqual(RegisterResult.Correct, response.Result, errorMessage);
+                    }
+                },
+                async _ =>
+                {
+                    await Task.Run(() =>
+                    {
+                        if (expectedSuccess)
+                        {
+                            Assert.Fail("Expected to success but failed", invoice.Error.Get().Select(e => e.Message).MkString(", "));
+                        }
+
+                        Assert.Pass();
+                    });
+                }
+            );
         }
 
         /// <summary>
