@@ -55,56 +55,9 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
         }
 
         [Test]
-        [TestCase(1, false, true, true)]
-        [TestCase(2, false, true, false)]
-        [TestCase(3, false, false, true)]
-
-        [TestCase(4, true, true, true)]
-        [TestCase(5, true, true, false)]
-        [TestCase(6, true, false, true)]
-        [TestCase(7, true, true, true, false)]
-        [TestCase(8, true, true, false, false)]
-        [TestCase(9, true, false, true, false)]
-
-        [TestCase(10, false, false, false, false, false)]
-        [TestCase(11, true, false, false, false, false)]
-        public async Task SendInvoics(int invoiceIndex, bool isOperationTypeTaxBreakdown, bool addTaxExemptItems, bool addTaxedItems, bool addDeliveryItems = true, bool expectedSuccess = true)
+        public async Task PostInvoice()
         {
-            var invoice = GetInvoice(IssuingCompany, ReceivingCompany, isOperationTypeTaxBreakdown, addTaxExemptItems, addTaxedItems, addDeliveryItems, invoiceIndex);
-            await invoice.Match(
-                async i =>
-                {
-                    if (!expectedSuccess)
-                    {
-                        Assert.Fail("Expected to fail but was success.");
-                    }
-                    else
-                    {
-                        var model = new InvoicesToSubmit(
-                            header: new Header(IssuingCompany, CommunicationType.Registration),
-                            addedInvoices: new[] { i }
-                        );
-
-                        var response = await Client.SubmitInvoiceAsync(model).ConfigureAwait(continueOnCapturedContext: false);
-
-                        var responseErrorMessages = response.Invoices.Select(result => result.ErrorMessage).Flatten();
-                        var errorMessage = String.Join(System.Environment.NewLine, responseErrorMessages);
-                        Assert.AreEqual(RegisterResult.Correct, response.Result, errorMessage);
-                    }
-                },
-                async _ =>
-                {
-                    await Task.Run(() =>
-                    {
-                        if (expectedSuccess)
-                        {
-                            Assert.Fail("Expected to success but failed", invoice.Error.Get().Select(e => e.Message).MkString(", "));
-                        }
-
-                        Assert.Pass();
-                    });
-                }
-            );
+            await SuccessfullyPostInvoice(Client);
         }
 
         /// <summary>
@@ -123,6 +76,23 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
         //     Assert.NotNull(response);
         // }
 
+        private async Task<AddedInvoice> SuccessfullyPostInvoice(Client client)
+        {
+            var invoice = GetInvoice(IssuingCompany, ReceivingCompany);
+            var model = new InvoicesToSubmit(
+                header: new Header(IssuingCompany, CommunicationType.Registration),
+                addedInvoices:  new [] { invoice }
+            );
+
+            var response = await client.SubmitInvoiceAsync(model).ConfigureAwait(continueOnCapturedContext: false);
+
+            var responseErrorMessages = response.Invoices.Select(i => i.ErrorMessage).Flatten();
+            var errorMessage = String.Join(System.Environment.NewLine, responseErrorMessages);
+            Assert.AreEqual(response.Result, RegisterResult.Correct, errorMessage);
+
+            return invoice;
+        }
+
         private async Task AssertNifLookup(INonEmptyEnumerable<NifInfoEntry> entries, NifSearchResult expectedResult)
         {
             var validator = new NifValidator(Certificate, httpTimeout: TimeSpan.FromSeconds(30));
@@ -135,47 +105,25 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
             }
         }
 
-        private ITry<AddedInvoice, IEnumerable<Error>> GetInvoice(
-            LocalCompany issuingCompany,
-            LocalCompany payingCompany,
-            bool isOperationTypeTaxBreakdown,
-            bool addTaxExemptItems,
-            bool addTaxedItems,
-            bool addDeliveryItems,
-            int invoiceIndex = 1)
+        private AddedInvoice GetInvoice(LocalCompany issuingCompany, LocalCompany payingCompany, int invoiceIndex = 1)
         {
-            var taxRateSummaries = addTaxedItems.Match(
-                t => new[] { GetTaxRateSummary(21m, 42.07M) },
-                f => null
-            );
-            var taxExemptItems = addTaxExemptItems.Match(
-                t => new[] { new TaxExemptItem(new Amount(20m), CauseOfExemption.OtherGrounds) },
-                f => null
-            );
-
-            var taxSummary = TaxSummary.Create(taxExemptItems, taxRateSummaries);
-            var breakdown = isOperationTypeTaxBreakdown.Match(
-                t => taxSummary.FlatMap(s => addDeliveryItems.Match(
-                    tt => OperationTypeTaxBreakdown.Create(serviceProvision: s, delivery: s),
-                    ff => OperationTypeTaxBreakdown.Create(serviceProvision: s)
-                ).Map(b => new TaxBreakdown(b))),
-                f => taxSummary.Map(s => new TaxBreakdown(s))
-            );
+            var taxRateSummaries = new[] { GetTaxRateSummary(21m, 42.07M) };
+            var taxExemptItems = new[] { new TaxExemptItem(new Amount(20m), CauseOfExemption.OtherGrounds) };
 
             var nowUtc = DateTime.UtcNow;
             var issueDateUtc = nowUtc.Date;
             var invoiceNumber = $"Bill-{nowUtc:yyyy-MM-dd-HH-mm-ss}-{invoiceIndex}";
 
-            return breakdown.Map(b => new AddedInvoice(
+            return new AddedInvoice(
                 taxPeriod: new TaxPeriod(new Year(issueDateUtc.Year), (Month)(issueDateUtc.Month - 1)),
                 id: new InvoiceId(issuingCompany.TaxpayerIdentificationNumber, new LimitedString1to60(invoiceNumber), issueDateUtc),
                 type: InvoiceType.Invoice,
                 schemeOrEffect: SchemeOrEffect.GeneralTaxRegimeActivity,
                 description: new LimitedString500("This is a test invoice."),
-                taxBreakdown: b,
+                taxBreakdown: new TaxBreakdown(TaxSummary.Create(taxExempt: taxExemptItems, taxed: taxRateSummaries).Success.Get()),
                 counterParty: new CounterPartyCompany(payingCompany),
                 issuedByThirdParty: true
-            ));
+            );
         }
 
         private TaxRateSummary GetTaxRateSummary(decimal vat, decimal baseValue)
