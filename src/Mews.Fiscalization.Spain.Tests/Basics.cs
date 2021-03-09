@@ -66,8 +66,8 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
         [TestCase(8, true, true, false, false)]
         [TestCase(9, true, false, true, false)]
 
-        [TestCase(10, false, false, false, false)]
-        [TestCase(11, true, false, false, false)]
+        [TestCase(10, false, false, false, false, false)]
+        [TestCase(11, true, false, false, false, false)]
         public async Task SendInvoics(int invoiceIndex, bool isOperationTypeTaxBreakdown, bool addTaxExemptItems, bool addTaxedItems, bool addDeliveryItems =  true, bool expectedSuccess = true)
         {
             var invoice = GetInvoice(IssuingCompany, ReceivingCompany, isOperationTypeTaxBreakdown, addTaxExemptItems, addTaxedItems, addDeliveryItems, invoiceIndex);
