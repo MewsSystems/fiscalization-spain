@@ -55,19 +55,19 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
         }
 
         [Test]
-        [TestCase(false, true, true)]
-        [TestCase(false, true, false)]
-        [TestCase(false, false, true)]
+        [TestCase(1, false, true, true)]
+        [TestCase(2, false, true, false)]
+        [TestCase(3, false, false, true)]
 
-        [TestCase(true, true, true)]
-        [TestCase(true, true, false)]
-        [TestCase(false, false, true)]
+        [TestCase(4, true, true, true)]
+        [TestCase(5, true, true, false)]
+        [TestCase(6, false, false, true)]
 
-        [TestCase(false, false, false, false)]
-        [TestCase(true, false, false, false)]
-        public async Task SendInvoics(bool isOperationTypeTaxBreakdown, bool addTaxExemptItems, bool addTaxedItems, bool expectedSuccess = true)
+        [TestCase(7, false, false, false, false)]
+        [TestCase(8, true, false, false, false)]
+        public async Task SendInvoics(int invoiceIndex, bool isOperationTypeTaxBreakdown, bool addTaxExemptItems, bool addTaxedItems, bool expectedSuccess = true)
         {
-            var invoice = GetInvoice(IssuingCompany, ReceivingCompany, isOperationTypeTaxBreakdown, addTaxExemptItems, addTaxedItems);
+            var invoice = GetInvoice(IssuingCompany, ReceivingCompany, isOperationTypeTaxBreakdown, addTaxExemptItems, addTaxedItems, invoiceIndex);
             if (!expectedSuccess)
             {
                 Assert.IsTrue(invoice.IsError);
