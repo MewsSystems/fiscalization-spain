@@ -70,7 +70,7 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
             var invoice = GetInvoice(IssuingCompany, ReceivingCompany, isOperationTypeTaxBreakdown, addTaxExemptItems, addTaxedItems);
             if (!expectedSuccess)
             {
-                Assert.IsFalse(invoice.IsSuccess, invoice.Error.Flatten().Select(e => e.Message).MkString(", "));
+                Assert.IsTrue(invoice.IsError);
             }
             else
             {
