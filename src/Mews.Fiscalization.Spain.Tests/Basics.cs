@@ -62,12 +62,15 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
         [TestCase(4, true, true, true)]
         [TestCase(5, true, true, false)]
         [TestCase(6, true, false, true)]
+        [TestCase(7, true, true, true, false)]
+        [TestCase(8, true, true, false, false)]
+        [TestCase(9, true, false, true, false)]
 
-        [TestCase(7, false, false, false, false)]
-        [TestCase(8, true, false, false, false)]
-        public async Task SendInvoics(int invoiceIndex, bool isOperationTypeTaxBreakdown, bool addTaxExemptItems, bool addTaxedItems, bool expectedSuccess = true)
+        [TestCase(10, false, false, false, false)]
+        [TestCase(11, true, false, false, false)]
+        public async Task SendInvoics(int invoiceIndex, bool isOperationTypeTaxBreakdown, bool addTaxExemptItems, bool addTaxedItems, bool addDeliveryItems =  true, bool expectedSuccess = true)
         {
-            var invoice = GetInvoice(IssuingCompany, ReceivingCompany, isOperationTypeTaxBreakdown, addTaxExemptItems, addTaxedItems, invoiceIndex);
+            var invoice = GetInvoice(IssuingCompany, ReceivingCompany, isOperationTypeTaxBreakdown, addTaxExemptItems, addTaxedItems, addDeliveryItems, invoiceIndex);
             await invoice.Match(
                 async i =>
                 {
@@ -138,6 +141,7 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
             bool isOperationTypeTaxBreakdown,
             bool addTaxExemptItems,
             bool addTaxedItems,
+            bool addDeliveryItems,
             int invoiceIndex = 1)
         {
             var taxRateSummaries = addTaxedItems.Match(
@@ -151,7 +155,10 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
 
             var taxSummary = TaxSummary.Create(taxExemptItems, taxRateSummaries);
             var breakdown = isOperationTypeTaxBreakdown.Match(
-                t => taxSummary.FlatMap(s => OperationTypeTaxBreakdown.Create(s, s).Map(b => new TaxBreakdown(b))),
+                t => taxSummary.FlatMap(s => addDeliveryItems.Match(
+                    tt => OperationTypeTaxBreakdown.Create(serviceProvision: s, delivery: s),
+                    ff => OperationTypeTaxBreakdown.Create(serviceProvision: s)
+                ).Map(b => new TaxBreakdown(b))),
                 f => taxSummary.Map(s => new TaxBreakdown(s))
             );
 
