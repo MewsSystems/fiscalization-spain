@@ -61,7 +61,7 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
 
         [TestCase(4, true, true, true)]
         [TestCase(5, true, true, false)]
-        [TestCase(6, false, false, true)]
+        [TestCase(6, true, false, true)]
 
         [TestCase(7, false, false, false, false)]
         [TestCase(8, true, false, false, false)]
