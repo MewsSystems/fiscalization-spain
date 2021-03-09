@@ -151,7 +151,7 @@ namespace Mews.Fiscalization.Spain.Tests.IssuedInvoices
 
             var taxSummary = TaxSummary.Create(taxExemptItems, taxRateSummaries);
             var breakdown = isOperationTypeTaxBreakdown.Match(
-                t => taxSummary.FlatMap(s => OperationTypeTaxBreakdown.Create(s).Map(b => new TaxBreakdown(b))),
+                t => taxSummary.FlatMap(s => OperationTypeTaxBreakdown.Create(s, s).Map(b => new TaxBreakdown(b))),
                 f => taxSummary.Map(s => new TaxBreakdown(s))
             );
 
